@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "pixelbin"
+version = "1.0.1"
+description = "Pixelbin SDK for Python"
+authors = ["Pixelbin <dev@pixelbin.io>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/pixelbin-dev/pixelbin-python-sdk"
+repository = "https://github.com/pixelbin-dev/pixelbin-python-sdk"
+keywords = ["Pixelbin"]
+include = [
+    "LICENSE", "README.md"
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+aiohttp = "^3.8.1"
+ujson = "^5.2.0"
+pytz = "^2022.1"
+marshmallow = "^3.15.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
