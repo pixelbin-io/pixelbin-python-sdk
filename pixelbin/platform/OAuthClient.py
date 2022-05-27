@@ -6,6 +6,9 @@ class OAuthClient:
         self.token = config.apiSecret
 
 
-    async def getAccessToken(self):
+    async def getAccessToken(self) -> str:
+        """
+        summary : return access token
+        """
         return self.token
 

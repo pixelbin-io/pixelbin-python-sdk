@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pixelbin"
-version = "1.0.1"
+version = "1.0.2"
 description = "Pixelbin SDK for Python"
 authors = ["Pixelbin <dev@pixelbin.io>"]
 license = "MIT"
@@ -9,7 +9,7 @@ homepage = "https://github.com/pixelbin-dev/pixelbin-python-sdk"
 repository = "https://github.com/pixelbin-dev/pixelbin-python-sdk"
 keywords = ["Pixelbin"]
 include = [
-    "LICENSE", "README.md"
+    "LICENSE", "README.md", "documentation/platform/README.md", "documentation/platform/ASSETS.md", "documentation/platform/ORGANIZATION.md"
 ]
 
 [tool.poetry.dependencies]
