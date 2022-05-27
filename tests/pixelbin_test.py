@@ -3,13 +3,14 @@ import ujson
 import unittest
 from unittest import mock
 
+
 sys.path.append(__file__.replace("/tests/pixelbin_test.py", ""))
 
 CONFIG = {"domain": "https://api.testdomain.com", "apiSecret": "test-api-secret"}
 
 
 def mocked_requests_get(*args, **kwargs):
-    return {"status_code": 200}
+    return {"status_code": 200, "content": '{"items":[]}'}
 
 
 class TestPixelBin(unittest.TestCase):
@@ -31,11 +32,108 @@ class TestPixelBin(unittest.TestCase):
     def create_data(self):
         self.folder_name = "testdir"
         self.folder_path = "/"
-
-    def check_condition(self, resp):
-        if resp["status_code"] != 200:
-            print(resp)
-        self.assertEqual(resp["status_code"], 200)
+        self.urls_and_obj = [
+            {
+                "url": "https://cdn.pixelbinx0.de/v2/broken-butterfly-3b12f1/t.resize(h:600,w:800)/W2.jpeg",
+                "obj": {
+                    "version": "v2",
+                    "cloudName": "broken-butterfly-3b12f1",
+                    "pattern": "t.resize(h:600,w:800)",
+                    "filePath": "W2.jpeg",
+                    "zone": None,
+                    "baseUrl": "https://cdn.pixelbinx0.de",
+                    "transformations": [
+                        {
+                            "plugin": "t",
+                            "name": "resize",
+                            "values": [
+                                {"key": "h", "value": "600"},
+                                {"key": "w", "value": "800"}
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "url": "https://cdn.pixelbinx0.de/v2/broken-butterfly-3b12f1/z-slug/t.resize(h:600,w:800)/W2.jpeg",
+                "obj": {
+                    "version": "v2",
+                    "cloudName": "broken-butterfly-3b12f1",
+                    "pattern": "t.resize(h:600,w:800)",
+                    "filePath": "W2.jpeg",
+                    "zone": 'z-slug',
+                    "baseUrl": "https://cdn.pixelbinx0.de",
+                    "transformations": [
+                        {
+                            "plugin": "t",
+                            "name": "resize",
+                            "values": [
+                                {"key": "h", "value": "600"},
+                                {"key": "w", "value": "800"}
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "url": "https://cdn.pixelbinx0.de/v2/broken-butterfly-3b12f1/t.resize(h:600,w:800)~t.rotate(a:-249)/W2.jpeg",
+                "obj": {
+                    "version": "v2",
+                    "cloudName": "broken-butterfly-3b12f1",
+                    "pattern": "t.resize(h:600,w:800)~t.rotate(a:-249)",
+                    "filePath": "W2.jpeg",
+                    "zone": None,
+                    "baseUrl": "https://cdn.pixelbinx0.de",
+                    "transformations": [
+                        {
+                            "plugin": "t",
+                            "name": "resize",
+                            "values": [
+                                {"key": "h", "value": "600"},
+                                {"key": "w", "value": "800"}
+                            ]
+                        },
+                        {
+                            "plugin": "t",
+                            "name": "rotate",
+                            "values": [{"key": "a", "value": "-249"}]
+                        }
+                    ]
+                }
+            },
+            {
+                "url": "https://cdn.pixelbinx0.de/v2/broken-butterfly-3b12f1/t.resize(h:600,w:800)~t.rotate(a:-249)~t.flip()~t.trim(t:217)/W2.jpeg",
+                "obj": {
+                    "version": "v2",
+                    "cloudName": "broken-butterfly-3b12f1",
+                    "pattern": "t.resize(h:600,w:800)~t.rotate(a:-249)~t.flip()~t.trim(t:217)",
+                    "filePath": "W2.jpeg",
+                    "zone": None,
+                    "baseUrl": "https://cdn.pixelbinx0.de",
+                    "transformations": [
+                        {
+                            "plugin": "t",
+                            "name": "resize",
+                            "values": [
+                                {"key": "h", "value": "600"},
+                                {"key": "w", "value": "800"}
+                            ],
+                        },
+                        {
+                            "plugin": "t",
+                            "name": "rotate",
+                            "values": [{"key": "a", "value": "-249"}]
+                        },
+                        {"plugin": "t", "name": "flip"},
+                        {
+                            "plugin": "t",
+                            "name": "trim",
+                            "values": [{"key": "t", "value": "217"}]
+                        }
+                    ]
+                }
+            }
+        ]
 
     def run_patcher(self):
         if (
@@ -58,12 +156,10 @@ class TestPixelBin(unittest.TestCase):
         resp = self.pixelbinClient.assets.createFolder(
             name=self.folder_name, path=self.folder_path
         )
-        self.check_condition(resp)
 
     def test_fileUpload_case1(self):
         file = open("1.jpeg", "rb")
         resp = self.pixelbinClient.assets.fileUpload(file=file)
-        self.check_condition(resp)
 
     def test_fileUpload_case2(self):
         file = open("1.jpeg", "rb")
@@ -77,11 +173,9 @@ class TestPixelBin(unittest.TestCase):
             overwrite=False,
             filenameOverride=True,
         )
-        self.check_condition(resp)
 
     def test_listFiles_case1(self):
         resp = self.pixelbinClient.assets.listFiles()
-        self.check_condition(resp)
 
     def test_listFiles_case2(self):
         resp = self.pixelbinClient.assets.listFiles(
@@ -89,14 +183,12 @@ class TestPixelBin(unittest.TestCase):
             path=self.folder_name,
             format="jpeg",
             tags=["tag1", "tag2"],
-            onlyFiles=False,
+            onlyFiles=True,
             onlyFolders=False,
             pageNo=1,
             pageSize=10,
             sort="name",
         )
-        self.check_condition(resp)
-        return resp
 
     def test_urlUpload(self):
         resp = self.pixelbinClient.assets.urlUpload(
@@ -109,11 +201,9 @@ class TestPixelBin(unittest.TestCase):
             overwrite=False,
             filenameOverride=True,
         )
-        self.check_condition(resp)
 
     def test_createSignedUrl_case1(self):
         resp = self.pixelbinClient.assets.createSignedUrl()
-        self.check_condition(resp)
 
     def test_createSignedUrl_case2(self):
         resp = self.pixelbinClient.assets.createSignedUrl(
@@ -126,11 +216,9 @@ class TestPixelBin(unittest.TestCase):
             overwrite=False,
             filenameOverride=True,
         )
-        self.check_condition(resp)
 
     def test_updateFile_case1(self):
         resp = self.pixelbinClient.assets.updateFile(fileId="1", name=f"1_")
-        self.check_condition(resp)
 
     def test_updateFile_case2(self):
         resp = self.pixelbinClient.assets.updateFile(
@@ -138,33 +226,27 @@ class TestPixelBin(unittest.TestCase):
             name=f"{self.folder_name}_",
             path=self.folder_name,
             access="private",
-            isActive=False,
+            isActive=True,
             tags=["tag1", "tag2"],
-            metadata={"key": "value"},
+            metadata={"key": "value"}
         )
-        self.check_condition(resp)
-
 
     def test_getFileByFileId(self):
-        resp = self.pixelbinClient.assets.getFileByFileId(fileId=f"{self.folder_name}/2")
-        self.check_condition(resp)
+        resp = self.pixelbinClient.assets.getFileByFileId(
+            fileId=f"{self.folder_name}/2"
+        )
 
     def test_deleteFile(self):
         resp = self.pixelbinClient.assets.deleteFile(fileId="1_")
-        self.check_condition(resp)
-
 
     def test_updateFolder(self):
         resp = self.pixelbinClient.assets.updateFolder(
-            folderId=self.folder_name, isActive=False
+            folderId=f"{self.folder_name}", isActive=True
         )
-        self.check_condition(resp)
 
     def test_deleteFolder(self):
         resp = self.pixelbinClient.assets.listFiles()
-        self.check_condition(resp)
-        data = ujson.loads(resp["text"])
-        items = data["items"]
+        items = resp["items"]
         id = None
         for ele in items:
             if ele["type"] == "folder" and ele["name"] == self.folder_name:
@@ -172,15 +254,28 @@ class TestPixelBin(unittest.TestCase):
                 break
         if id is not None:
             resp = self.pixelbinClient.assets.deleteFolder(_id=id)
-            self.check_condition(resp)
 
     def test_getModules(self):
         resp = self.pixelbinClient.assets.getModules()
-        self.check_condition(resp)
 
     def test_getModule(self):
         resp = self.pixelbinClient.assets.getModule(identifier="t")
-        self.check_condition(resp)
+
+    def test_url_to_obj(self):
+        from pixelbin.utils.url import url_to_obj
+        for case in self.urls_and_obj:
+            url = case["url"]
+            expected_obj = case["obj"]
+            obj = url_to_obj(url)
+            self.assertDictEqual(obj, expected_obj)
+
+    def test_obj_to_url(self):
+        from pixelbin.utils.url import obj_to_url
+        for case in self.urls_and_obj:
+            obj = case["obj"]
+            expected_url = case["url"]
+            url = obj_to_url(obj)
+            self.assertEqual(url, expected_url)
 
 
 class SequentialTestLoader(unittest.TestLoader):

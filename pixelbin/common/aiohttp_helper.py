@@ -8,7 +8,6 @@ import ujson
 from .constants import HTTP_TIMEOUT
 from .date_helper import get_ist_now
 
-
 class AiohttpHelper:
     """Aiohttp Helper."""
 
@@ -23,7 +22,17 @@ class AiohttpHelper:
 
         return text
 
-    async def request(self, method, url, params, data, headers, timeout_allowed=HTTP_TIMEOUT):
+    async def request(self, method:str, url:str, params:dict, data:dict, headers:dict, timeout_allowed:int=HTTP_TIMEOUT) -> dict:
+        """
+        summary - call api using aiohttp 
+        
+        :param - method : request method type : Type - str
+        :param - url : url to be hit : Type - str
+        :param - params : query params : Type - dict
+        :param - data : request body data : Type - dict
+        :param - headers : request headers : Type - dict
+        :param - timeout_allowed : timeout for request in seconds : Type - int    
+        """
         start_time = time.time()
         timeout = aiohttp.ClientTimeout(total=timeout_allowed)
         async with aiohttp.ClientSession(headers=headers, timeout=timeout) as session:

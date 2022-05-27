@@ -1,4 +1,4 @@
-"""Python code/pixelbin/common/constants.py."""
+"""Python pixelbin/common/constants.py."""
 
 
 DEFAULT_DOMAIN = "https://api.pixelbin.io"

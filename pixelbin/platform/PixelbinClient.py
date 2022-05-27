@@ -1,7 +1,10 @@
 
 import asyncio
+import ujson
 from ..common.aiohttp_helper import AiohttpHelper
+from ..common.exceptions import PixelbinServerResponseError
 from .PlatformAPIClient import APIClient
+from .PixelbinConfig import PixelbinConfig
 from io import FileIO
 from typing import List, Any
 
@@ -17,8 +20,14 @@ from .models.OrganizationValidator import OrganizationValidator
 
 
 class PixelbinClient:
+    """PixelbinClient is wrapper class for hitting pixelbin apis"""
 
-    def __init__(self, config):
+    def __init__(self, config: PixelbinConfig):
+        """
+        summary: create instance of PixelbinClient
+        
+        :param - config : instances of PixelbinConfig : Type - PixelbinConfig
+        """
         self.config = config
         self.assets = Assets(config)
         self.organization = Organization(config)
@@ -47,7 +56,7 @@ class Assets:
         metadata:Any=None, 
         overwrite:bool=None, 
         filenameOverride:bool=None
-        ):   
+        ) -> dict:   
         """
         summary: Upload File
         description: Upload File to Pixelbin
@@ -72,28 +81,28 @@ class Assets:
         
         body = {}
         
-        if file:
+        if file is not None:
             body["file"] = file
         
-        if path:
+        if path is not None:
             body["path"] = path
         
-        if name:
+        if name is not None:
             body["name"] = name
         
-        if access:
+        if access is not None:
             body["access"] = access
         
-        if tags:
+        if tags is not None:
             body["tags"] = tags
         
-        if metadata:
+        if metadata is not None:
             body["metadata"] = metadata
         
-        if overwrite:
+        if overwrite is not None:
             body["overwrite"] = overwrite
         
-        if filenameOverride:
+        if filenameOverride is not None:
             body["filenameOverride"] = filenameOverride
         
         # Body validation
@@ -105,15 +114,18 @@ class Assets:
         query_params = {}
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="post",
-                    url=f"/service/platform/assets/v1.0/upload/direct",
-                    query=query_params,
-                    body=body,
-                    contentType="multipart/form-data"
+        response = await APIClient.execute(
+            conf=self.config,
+            method="post",
+            url=f"/service/platform/assets/v1.0/upload/direct",
+            query=query_params,
+            body=body,
+            contentType="multipart/form-data"
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def fileUpload(
         self, 
         
@@ -167,7 +179,7 @@ class Assets:
         metadata:Any=None, 
         overwrite:bool=None, 
         filenameOverride:bool=None
-        ):   
+        ) -> dict:   
         """
         summary: Upload Asset with url
         description: Upload Asset with url
@@ -192,28 +204,28 @@ class Assets:
         
         body = {}
         
-        if url:
+        if url is not None:
             body["url"] = url
         
-        if path:
+        if path is not None:
             body["path"] = path
         
-        if name:
+        if name is not None:
             body["name"] = name
         
-        if access:
+        if access is not None:
             body["access"] = access
         
-        if tags:
+        if tags is not None:
             body["tags"] = tags
         
-        if metadata:
+        if metadata is not None:
             body["metadata"] = metadata
         
-        if overwrite:
+        if overwrite is not None:
             body["overwrite"] = overwrite
         
-        if filenameOverride:
+        if filenameOverride is not None:
             body["filenameOverride"] = filenameOverride
         
         # Body validation
@@ -225,15 +237,18 @@ class Assets:
         query_params = {}
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="post",
-                    url=f"/service/platform/assets/v1.0/upload/url",
-                    query=query_params,
-                    body=body,
-                    contentType="application/json"
+        response = await APIClient.execute(
+            conf=self.config,
+            method="post",
+            url=f"/service/platform/assets/v1.0/upload/url",
+            query=query_params,
+            body=body,
+            contentType="application/json"
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def urlUpload(
         self, 
         
@@ -287,7 +302,7 @@ class Assets:
         metadata:Any=None, 
         overwrite:bool=None, 
         filenameOverride:bool=None
-        ):   
+        ) -> dict:   
         """
         summary: S3 Signed URL upload
         description: For the given asset details, a S3 signed URL will be generated,
@@ -314,28 +329,28 @@ which can be then used to upload your asset.
         
         body = {}
         
-        if name:
+        if name is not None:
             body["name"] = name
         
-        if path:
+        if path is not None:
             body["path"] = path
         
-        if format:
+        if format is not None:
             body["format"] = format
         
-        if access:
+        if access is not None:
             body["access"] = access
         
-        if tags:
+        if tags is not None:
             body["tags"] = tags
         
-        if metadata:
+        if metadata is not None:
             body["metadata"] = metadata
         
-        if overwrite:
+        if overwrite is not None:
             body["overwrite"] = overwrite
         
-        if filenameOverride:
+        if filenameOverride is not None:
             body["filenameOverride"] = filenameOverride
         
         # Body validation
@@ -347,15 +362,18 @@ which can be then used to upload your asset.
         query_params = {}
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="post",
-                    url=f"/service/platform/assets/v1.0/upload/signed-url",
-                    query=query_params,
-                    body=body,
-                    contentType="application/json"
+        response = await APIClient.execute(
+            conf=self.config,
+            method="post",
+            url=f"/service/platform/assets/v1.0/upload/signed-url",
+            query=query_params,
+            body=body,
+            contentType="application/json"
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def createSignedUrl(
         self, 
         
@@ -412,7 +430,7 @@ which can be then used to upload your asset.
         pageNo:int=None, 
         pageSize:int=None, 
         sort:str=None
-        ):   
+        ) -> dict:   
         """
         summary: List and search files and folders.
         description: List all files and folders in root folder. Search for files if name is provided. If path is provided, search in the specified path.
@@ -432,31 +450,31 @@ which can be then used to upload your asset.
 
         payload = {}
         
-        if name:
+        if name is not None:
             payload["name"] = name
         
-        if path:
+        if path is not None:
             payload["path"] = path
         
-        if format:
+        if format is not None:
             payload["format"] = format
         
-        if tags:
+        if tags is not None:
             payload["tags"] = tags
         
-        if onlyFiles:
+        if onlyFiles is not None:
             payload["onlyFiles"] = onlyFiles
         
-        if onlyFolders:
+        if onlyFolders is not None:
             payload["onlyFolders"] = onlyFolders
         
-        if pageNo:
+        if pageNo is not None:
             payload["pageNo"] = pageNo
         
-        if pageSize:
+        if pageSize is not None:
             payload["pageSize"] = pageSize
         
-        if sort:
+        if sort is not None:
             payload["sort"] = sort
         
 
@@ -496,15 +514,18 @@ which can be then used to upload your asset.
             query_params['sort'] = sort
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="get",
-                    url=f"/service/platform/assets/v1.0/listFiles",
-                    query=query_params,
-                    body=None,
-                    contentType=""
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/assets/v1.0/listFiles",
+            query=query_params,
+            body=None,
+            contentType=""
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def listFiles(
         self, 
         
@@ -556,7 +577,7 @@ which can be then used to upload your asset.
         self, 
         
         _id:str=None
-        ):   
+        ) -> dict:   
         """
         summary: Get file details with _id
         description: 
@@ -566,7 +587,7 @@ which can be then used to upload your asset.
 
         payload = {}
         
-        if _id:
+        if _id is not None:
             payload["_id"] = _id
         
 
@@ -579,15 +600,18 @@ which can be then used to upload your asset.
         query_params = {}
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="get",
-                    url=f"/service/platform/assets/v1.0/files/id/{_id}",
-                    query=query_params,
-                    body=None,
-                    contentType=""
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/assets/v1.0/files/id/{_id}",
+            query=query_params,
+            body=None,
+            contentType=""
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def getFileById(
         self, 
         
@@ -613,7 +637,7 @@ which can be then used to upload your asset.
         self, 
         
         fileId:str=None
-        ):   
+        ) -> dict:   
         """
         summary: Get file details with fileId
         description: 
@@ -623,7 +647,7 @@ which can be then used to upload your asset.
 
         payload = {}
         
-        if fileId:
+        if fileId is not None:
             payload["fileId"] = fileId
         
 
@@ -636,15 +660,18 @@ which can be then used to upload your asset.
         query_params = {}
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="get",
-                    url=f"/service/platform/assets/v1.0/files/{fileId}",
-                    query=query_params,
-                    body=None,
-                    contentType=""
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/assets/v1.0/files/{fileId}",
+            query=query_params,
+            body=None,
+            contentType=""
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def getFileByFileId(
         self, 
         
@@ -676,7 +703,7 @@ which can be then used to upload your asset.
         isActive:bool=None, 
         tags:List[str]=None, 
         metadata:Any=None
-        ):   
+        ) -> dict:   
         """
         summary: Update file details
         description: 
@@ -692,7 +719,7 @@ which can be then used to upload your asset.
 
         payload = {}
         
-        if fileId:
+        if fileId is not None:
             payload["fileId"] = fileId
         
 
@@ -703,22 +730,22 @@ which can be then used to upload your asset.
         
         body = {}
         
-        if name:
+        if name is not None:
             body["name"] = name
         
-        if path:
+        if path is not None:
             body["path"] = path
         
-        if access:
+        if access is not None:
             body["access"] = access
         
-        if isActive:
+        if isActive is not None:
             body["isActive"] = isActive
         
-        if tags:
+        if tags is not None:
             body["tags"] = tags
         
-        if metadata:
+        if metadata is not None:
             body["metadata"] = metadata
         
         # Body validation
@@ -730,15 +757,18 @@ which can be then used to upload your asset.
         query_params = {}
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="patch",
-                    url=f"/service/platform/assets/v1.0/files/{fileId}",
-                    query=query_params,
-                    body=body,
-                    contentType="application/json"
+        response = await APIClient.execute(
+            conf=self.config,
+            method="patch",
+            url=f"/service/platform/assets/v1.0/files/{fileId}",
+            query=query_params,
+            body=body,
+            contentType="application/json"
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def updateFile(
         self, 
         
@@ -782,7 +812,7 @@ which can be then used to upload your asset.
         self, 
         
         fileId:str=None
-        ):   
+        ) -> dict:   
         """
         summary: Delete file
         description: 
@@ -792,7 +822,7 @@ which can be then used to upload your asset.
 
         payload = {}
         
-        if fileId:
+        if fileId is not None:
             payload["fileId"] = fileId
         
 
@@ -805,15 +835,18 @@ which can be then used to upload your asset.
         query_params = {}
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="delete",
-                    url=f"/service/platform/assets/v1.0/files/{fileId}",
-                    query=query_params,
-                    body=None,
-                    contentType=""
+        response = await APIClient.execute(
+            conf=self.config,
+            method="delete",
+            url=f"/service/platform/assets/v1.0/files/{fileId}",
+            query=query_params,
+            body=None,
+            contentType=""
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def deleteFile(
         self, 
         
@@ -839,7 +872,7 @@ which can be then used to upload your asset.
         self, 
         
         ids:List[str]=None
-        ):   
+        ) -> dict:   
         """
         summary: Delete multiple files
         description: 
@@ -857,7 +890,7 @@ which can be then used to upload your asset.
         
         body = {}
         
-        if ids:
+        if ids is not None:
             body["ids"] = ids
         
         # Body validation
@@ -869,15 +902,18 @@ which can be then used to upload your asset.
         query_params = {}
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="post",
-                    url=f"/service/platform/assets/v1.0/files/delete",
-                    query=query_params,
-                    body=body,
-                    contentType="application/json"
+        response = await APIClient.execute(
+            conf=self.config,
+            method="post",
+            url=f"/service/platform/assets/v1.0/files/delete",
+            query=query_params,
+            body=body,
+            contentType="application/json"
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def deleteFiles(
         self, 
         
@@ -904,7 +940,7 @@ which can be then used to upload your asset.
         
         name:str=None, 
         path:str=None
-        ):   
+        ) -> dict:   
         """
         summary: Create folder
         description: Create a new folder at the specified path. Also creates the ancestors if they do not exist.
@@ -924,10 +960,10 @@ which can be then used to upload your asset.
         
         body = {}
         
-        if name:
+        if name is not None:
             body["name"] = name
         
-        if path:
+        if path is not None:
             body["path"] = path
         
         # Body validation
@@ -939,15 +975,18 @@ which can be then used to upload your asset.
         query_params = {}
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="post",
-                    url=f"/service/platform/assets/v1.0/folders",
-                    query=query_params,
-                    body=body,
-                    contentType="application/json"
+        response = await APIClient.execute(
+            conf=self.config,
+            method="post",
+            url=f"/service/platform/assets/v1.0/folders",
+            query=query_params,
+            body=body,
+            contentType="application/json"
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def createFolder(
         self, 
         
@@ -978,7 +1017,7 @@ which can be then used to upload your asset.
         
         folderId:str=None,
         isActive:bool=None
-        ):   
+        ) -> dict:   
         """
         summary: Update folder details
         description: Update folder details. Eg: Soft delete it
@@ -992,7 +1031,7 @@ We currently do not support updating folder name or path.
 
         payload = {}
         
-        if folderId:
+        if folderId is not None:
             payload["folderId"] = folderId
         
 
@@ -1003,7 +1042,7 @@ We currently do not support updating folder name or path.
         
         body = {}
         
-        if isActive:
+        if isActive is not None:
             body["isActive"] = isActive
         
         # Body validation
@@ -1015,15 +1054,18 @@ We currently do not support updating folder name or path.
         query_params = {}
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="patch",
-                    url=f"/service/platform/assets/v1.0/folders/{folderId}",
-                    query=query_params,
-                    body=body,
-                    contentType="application/json"
+        response = await APIClient.execute(
+            conf=self.config,
+            method="patch",
+            url=f"/service/platform/assets/v1.0/folders/{folderId}",
+            query=query_params,
+            body=body,
+            contentType="application/json"
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def updateFolder(
         self, 
         
@@ -1055,7 +1097,7 @@ We currently do not support updating folder name or path.
         self, 
         
         _id:str=None
-        ):   
+        ) -> dict:   
         """
         summary: Delete folder
         description: Delete folder and all its children permanently.
@@ -1066,7 +1108,7 @@ We currently do not support updating folder name or path.
 
         payload = {}
         
-        if _id:
+        if _id is not None:
             payload["_id"] = _id
         
 
@@ -1079,15 +1121,18 @@ We currently do not support updating folder name or path.
         query_params = {}
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="delete",
-                    url=f"/service/platform/assets/v1.0/folders/{_id}",
-                    query=query_params,
-                    body=None,
-                    contentType=""
+        response = await APIClient.execute(
+            conf=self.config,
+            method="delete",
+            url=f"/service/platform/assets/v1.0/folders/{_id}",
+            query=query_params,
+            body=None,
+            contentType=""
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def deleteFolder(
         self, 
         
@@ -1113,7 +1158,7 @@ We currently do not support updating folder name or path.
     async def getModulesAsync(
         self, 
         
-        ):   
+        ) -> dict:   
         """
         summary: Get all transformation modules
         description: Get all transformation modules.
@@ -1133,15 +1178,18 @@ We currently do not support updating folder name or path.
         query_params = {}
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="get",
-                    url=f"/service/platform/assets/v1.0/playground/plugins",
-                    query=query_params,
-                    body=None,
-                    contentType=""
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/assets/v1.0/playground/plugins",
+            query=query_params,
+            body=None,
+            contentType=""
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def getModules(
         self, 
         
@@ -1165,7 +1213,7 @@ We currently do not support updating folder name or path.
         self, 
         
         identifier:str=None
-        ):   
+        ) -> dict:   
         """
         summary: Get Transformation Module by module identifier
         description: Get Transformation Module by module identifier
@@ -1176,7 +1224,7 @@ We currently do not support updating folder name or path.
 
         payload = {}
         
-        if identifier:
+        if identifier is not None:
             payload["identifier"] = identifier
         
 
@@ -1189,15 +1237,18 @@ We currently do not support updating folder name or path.
         query_params = {}
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="get",
-                    url=f"/service/platform/assets/v1.0/playground/plugins/{identifier}",
-                    query=query_params,
-                    body=None,
-                    contentType=""
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/assets/v1.0/playground/plugins/{identifier}",
+            query=query_params,
+            body=None,
+            contentType=""
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def getModule(
         self, 
         
@@ -1233,7 +1284,7 @@ class Organization:
         self, 
         
         token:str=None
-        ):   
+        ) -> dict:   
         """
         summary: Get App Details
         description: Get App and org details with the API_TOKEN
@@ -1243,7 +1294,7 @@ class Organization:
 
         payload = {}
         
-        if token:
+        if token is not None:
             payload["token"] = token
         
 
@@ -1256,15 +1307,18 @@ class Organization:
         query_params = {}
         
 
-        return await APIClient.execute(
-                    conf=self.config,
-                    method="get",
-                    url=f"/service/platform/organization/v1.0/apps/{token}",
-                    query=query_params,
-                    body=None,
-                    contentType=""
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/organization/v1.0/apps/{token}",
+            query=query_params,
+            body=None,
+            contentType=""
             )
-    
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
     def getAppByToken(
         self, 
         
