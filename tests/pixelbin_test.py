@@ -40,6 +40,7 @@ class TestPixelBin(unittest.TestCase):
                     "cloudName": "broken-butterfly-3b12f1",
                     "pattern": "t.resize(h:600,w:800)",
                     "filePath": "W2.jpeg",
+                    "options": {},
                     "zone": None,
                     "baseUrl": "https://cdn.pixelbinx0.de",
                     "transformations": [
@@ -61,6 +62,7 @@ class TestPixelBin(unittest.TestCase):
                     "cloudName": "broken-butterfly-3b12f1",
                     "pattern": "t.resize(h:600,w:800)",
                     "filePath": "W2.jpeg",
+                    "options": {},
                     "zone": 'z-slug',
                     "baseUrl": "https://cdn.pixelbinx0.de",
                     "transformations": [
@@ -82,6 +84,7 @@ class TestPixelBin(unittest.TestCase):
                     "cloudName": "broken-butterfly-3b12f1",
                     "pattern": "t.resize(h:600,w:800)~t.rotate(a:-249)",
                     "filePath": "W2.jpeg",
+                    "options": {},
                     "zone": None,
                     "baseUrl": "https://cdn.pixelbinx0.de",
                     "transformations": [
@@ -108,6 +111,7 @@ class TestPixelBin(unittest.TestCase):
                     "cloudName": "broken-butterfly-3b12f1",
                     "pattern": "t.resize(h:600,w:800)~t.rotate(a:-249)~t.flip()~t.trim(t:217)",
                     "filePath": "W2.jpeg",
+                    "options": {},
                     "zone": None,
                     "baseUrl": "https://cdn.pixelbinx0.de",
                     "transformations": [
@@ -130,6 +134,55 @@ class TestPixelBin(unittest.TestCase):
                             "name": "trim",
                             "values": [{"key": "t", "value": "217"}]
                         }
+                    ]
+                }
+            },
+                        {
+                "url": "https://cdn.pixelbinx0.de/v2/feel/erase.bg(shadow:true)~t.merge(m:underlay,i:eU44YkFJOHlVMmZrWVRDOUNTRm1D,b:screen,r:true)/MZZKB3e1hT48o0NYJ2Kxh.jpeg?dpr=2.0&f_auto=True",
+                "obj": {
+                    "version": "v2",
+                    "baseUrl": "https://cdn.pixelbinx0.de",
+                    "filePath": "MZZKB3e1hT48o0NYJ2Kxh.jpeg",
+                    "pattern": "erase.bg(shadow:true)~t.merge(m:underlay,i:eU44YkFJOHlVMmZrWVRDOUNTRm1D,b:screen,r:true)",
+                    "cloudName": "feel",
+                    "options": {
+                        "dpr": 2.0,
+                        "f_auto": True,
+                    },
+                    "zone": None,
+                    "transformations": [
+                        {
+                            "values": [
+                                {
+                                    "key": "shadow",
+                                    "value": "true",
+                                },
+                            ],
+                            "plugin": "erase",
+                            "name": "bg",
+                        },
+                        {
+                            "values": [
+                                {
+                                    "key": "m",
+                                    "value": "underlay",
+                                },
+                                {
+                                    "key": "i",
+                                    "value": "eU44YkFJOHlVMmZrWVRDOUNTRm1D",
+                                },
+                                {
+                                    "key": "b",
+                                    "value": "screen",
+                                },
+                                {
+                                    "key": "r",
+                                    "value": "true",
+                                },
+                            ],
+                            "plugin": "t",
+                            "name": "merge",
+                        },
                     ]
                 }
             }
@@ -277,6 +330,35 @@ class TestPixelBin(unittest.TestCase):
             url = obj_to_url(obj)
             self.assertEqual(url, expected_url)
 
+    def test_failure_for_option_dpr_queryParam(self):
+        from pixelbin.common.exceptions import PixelbinIllegalQueryParameterError
+        from pixelbin.utils.url import obj_to_url
+        obj = {
+            "baseUrl": "https://cdn.pixelbin.io",
+            "filePath": "__playground/playground-default.jpeg",
+            "version": "v2",
+            "zone": "z-slug",
+            "cloudName": "red-scene-95b6ea",
+            "options": { "dpr": 5.5, "f_auto": True },
+            "transformations": [{}],
+        };
+        with self.assertRaises(PixelbinIllegalQueryParameterError):
+            obj_to_url(obj)
+
+    def test_failure_for_option_fauto_queryParam(self):
+        from pixelbin.common.exceptions import PixelbinIllegalQueryParameterError
+        from pixelbin.utils.url import obj_to_url
+        obj = {
+            "baseUrl": "https://cdn.pixelbin.io",
+            "filePath": "__playground/playground-default.jpeg",
+            "version": "v2",
+            "zone": "z-slug",
+            "cloudName": "red-scene-95b6ea",
+            "options": { "dpr": 2.5, "f_auto": "abc" },
+            "transformations": [{}],
+        };
+        with self.assertRaises(PixelbinIllegalQueryParameterError):
+            obj_to_url(obj)
 
 class SequentialTestLoader(unittest.TestLoader):
     def getTestCaseNames(self, testCaseClass):

@@ -23,3 +23,9 @@ class PixelbinIllegalArgumentError(Exception):
     def __init__(self, message=""):
         """Initialize function __init__."""
         super(PixelbinIllegalArgumentError, self).__init__(message)
+
+class PixelbinIllegalQueryParameterError(Exception):
+    """Pixelbin Illegal Query Parameter Exception."""
+    def __init__(self, message=""):
+        """Initialize function __init__."""
+        super(PixelbinIllegalQueryParameterError, self).__init__(message)
