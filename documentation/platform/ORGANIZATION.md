@@ -4,11 +4,11 @@
 
 Organization Service
 
--   [getAppByToken](#getappbytoken)
+-   [getAppOrgDetails](#getapporgdetails)
 
 ## Methods with example and description
 
-### getAppByToken
+### getAppOrgDetails
 
 **Summary**: Get App Details
 
@@ -25,33 +25,27 @@ pixelbin:PixelbinClient = PixelbinClient(config=config)
 
 # Sync method call
 try:
-    result = pixelbin.organization.getAppByToken(
-        token="<API-TOKEN>")
+    result = pixelbin.organization.getAppOrgDetails()
     # use result
 except Exception as e:
     print(e)
 
 # Async method call
 try:
-    result = asyncio.run(pixelbin.organization.getAppByTokenAsync(
-        token="<API-TOKEN>"))
+    result = asyncio.run(pixelbin.organization.getAppOrgDetailsAsync())
     # use result
 except Exception as e:
     print(e)
 
 ```
 
-| Argument | Type | Required | Description        |
-| -------- | ---- | -------- | ------------------ |
-| token    | str  | yes      | Pixelbin api token |
-
-Get App and org details with the API_TOKEN
+Get App and org details
 
 _Returned Response:_
 
-[AppDetailsByToken](#appdetailsbytoken)
+[AppOrgDetails](#apporgdetails)
 
-Success. Returns a JSON object as shown below. Refer `AppDetailsByToken` for more details.
+Success. Returns a JSON object as shown below. Refer `AppOrgDetails` for more details.
 
 <details>
 <summary><i>&nbsp; Example:</i></summary>
@@ -108,7 +102,7 @@ Success. Returns a JSON object as shown below. Refer `AppDetailsByToken` for mor
 | createdAt   | str       | no       | Timestamp when the app was created      |
 | updatedAt   | str       | no       | Timestamp when the app was last updated |
 
-#### AppDetailsByToken
+#### AppOrgDetails
 
 | Properties | Type                     | Nullable | Description |
 | ---------- | ------------------------ | -------- | ----------- |

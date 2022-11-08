@@ -1280,26 +1280,21 @@ class Organization:
     
 
     
-    async def getAppByTokenAsync(
+    async def getAppOrgDetailsAsync(
         self, 
         
-        token:str=None
         ) -> dict:   
         """
         summary: Get App Details
-        description: Get App and org details with the API_TOKEN
-        :param - token : Pixelbin api token: Type - str 
+        description: Get App and org details
         
         """
 
         payload = {}
         
-        if token is not None:
-            payload["token"] = token
-        
 
         # Parameter validation
-        schema = OrganizationValidator.getAppByToken()
+        schema = OrganizationValidator.getAppOrgDetails()
         schema.dump(schema.load(payload))
 
         
@@ -1310,7 +1305,7 @@ class Organization:
         response = await APIClient.execute(
             conf=self.config,
             method="get",
-            url=f"/service/platform/organization/v1.0/apps/{token}",
+            url=f"/service/platform/organization/v1.0/apps/info",
             query=query_params,
             body=None,
             contentType=""
@@ -1319,20 +1314,17 @@ class Organization:
             raise PixelbinServerResponseError(str(response["content"]))
         return ujson.loads(response["content"])
 
-    def getAppByToken(
+    def getAppOrgDetails(
         self, 
         
-        token:str=None
         ):   
         """
         summary: Get App Details
-        description: Get App and org details with the API_TOKEN
-        :param - token : Pixelbin api token: Type - str 
+        description: Get App and org details
         
         """
         return asyncio.get_event_loop().run_until_complete(
-            self.getAppByTokenAsync(
-                token=token)
+            self.getAppOrgDetailsAsync()
         )
 
     

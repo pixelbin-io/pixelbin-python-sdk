@@ -7,8 +7,7 @@ from ..models.BaseSchema import BaseSchema
 
 class OrganizationValidator:
     
-    class getAppByToken(BaseSchema):
+    class getAppOrgDetails(BaseSchema):
         
-        token = fields.Str(required=False)
-         
+        pass 
     
