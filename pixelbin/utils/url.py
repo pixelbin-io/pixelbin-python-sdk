@@ -59,6 +59,7 @@ def get_url_parts(pixelbinUrl):
 def get_parts_from_url(url):
     parts = get_url_parts(url)
     queryObj = processQueryParams(parts)
+
     parts["zone"] = None
     if "zoneSlug" in parts:
         parts["zone"] = parts["zoneSlug"]
@@ -81,42 +82,42 @@ def get_params_list(dSplit, prefix):
 
 
 def get_params_object(paramsList):
-    params = []
+    params = {}
     for item in paramsList:
         if ":" in item:
             param, val = item.split(":")
             if param:
-                params.append({
-                    "key": param,
-                    "value": val
-                })
+                params[param] = val
 
     if len(params) > 0:
         return params
     return 0
 
-
-def txt_to_options(dSplit):
+# previously txtToOptions
+def get_operation_details_from_operation(dSplit):
     #Figure Out Module
     fullFnName = dSplit.split("(")[0]
 
-    pluginId, operationName = fullFnName.split(".")
+    pluginId = None
+    operationName = None
+    if dSplit.startswith("p:"):
+        pluginId = fullFnName.split(":")[0]
+        operationName = fullFnName.split(":")[1]
+    else:
+        pluginId = fullFnName.split(".")[0]
+        operationName = fullFnName.split(".")[1]
 
+    values = None
     if pluginId == "p":
-        params = get_params_object(get_params_list(dSplit, ""))
-        for p in params:
-            if p["key"] == "n":
-                return {
-                    "plugin": pluginId,
-                    "name": p["value"]
-                }
-        return None
+        if "(" in dSplit:
+            values = get_params_object(get_params_list(dSplit, ""))
+    else:
+        values = get_params_object(get_params_list(dSplit, ""))
 
-    values = get_params_object(get_params_list(dSplit, ""))
-    plugin, name = dSplit.split("(")[0].split(".")
+    # plugin, name = dSplit.split("(")[0].split(".")
     transformation = {
-        "plugin": plugin,
-        "name":name
+        "plugin": pluginId,
+        "name": operationName
     }
     if values:
         transformation["values"] = values
@@ -124,17 +125,41 @@ def txt_to_options(dSplit):
 
 import itertools
 
-def get_transformations_from_pattern(pattern, url, flatten = False):
+def get_transformation_details_from_pattern(pattern, url, flatten = False):
     if pattern == "original":
         return []
 
     dSplit = pattern.split(OPERTATION_SEPARATOR)
 
     def mapfunc(x:str):
-        if x.startswith("p:"):
-            _, presetString = x.split(":") 
-            x = f"p.apply(n:{presetString})"
-        return txt_to_options(x)
+        # if x.startswith("p:"):
+        #     _, presetString = x.split(":") 
+        #     x = f"p.apply(n:{presetString})"
+        result = get_operation_details_from_operation(x)
+        name = result["name"]
+        plugin = result["plugin"]
+        values = result["values"] if "values" in result else None
+
+        if values and len(values) > 0:
+            def mapkeyvalue(x:str):
+                return {
+                    "key": x,
+                    "value": values[x]
+                }
+
+            values = list(map(mapkeyvalue, values))
+
+            return {
+                "plugin": plugin,
+                "name": name,
+                "values": values
+            }
+
+        return {
+            "plugin": plugin,
+            "name": name
+        }
+        
 
     opts = list(itertools.chain(list(map(mapfunc, dSplit))))
 
@@ -146,11 +171,11 @@ def get_transformations_from_pattern(pattern, url, flatten = False):
 def get_obj_from_url(url, flatten=False):
     parts = get_parts_from_url(url)
     try:
-        parts["transformations"] = get_transformations_from_pattern(
+        parts["transformations"] = get_transformation_details_from_pattern(
             parts["pattern"],
             url,
             flatten
-        )
+        ) if parts["pattern"] else []
     except Exception as e: 
         raise PixelbinInvalidUrlError(f"Error Processing url. Please check the url is correct, {e}")
     return parts
@@ -186,7 +211,7 @@ def get_url_from_obj(obj:dict):
         if (f_auto):
             validateFAuto(f_auto)
             queryArr.append(f"f_auto={f_auto}")
-
+    
     urlStr = "/" . join(urlArr)
     if len(queryArr) > 0:
         urlStr += "?" + "&" . join(queryArr)
@@ -198,19 +223,19 @@ def get_pattern_from_transformations(transformationList) :
     
     def mapfunc(o):
         if "name" in o:
+            o["values"] = o["values"] if "values" in o else []
+            paramlist = []
+            for items in o["values"]:
+                if "key" not in items or not items["key"]:
+                    raise PixelbinIllegalArgumentError(f"key not specified in '{o['name']}'")
+                if "value" not in items or not items["value"]:
+                    raise PixelbinIllegalArgumentError(f"value not specified for '{items['key']}' in '{o['name']}'")
+                paramlist.append(f"{items['key']}:{items['value']}")
+            paramstr = f"{PARAMETER_SEPARATOR}".join(paramlist)
+
             if o["plugin"] == "p":
-                return f"p:{o['name']}"
-            else:
-                o["values"] = o["values"] if "values" in o else []
-                paramlist = []
-                for items in o["values"]:
-                    if "key" not in items:
-                        raise PixelbinIllegalArgumentError("key not specified.")
-                    if "value" not in items:
-                        raise PixelbinIllegalArgumentError(f"value not specified for {items['key']}")
-                    paramlist.append(f"{items['key']}:{items['value']}")
-                paramstr = f"{PARAMETER_SEPARATOR}".join(paramlist)
-                return f"{o['plugin']}.{o['name']}({paramstr})"
+                return f"p:{o['name']}({paramstr})" if paramstr else f"p:{o['name']}"
+            return f"{o['plugin']}.{o['name']}({paramstr})"
         return None
 
     transformationList = list(map(mapfunc, transformationList))

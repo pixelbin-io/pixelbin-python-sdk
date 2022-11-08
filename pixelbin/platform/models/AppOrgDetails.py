@@ -10,7 +10,7 @@ from .AppSchema import AppSchema
 from .OrganizationDetailSchema import OrganizationDetailSchema
 
 
-class AppDetailsByToken(BaseSchema):
+class AppOrgDetails(BaseSchema):
     # Organization swagger.json
 
     

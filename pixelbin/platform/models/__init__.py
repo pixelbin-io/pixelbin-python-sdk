@@ -50,7 +50,7 @@ from .OrganizationDetailSchema import OrganizationDetailSchema
     
 from .AppSchema import AppSchema
     
-from .AppDetailsByToken import AppDetailsByToken
+from .AppOrgDetails import AppOrgDetails
     
 from .ErrorSchema import ErrorSchema
     
