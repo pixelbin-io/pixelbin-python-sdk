@@ -1011,6 +1011,82 @@ which can be then used to upload your asset.
     
     
 
+    
+    async def getFolderDetailsAsync(
+        self, 
+        
+        path:str=None, 
+        name:str=None
+        ) -> dict:   
+        """
+        summary: Get folder details
+        description: Get folder details
+
+        :param - path : Folder path: Type - str 
+        :param - name : Folder name: Type - str 
+        
+        """
+
+        payload = {}
+        
+        if path is not None:
+            payload["path"] = path
+        
+        if name is not None:
+            payload["name"] = name
+        
+
+        # Parameter validation
+        schema = AssetsValidator.getFolderDetails()
+        schema.dump(schema.load(payload))
+
+        
+
+        query_params = {}
+        
+        if path:
+            query_params['path'] = path
+        
+        if name:
+            query_params['name'] = name
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/assets/v1.0/folders",
+            query=query_params,
+            body=None,
+            contentType=""
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def getFolderDetails(
+        self, 
+        
+        path:str=None, 
+        name:str=None
+        ):   
+        """
+        summary: Get folder details
+        description: Get folder details
+
+        :param - path : Folder path: Type - str 
+        :param - name : Folder name: Type - str 
+        
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.getFolderDetailsAsync(
+                path=path, 
+                name=name)
+        )
+
+    
+    
+    
+
         
     async def updateFolderAsync(
         self, 
@@ -1148,6 +1224,676 @@ We currently do not support updating folder name or path.
         return asyncio.get_event_loop().run_until_complete(
             self.deleteFolderAsync(
                 _id=_id)
+        )
+
+    
+    
+    
+
+    
+    async def getFolderAncestorsAsync(
+        self, 
+        
+        _id:str=None
+        ) -> dict:   
+        """
+        summary: Get all ancestors of a folder
+        description: Get all ancestors of a folder, using the folder ID.
+
+        :param - _id : _id of the folder: Type - str 
+        
+        """
+
+        payload = {}
+        
+        if _id is not None:
+            payload["_id"] = _id
+        
+
+        # Parameter validation
+        schema = AssetsValidator.getFolderAncestors()
+        schema.dump(schema.load(payload))
+
+        
+
+        query_params = {}
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/assets/v1.0/folders/{_id}/ancestors",
+            query=query_params,
+            body=None,
+            contentType=""
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def getFolderAncestors(
+        self, 
+        
+        _id:str=None
+        ):   
+        """
+        summary: Get all ancestors of a folder
+        description: Get all ancestors of a folder, using the folder ID.
+
+        :param - _id : _id of the folder: Type - str 
+        
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.getFolderAncestorsAsync(
+                _id=_id)
+        )
+
+    
+    
+    
+
+        
+    async def addCredentialsAsync(
+        self, 
+        
+        credentials:Any=None, 
+        pluginId:str=None
+        ) -> dict:   
+        """
+        summary: Add credentials for a transformation module.
+        description: Add a transformation modules's credentials for an organization.
+
+        
+        :param - credentials : Credentials of the plugin : Type - Any
+        :param - pluginId : Unique identifier for the plugin this credential belongs to : Type - str
+        """
+
+        payload = {}
+        
+
+        # Parameter validation
+        schema = AssetsValidator.addCredentials()
+        schema.dump(schema.load(payload))
+
+        
+        body = {}
+        
+        if credentials is not None:
+            body["credentials"] = credentials
+        
+        if pluginId is not None:
+            body["pluginId"] = pluginId
+        
+        # Body validation
+        from .models.AddCredentialsRequest import AddCredentialsRequest
+        schema = AddCredentialsRequest()
+        schema.dump(schema.load(body))
+        
+
+        query_params = {}
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="post",
+            url=f"/service/platform/assets/v1.0/credentials",
+            query=query_params,
+            body=body,
+            contentType="application/json"
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def addCredentials(
+        self, 
+        
+        credentials:Any=None, 
+        pluginId:str=None
+        ):   
+        """
+        summary: Add credentials for a transformation module.
+        description: Add a transformation modules's credentials for an organization.
+
+        
+        :param - credentials : Credentials of the plugin : Type - Any
+        :param - pluginId : Unique identifier for the plugin this credential belongs to : Type - str
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.addCredentialsAsync(
+                credentials=credentials, 
+                pluginId=pluginId)
+        )
+
+    
+    
+    
+
+        
+    async def updateCredentialsAsync(
+        self, 
+        
+        pluginId:str=None,
+        credentials:Any=None
+        ) -> dict:   
+        """
+        summary: Update credentials of a transformation module.
+        description: Update credentials of a transformation module, for an organization.
+
+        :param - pluginId : ID of the plugin whose credentials are being updated: Type - str 
+        
+        :param - credentials : Credentials of the plugin : Type - Any
+        """
+
+        payload = {}
+        
+        if pluginId is not None:
+            payload["pluginId"] = pluginId
+        
+
+        # Parameter validation
+        schema = AssetsValidator.updateCredentials()
+        schema.dump(schema.load(payload))
+
+        
+        body = {}
+        
+        if credentials is not None:
+            body["credentials"] = credentials
+        
+        # Body validation
+        from .models.UpdateCredentialsRequest import UpdateCredentialsRequest
+        schema = UpdateCredentialsRequest()
+        schema.dump(schema.load(body))
+        
+
+        query_params = {}
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="patch",
+            url=f"/service/platform/assets/v1.0/credentials/{pluginId}",
+            query=query_params,
+            body=body,
+            contentType="application/json"
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def updateCredentials(
+        self, 
+        
+        pluginId:str=None,
+        credentials:Any=None
+        ):   
+        """
+        summary: Update credentials of a transformation module.
+        description: Update credentials of a transformation module, for an organization.
+
+        :param - pluginId : ID of the plugin whose credentials are being updated: Type - str 
+        
+        :param - credentials : Credentials of the plugin : Type - Any
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.updateCredentialsAsync(
+                pluginId=pluginId,
+                credentials=credentials)
+        )
+
+    
+    
+    
+
+    
+    async def deleteCredentialsAsync(
+        self, 
+        
+        pluginId:str=None
+        ) -> dict:   
+        """
+        summary: Delete credentials of a transformation module.
+        description: Delete credentials of a transformation module, for an organization.
+
+        :param - pluginId : ID of the plugin whose credentials are being deleted: Type - str 
+        
+        """
+
+        payload = {}
+        
+        if pluginId is not None:
+            payload["pluginId"] = pluginId
+        
+
+        # Parameter validation
+        schema = AssetsValidator.deleteCredentials()
+        schema.dump(schema.load(payload))
+
+        
+
+        query_params = {}
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="delete",
+            url=f"/service/platform/assets/v1.0/credentials/{pluginId}",
+            query=query_params,
+            body=None,
+            contentType=""
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def deleteCredentials(
+        self, 
+        
+        pluginId:str=None
+        ):   
+        """
+        summary: Delete credentials of a transformation module.
+        description: Delete credentials of a transformation module, for an organization.
+
+        :param - pluginId : ID of the plugin whose credentials are being deleted: Type - str 
+        
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.deleteCredentialsAsync(
+                pluginId=pluginId)
+        )
+
+    
+    
+    
+
+        
+    async def addPresetAsync(
+        self, 
+        
+        presetName:str=None, 
+        transformation:str=None, 
+        params:Any=None
+        ) -> dict:   
+        """
+        summary: Add a preset.
+        description: Add a preset for an organization.
+
+        
+        :param - presetName : Name of the preset : Type - str
+        :param - transformation : A chain of transformations, separated by `~` : Type - str
+        :param - params : Parameters object for transformation variables : Type - Any
+        """
+
+        payload = {}
+        
+
+        # Parameter validation
+        schema = AssetsValidator.addPreset()
+        schema.dump(schema.load(payload))
+
+        
+        body = {}
+        
+        if presetName is not None:
+            body["presetName"] = presetName
+        
+        if transformation is not None:
+            body["transformation"] = transformation
+        
+        if params is not None:
+            body["params"] = params
+        
+        # Body validation
+        from .models.AddPresetRequest import AddPresetRequest
+        schema = AddPresetRequest()
+        schema.dump(schema.load(body))
+        
+
+        query_params = {}
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="post",
+            url=f"/service/platform/assets/v1.0/presets",
+            query=query_params,
+            body=body,
+            contentType="application/json"
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def addPreset(
+        self, 
+        
+        presetName:str=None, 
+        transformation:str=None, 
+        params:Any=None
+        ):   
+        """
+        summary: Add a preset.
+        description: Add a preset for an organization.
+
+        
+        :param - presetName : Name of the preset : Type - str
+        :param - transformation : A chain of transformations, separated by `~` : Type - str
+        :param - params : Parameters object for transformation variables : Type - Any
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.addPresetAsync(
+                presetName=presetName, 
+                transformation=transformation, 
+                params=params)
+        )
+
+    
+    
+    
+
+    
+    async def getPresetsAsync(
+        self, 
+        
+        ) -> dict:   
+        """
+        summary: Get all presets.
+        description: Get all presets of an organization.
+
+        
+        """
+
+        payload = {}
+        
+
+        # Parameter validation
+        schema = AssetsValidator.getPresets()
+        schema.dump(schema.load(payload))
+
+        
+
+        query_params = {}
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/assets/v1.0/presets",
+            query=query_params,
+            body=None,
+            contentType=""
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def getPresets(
+        self, 
+        
+        ):   
+        """
+        summary: Get all presets.
+        description: Get all presets of an organization.
+
+        
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.getPresetsAsync()
+        )
+
+    
+    
+    
+
+        
+    async def updatePresetAsync(
+        self, 
+        
+        presetName:str=None,
+        archived:bool=None
+        ) -> dict:   
+        """
+        summary: Update a preset.
+        description: Update a preset of an organization.
+
+        :param - presetName : Name of the preset to be updated: Type - str 
+        
+        :param - archived : Indicates if the preset has been archived : Type - bool
+        """
+
+        payload = {}
+        
+        if presetName is not None:
+            payload["presetName"] = presetName
+        
+
+        # Parameter validation
+        schema = AssetsValidator.updatePreset()
+        schema.dump(schema.load(payload))
+
+        
+        body = {}
+        
+        if archived is not None:
+            body["archived"] = archived
+        
+        # Body validation
+        from .models.UpdatePresetRequest import UpdatePresetRequest
+        schema = UpdatePresetRequest()
+        schema.dump(schema.load(body))
+        
+
+        query_params = {}
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="patch",
+            url=f"/service/platform/assets/v1.0/presets/{presetName}",
+            query=query_params,
+            body=body,
+            contentType="application/json"
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def updatePreset(
+        self, 
+        
+        presetName:str=None,
+        archived:bool=None
+        ):   
+        """
+        summary: Update a preset.
+        description: Update a preset of an organization.
+
+        :param - presetName : Name of the preset to be updated: Type - str 
+        
+        :param - archived : Indicates if the preset has been archived : Type - bool
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.updatePresetAsync(
+                presetName=presetName,
+                archived=archived)
+        )
+
+    
+    
+    
+
+    
+    async def deletePresetAsync(
+        self, 
+        
+        presetName:str=None
+        ) -> dict:   
+        """
+        summary: Delete a preset.
+        description: Delete a preset of an organization.
+
+        :param - presetName : Name of the preset to be deleted: Type - str 
+        
+        """
+
+        payload = {}
+        
+        if presetName is not None:
+            payload["presetName"] = presetName
+        
+
+        # Parameter validation
+        schema = AssetsValidator.deletePreset()
+        schema.dump(schema.load(payload))
+
+        
+
+        query_params = {}
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="delete",
+            url=f"/service/platform/assets/v1.0/presets/{presetName}",
+            query=query_params,
+            body=None,
+            contentType=""
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def deletePreset(
+        self, 
+        
+        presetName:str=None
+        ):   
+        """
+        summary: Delete a preset.
+        description: Delete a preset of an organization.
+
+        :param - presetName : Name of the preset to be deleted: Type - str 
+        
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.deletePresetAsync(
+                presetName=presetName)
+        )
+
+    
+    
+    
+
+    
+    async def getPresetAsync(
+        self, 
+        
+        presetName:str=None
+        ) -> dict:   
+        """
+        summary: Get a preset.
+        description: Get a preset of an organization.
+
+        :param - presetName : Name of the preset to be fetched: Type - str 
+        
+        """
+
+        payload = {}
+        
+        if presetName is not None:
+            payload["presetName"] = presetName
+        
+
+        # Parameter validation
+        schema = AssetsValidator.getPreset()
+        schema.dump(schema.load(payload))
+
+        
+
+        query_params = {}
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/assets/v1.0/presets/{presetName}",
+            query=query_params,
+            body=None,
+            contentType=""
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def getPreset(
+        self, 
+        
+        presetName:str=None
+        ):   
+        """
+        summary: Get a preset.
+        description: Get a preset of an organization.
+
+        :param - presetName : Name of the preset to be fetched: Type - str 
+        
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.getPresetAsync(
+                presetName=presetName)
+        )
+
+    
+    
+    
+
+    
+    async def getDefaultAssetForPlaygroundAsync(
+        self, 
+        
+        ) -> dict:   
+        """
+        summary: Get default asset for playground
+        description: Get default asset for playground
+        
+        """
+
+        payload = {}
+        
+
+        # Parameter validation
+        schema = AssetsValidator.getDefaultAssetForPlayground()
+        schema.dump(schema.load(payload))
+
+        
+
+        query_params = {}
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/assets/v1.0/playground/default",
+            query=query_params,
+            body=None,
+            contentType=""
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def getDefaultAssetForPlayground(
+        self, 
+        
+        ):   
+        """
+        summary: Get default asset for playground
+        description: Get default asset for playground
+        
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.getDefaultAssetForPlaygroundAsync()
         )
 
     

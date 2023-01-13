@@ -15,8 +15,19 @@ Asset Uploader Service
 -   [deleteFile](#deletefile)
 -   [deleteFiles](#deletefiles)
 -   [createFolder](#createfolder)
+-   [getFolderDetails](#getfolderdetails)
 -   [updateFolder](#updatefolder)
 -   [deleteFolder](#deletefolder)
+-   [getFolderAncestors](#getfolderancestors)
+-   [addCredentials](#addcredentials)
+-   [updateCredentials](#updatecredentials)
+-   [deleteCredentials](#deletecredentials)
+-   [addPreset](#addpreset)
+-   [getPresets](#getpresets)
+-   [updatePreset](#updatepreset)
+-   [deletePreset](#deletepreset)
+-   [getPreset](#getpreset)
+-   [getDefaultAssetForPlayground](#getdefaultassetforplayground)
 -   [getModules](#getmodules)
 -   [getModule](#getmodule)
 
@@ -814,6 +825,79 @@ Success - List of all created folders
 
 </details>
 
+### getFolderDetails
+
+**Summary**: Get folder details
+
+```python
+import asyncio
+from pixelbin import PixelbinClient, PixelbinConfig
+
+config = PixelbinConfig({
+    "domain": "https://api.pixelbin.io",
+    "apiSecret": "API_SECRECT_TOKEN",
+})
+
+pixelbin:PixelbinClient = PixelbinClient(config=config)
+
+# Sync method call
+try:
+    result = pixelbin.assets.getFolderDetails(
+        path="dir1/dir2",
+        name="dir")
+    # use result
+except Exception as e:
+    print(e)
+
+# Async method call
+try:
+    result = asyncio.run(pixelbin.assets.getFolderDetailsAsync(
+        path="dir1/dir2",
+        name="dir"))
+    # use result
+except Exception as e:
+    print(e)
+
+```
+
+| Argument | Type | Required | Description |
+| -------- | ---- | -------- | ----------- |
+| path     | str  | no       | Folder path |
+| name     | str  | no       | Folder name |
+
+Get folder details
+
+_Returned Response:_
+
+[exploreItem](#exploreitem)
+
+Success
+
+<details>
+<summary><i>&nbsp; Example:</i></summary>
+
+```json
+[
+    {
+        "_id": "dummy-uuid",
+        "createdAt": "2022-10-05T10:43:04.117Z",
+        "updatedAt": "2022-10-05T10:43:04.117Z",
+        "name": "asset2",
+        "type": "file",
+        "path": "dir",
+        "fileId": "dir/asset2",
+        "format": "jpeg",
+        "size": 1000,
+        "access": "private",
+        "metadata": {},
+        "height": 100,
+        "width": 100
+    }
+]
+```
+
+</details>
+
 ### updateFolder
 
 **Summary**: Update folder details
@@ -941,6 +1025,682 @@ Success
         "isActive": true
     }
 ]
+```
+
+</details>
+
+### getFolderAncestors
+
+**Summary**: Get all ancestors of a folder
+
+```python
+import asyncio
+from pixelbin import PixelbinClient, PixelbinConfig
+
+config = PixelbinConfig({
+    "domain": "https://api.pixelbin.io",
+    "apiSecret": "API_SECRECT_TOKEN",
+})
+
+pixelbin:PixelbinClient = PixelbinClient(config=config)
+
+# Sync method call
+try:
+    result = pixelbin.assets.getFolderAncestors(
+        _id="c9138153-94ea-4dbe-bea9-65d43dba85ae")
+    # use result
+except Exception as e:
+    print(e)
+
+# Async method call
+try:
+    result = asyncio.run(pixelbin.assets.getFolderAncestorsAsync(
+        _id="c9138153-94ea-4dbe-bea9-65d43dba85ae"))
+    # use result
+except Exception as e:
+    print(e)
+
+```
+
+| Argument | Type | Required | Description        |
+| -------- | ---- | -------- | ------------------ |
+| \_id     | str  | yes      | \_id of the folder |
+
+Get all ancestors of a folder, using the folder ID.
+
+_Returned Response:_
+
+[GetAncestorsResponse](#getancestorsresponse)
+
+Success
+
+<details>
+<summary><i>&nbsp; Example:</i></summary>
+
+```json
+{
+    "folder": {
+        "_id": "dummy-uuid",
+        "name": "subDir",
+        "path": "dir1/dir2",
+        "isActive": true
+    },
+    "ancestors": [
+        {
+            "_id": "dummy-uuid-2",
+            "name": "dir1",
+            "path": "",
+            "isActive": true
+        },
+        {
+            "_id": "dummy-uuid-2",
+            "name": "dir2",
+            "path": "dir1",
+            "isActive": true
+        }
+    ]
+}
+```
+
+</details>
+
+### addCredentials
+
+**Summary**: Add credentials for a transformation module.
+
+```python
+import asyncio
+from pixelbin import PixelbinClient, PixelbinConfig
+
+config = PixelbinConfig({
+    "domain": "https://api.pixelbin.io",
+    "apiSecret": "API_SECRECT_TOKEN",
+})
+
+pixelbin:PixelbinClient = PixelbinClient(config=config)
+
+# Sync method call
+try:
+    result = pixelbin.assets.addCredentials(
+        credentials={"region":"ap-south-1","accessKeyId":"123456789ABC","secretAccessKey":"DUMMY1234567890"},
+        pluginId="awsRek")
+    # use result
+except Exception as e:
+    print(e)
+
+# Async method call
+try:
+    result = asyncio.run(pixelbin.assets.addCredentialsAsync(
+        credentials={"region":"ap-south-1","accessKeyId":"123456789ABC","secretAccessKey":"DUMMY1234567890"},
+        pluginId="awsRek"))
+    # use result
+except Exception as e:
+    print(e)
+
+```
+
+| Argument    | Type | Required | Description                                                 |
+| ----------- | ---- | -------- | ----------------------------------------------------------- |
+| credentials | Any  | yes      | Credentials of the plugin                                   |
+| pluginId    | str  | yes      | Unique identifier for the plugin this credential belongs to |
+
+Add a transformation modules's credentials for an organization.
+
+_Returned Response:_
+
+[AddCredentialsResponse](#addcredentialsresponse)
+
+Success
+
+<details>
+<summary><i>&nbsp; Example:</i></summary>
+
+```json
+{
+    "_id": "123ee789-7ae8-4336-b9bd-e4f33c049002",
+    "createdAt": "2022-10-04T09:52:09.545Z",
+    "updatedAt": "2022-10-04T09:52:09.545Z",
+    "orgId": 23,
+    "pluginId": "awsRek"
+}
+```
+
+</details>
+
+### updateCredentials
+
+**Summary**: Update credentials of a transformation module.
+
+```python
+import asyncio
+from pixelbin import PixelbinClient, PixelbinConfig
+
+config = PixelbinConfig({
+    "domain": "https://api.pixelbin.io",
+    "apiSecret": "API_SECRECT_TOKEN",
+})
+
+pixelbin:PixelbinClient = PixelbinClient(config=config)
+
+# Sync method call
+try:
+    result = pixelbin.assets.updateCredentials(
+        pluginId="awsRek",
+        credentials={"region":"ap-south-1","accessKeyId":"123456789ABC","secretAccessKey":"DUMMY1234567890"})
+    # use result
+except Exception as e:
+    print(e)
+
+# Async method call
+try:
+    result = asyncio.run(pixelbin.assets.updateCredentialsAsync(
+        pluginId="awsRek",
+        credentials={"region":"ap-south-1","accessKeyId":"123456789ABC","secretAccessKey":"DUMMY1234567890"}))
+    # use result
+except Exception as e:
+    print(e)
+
+```
+
+| Argument    | Type | Required | Description                                          |
+| ----------- | ---- | -------- | ---------------------------------------------------- |
+| pluginId    | str  | yes      | ID of the plugin whose credentials are being updated |
+| credentials | Any  | yes      | Credentials of the plugin                            |
+
+Update credentials of a transformation module, for an organization.
+
+_Returned Response:_
+
+[AddCredentialsResponse](#addcredentialsresponse)
+
+Success
+
+<details>
+<summary><i>&nbsp; Example:</i></summary>
+
+```json
+{
+    "_id": "123ee789-7ae8-4336-b9bd-e4f33c049002",
+    "createdAt": "2022-10-04T09:52:09.545Z",
+    "updatedAt": "2022-10-04T09:52:09.545Z",
+    "orgId": 23,
+    "pluginId": "awsRek"
+}
+```
+
+</details>
+
+### deleteCredentials
+
+**Summary**: Delete credentials of a transformation module.
+
+```python
+import asyncio
+from pixelbin import PixelbinClient, PixelbinConfig
+
+config = PixelbinConfig({
+    "domain": "https://api.pixelbin.io",
+    "apiSecret": "API_SECRECT_TOKEN",
+})
+
+pixelbin:PixelbinClient = PixelbinClient(config=config)
+
+# Sync method call
+try:
+    result = pixelbin.assets.deleteCredentials(
+        pluginId="awsRek")
+    # use result
+except Exception as e:
+    print(e)
+
+# Async method call
+try:
+    result = asyncio.run(pixelbin.assets.deleteCredentialsAsync(
+        pluginId="awsRek"))
+    # use result
+except Exception as e:
+    print(e)
+
+```
+
+| Argument | Type | Required | Description                                          |
+| -------- | ---- | -------- | ---------------------------------------------------- |
+| pluginId | str  | yes      | ID of the plugin whose credentials are being deleted |
+
+Delete credentials of a transformation module, for an organization.
+
+_Returned Response:_
+
+[AddCredentialsResponse](#addcredentialsresponse)
+
+Success
+
+<details>
+<summary><i>&nbsp; Example:</i></summary>
+
+```json
+{
+    "_id": "123ee789-7ae8-4336-b9bd-e4f33c049002",
+    "createdAt": "2022-10-04T09:52:09.545Z",
+    "updatedAt": "2022-10-04T09:52:09.545Z",
+    "orgId": 23,
+    "pluginId": "awsRek"
+}
+```
+
+</details>
+
+### addPreset
+
+**Summary**: Add a preset.
+
+```python
+import asyncio
+from pixelbin import PixelbinClient, PixelbinConfig
+
+config = PixelbinConfig({
+    "domain": "https://api.pixelbin.io",
+    "apiSecret": "API_SECRECT_TOKEN",
+})
+
+pixelbin:PixelbinClient = PixelbinClient(config=config)
+
+# Sync method call
+try:
+    result = pixelbin.assets.addPreset(
+        presetName="p1",
+        transformation="t.flip()~t.flop()",
+        params={"w":{"type":"integer","default":200},"h":{"type":"integer","default":400}})
+    # use result
+except Exception as e:
+    print(e)
+
+# Async method call
+try:
+    result = asyncio.run(pixelbin.assets.addPresetAsync(
+        presetName="p1",
+        transformation="t.flip()~t.flop()",
+        params={"w":{"type":"integer","default":200},"h":{"type":"integer","default":400}}))
+    # use result
+except Exception as e:
+    print(e)
+
+```
+
+| Argument       | Type | Required | Description                                    |
+| -------------- | ---- | -------- | ---------------------------------------------- |
+| presetName     | str  | yes      | Name of the preset                             |
+| transformation | str  | yes      | A chain of transformations, separated by `~`   |
+| params         | Any  | no       | Parameters object for transformation variables |
+
+Add a preset for an organization.
+
+_Returned Response:_
+
+[AddPresetResponse](#addpresetresponse)
+
+Success
+
+<details>
+<summary><i>&nbsp; Example:</i></summary>
+
+```json
+{
+    "presetName": "p1",
+    "transformation": "t.flip()~t.flop()",
+    "params": {
+        "w": {
+            "type": "integer",
+            "default": 200
+        },
+        "h": {
+            "type": "integer",
+            "default": 400
+        }
+    },
+    "archived": false
+}
+```
+
+</details>
+
+### getPresets
+
+**Summary**: Get all presets.
+
+```python
+import asyncio
+from pixelbin import PixelbinClient, PixelbinConfig
+
+config = PixelbinConfig({
+    "domain": "https://api.pixelbin.io",
+    "apiSecret": "API_SECRECT_TOKEN",
+})
+
+pixelbin:PixelbinClient = PixelbinClient(config=config)
+
+# Sync method call
+try:
+    result = pixelbin.assets.getPresets()
+    # use result
+except Exception as e:
+    print(e)
+
+# Async method call
+try:
+    result = asyncio.run(pixelbin.assets.getPresetsAsync())
+    # use result
+except Exception as e:
+    print(e)
+
+```
+
+Get all presets of an organization.
+
+_Returned Response:_
+
+[AddPresetResponse](#addpresetresponse)
+
+Success
+
+<details>
+<summary><i>&nbsp; Example:</i></summary>
+
+```json
+{
+    "items": [
+        {
+            "presetName": "p1",
+            "transformation": "t.flip()~t.flop()",
+            "params": {
+                "w": {
+                    "type": "integer",
+                    "default": 200
+                },
+                "h": {
+                    "type": "integer",
+                    "default": 400
+                }
+            },
+            "archived": true
+        }
+    ],
+    "page": {
+        "type": "number",
+        "size": 1,
+        "current": 1,
+        "hasNext": false
+    }
+}
+```
+
+</details>
+
+### updatePreset
+
+**Summary**: Update a preset.
+
+```python
+import asyncio
+from pixelbin import PixelbinClient, PixelbinConfig
+
+config = PixelbinConfig({
+    "domain": "https://api.pixelbin.io",
+    "apiSecret": "API_SECRECT_TOKEN",
+})
+
+pixelbin:PixelbinClient = PixelbinClient(config=config)
+
+# Sync method call
+try:
+    result = pixelbin.assets.updatePreset(
+        presetName="p1",
+        archived=True)
+    # use result
+except Exception as e:
+    print(e)
+
+# Async method call
+try:
+    result = asyncio.run(pixelbin.assets.updatePresetAsync(
+        presetName="p1",
+        archived=True))
+    # use result
+except Exception as e:
+    print(e)
+
+```
+
+| Argument   | Type | Required | Description                               |
+| ---------- | ---- | -------- | ----------------------------------------- |
+| presetName | str  | yes      | Name of the preset to be updated          |
+| archived   | bool | yes      | Indicates if the preset has been archived |
+
+Update a preset of an organization.
+
+_Returned Response:_
+
+[AddPresetResponse](#addpresetresponse)
+
+Success
+
+<details>
+<summary><i>&nbsp; Example:</i></summary>
+
+```json
+{
+    "presetName": "p1",
+    "transformation": "t.flip()~t.flop()",
+    "params": {
+        "w": {
+            "type": "integer",
+            "default": 200
+        },
+        "h": {
+            "type": "integer",
+            "default": 400
+        }
+    },
+    "archived": true
+}
+```
+
+</details>
+
+### deletePreset
+
+**Summary**: Delete a preset.
+
+```python
+import asyncio
+from pixelbin import PixelbinClient, PixelbinConfig
+
+config = PixelbinConfig({
+    "domain": "https://api.pixelbin.io",
+    "apiSecret": "API_SECRECT_TOKEN",
+})
+
+pixelbin:PixelbinClient = PixelbinClient(config=config)
+
+# Sync method call
+try:
+    result = pixelbin.assets.deletePreset(
+        presetName="p1")
+    # use result
+except Exception as e:
+    print(e)
+
+# Async method call
+try:
+    result = asyncio.run(pixelbin.assets.deletePresetAsync(
+        presetName="p1"))
+    # use result
+except Exception as e:
+    print(e)
+
+```
+
+| Argument   | Type | Required | Description                      |
+| ---------- | ---- | -------- | -------------------------------- |
+| presetName | str  | yes      | Name of the preset to be deleted |
+
+Delete a preset of an organization.
+
+_Returned Response:_
+
+[AddPresetResponse](#addpresetresponse)
+
+Success
+
+<details>
+<summary><i>&nbsp; Example:</i></summary>
+
+```json
+{
+    "presetName": "p1",
+    "transformation": "t.flip()~t.flop()",
+    "params": {
+        "w": {
+            "type": "integer",
+            "default": 200
+        },
+        "h": {
+            "type": "integer",
+            "default": 400
+        }
+    },
+    "archived": true
+}
+```
+
+</details>
+
+### getPreset
+
+**Summary**: Get a preset.
+
+```python
+import asyncio
+from pixelbin import PixelbinClient, PixelbinConfig
+
+config = PixelbinConfig({
+    "domain": "https://api.pixelbin.io",
+    "apiSecret": "API_SECRECT_TOKEN",
+})
+
+pixelbin:PixelbinClient = PixelbinClient(config=config)
+
+# Sync method call
+try:
+    result = pixelbin.assets.getPreset(
+        presetName="p1")
+    # use result
+except Exception as e:
+    print(e)
+
+# Async method call
+try:
+    result = asyncio.run(pixelbin.assets.getPresetAsync(
+        presetName="p1"))
+    # use result
+except Exception as e:
+    print(e)
+
+```
+
+| Argument   | Type | Required | Description                      |
+| ---------- | ---- | -------- | -------------------------------- |
+| presetName | str  | yes      | Name of the preset to be fetched |
+
+Get a preset of an organization.
+
+_Returned Response:_
+
+[AddPresetResponse](#addpresetresponse)
+
+Success
+
+<details>
+<summary><i>&nbsp; Example:</i></summary>
+
+```json
+{
+    "presetName": "p1",
+    "transformation": "t.flip()~t.flop()",
+    "params": {
+        "w": {
+            "type": "integer",
+            "default": 200
+        },
+        "h": {
+            "type": "integer",
+            "default": 400
+        }
+    },
+    "archived": true
+}
+```
+
+</details>
+
+### getDefaultAssetForPlayground
+
+**Summary**: Get default asset for playground
+
+```python
+import asyncio
+from pixelbin import PixelbinClient, PixelbinConfig
+
+config = PixelbinConfig({
+    "domain": "https://api.pixelbin.io",
+    "apiSecret": "API_SECRECT_TOKEN",
+})
+
+pixelbin:PixelbinClient = PixelbinClient(config=config)
+
+# Sync method call
+try:
+    result = pixelbin.assets.getDefaultAssetForPlayground()
+    # use result
+except Exception as e:
+    print(e)
+
+# Async method call
+try:
+    result = asyncio.run(pixelbin.assets.getDefaultAssetForPlaygroundAsync())
+    # use result
+except Exception as e:
+    print(e)
+
+```
+
+Get default asset for playground
+
+_Returned Response:_
+
+[UploadResponse](#uploadresponse)
+
+Success
+
+<details>
+<summary><i>&nbsp; Example:</i></summary>
+
+```json
+{
+    "_id": "dummy-uuid",
+    "name": "asset",
+    "path": "dir",
+    "fileId": "dir/asset",
+    "format": "jpeg",
+    "size": 1000,
+    "access": "private",
+    "isActive": true,
+    "tags": ["tag1", "tag2"],
+    "metadata": {
+        "key": "value"
+    },
+    "url": "https://domain.com/filename.jpeg"
+}
 ```
 
 </details>
@@ -1320,6 +2080,109 @@ Success
 | credentials | Any       | no       | credentials, if any, associated with the plugin |
 | operations  | List[Any] | no       | supported operations in the plugin              |
 | enabled     | bool      | no       | whether the plugin is enabled                   |
+
+#### Credentials
+
+| Properties  | Type | Nullable | Description                                                 |
+| ----------- | ---- | -------- | ----------------------------------------------------------- |
+| \_id        | str  | no       | Unique ID for credential                                    |
+| createdAt   | str  | no       | Credential creation ISO timestamp                           |
+| updatedAt   | str  | no       | Credential update ISO timestamp                             |
+| isActive    | bool | no       | Tells if credential is active or not                        |
+| orgId       | str  | no       | ID of the organization this credential belongs to           |
+| pluginId    | str  | no       | Unique identifier for the plugin this credential belongs to |
+| credentials | Any  | no       | Credentials object. It is different for each plugin         |
+| description | Any  | no       |                                                             |
+
+#### CredentialsItem
+
+| Properties | Type | Nullable | Description |
+| ---------- | ---- | -------- | ----------- |
+| pluginId   | Any  | no       |             |
+
+#### AddCredentialsRequest
+
+| Properties  | Type | Nullable | Description                                                 |
+| ----------- | ---- | -------- | ----------------------------------------------------------- |
+| credentials | Any  | yes      | Credentials of the plugin                                   |
+| pluginId    | str  | yes      | Unique identifier for the plugin this credential belongs to |
+
+#### UpdateCredentialsRequest
+
+| Properties  | Type | Nullable | Description               |
+| ----------- | ---- | -------- | ------------------------- |
+| credentials | Any  | yes      | Credentials of the plugin |
+
+#### AddCredentialsResponse
+
+| Properties  | Type | Nullable | Description |
+| ----------- | ---- | -------- | ----------- |
+| credentials | Any  | no       |             |
+
+#### DeleteCredentialsResponse
+
+| Properties  | Type | Nullable | Description                                                 |
+| ----------- | ---- | -------- | ----------------------------------------------------------- |
+| \_id        | str  | no       | Unique Credential ID                                        |
+| createdAt   | str  | no       | Credential creation ISO timestamp                           |
+| updatedAt   | str  | no       | Credential update ISO timestamp                             |
+| isActive    | bool | no       | Tells if credential is active or not                        |
+| orgId       | str  | no       | ID of the organization this credential belongs to           |
+| pluginId    | str  | no       | Unique identifier for the plugin this credential belongs to |
+| credentials | Any  | no       | Credentials object. It is different for each plugin         |
+
+#### GetAncestorsResponse
+
+| Properties | Type                  | Nullable | Description |
+| ---------- | --------------------- | -------- | ----------- |
+| folder     | folderItem            | no       |             |
+| ancestors  | List[FoldersResponse] | no       |             |
+
+#### GetFilesWithConstraintsItem
+
+| Properties | Type | Nullable | Description |
+| ---------- | ---- | -------- | ----------- |
+| path       | str  | no       |             |
+| name       | str  | no       |             |
+| type       | str  | no       |             |
+
+#### GetFilesWithConstraintsRequest
+
+| Properties | Type                              | Nullable | Description |
+| ---------- | --------------------------------- | -------- | ----------- |
+| items      | List[GetFilesWithConstraintsItem] | no       |             |
+| maxCount   | float                             | no       |             |
+| maxSize    | float                             | no       |             |
+
+#### AddPresetRequest
+
+| Properties     | Type | Nullable | Description                                    |
+| -------------- | ---- | -------- | ---------------------------------------------- |
+| presetName     | str  | yes      | Name of the preset                             |
+| transformation | str  | yes      | A chain of transformations, separated by `~`   |
+| params         | Any  | no       | Parameters object for transformation variables |
+
+#### AddPresetResponse
+
+| Properties     | Type | Nullable | Description                                    |
+| -------------- | ---- | -------- | ---------------------------------------------- |
+| presetName     | str  | yes      | Name of the preset                             |
+| transformation | str  | yes      | A chain of transformations, separated by `~`   |
+| params         | Any  | no       | Parameters object for transformation variables |
+| archived       | bool | no       | Indicates if the preset has been archived      |
+
+#### UpdatePresetRequest
+
+| Properties | Type | Nullable | Description                               |
+| ---------- | ---- | -------- | ----------------------------------------- |
+| archived   | bool | yes      | Indicates if the preset has been archived |
+
+#### GetPresetsResponse
+
+| Properties | Type                    | Nullable | Description             |
+| ---------- | ----------------------- | -------- | ----------------------- |
+| items      | List[AddPresetResponse] | yes      | Presets in current page |
+| page       | page                    | yes      | page details            |
 
 ### Enums
 
