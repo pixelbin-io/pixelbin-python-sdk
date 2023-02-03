@@ -52,8 +52,12 @@ class AiohttpHelper:
                 if "file" in data.keys():
                     fdata = aiohttp.formdata.FormData()
                     for k, v in data.items():
-                        value = ujson.dumps(v, escape_forward_slashes=False) if isinstance(v, dict) or isinstance(v, bool) or isinstance(v, list) else v
-                        fdata.add_field(k,value)
+                        if isinstance(v, list):
+                            for ele in v:
+                                fdata.add_field(k,ele)
+                        else:                                
+                            value = ujson.dumps(v, escape_forward_slashes=False) if isinstance(v, dict) or isinstance(v, bool) else v
+                            fdata.add_field(k,value)
                     data = fdata
                 else:
                     data = ujson.dumps(data, escape_forward_slashes=False)

@@ -668,17 +668,19 @@ class TestPixelBin(unittest.TestCase):
         resp = self.pixelbinClient.assets.fileUpload(file=file)
 
     def test_fileUpload_case2(self):
+        tags = ["tag1", "tag2"]
         file = open("1.jpeg", "rb")
         resp = self.pixelbinClient.assets.fileUpload(
             file=file,
             path=self.folder_name,
             name="1",
             access="public-read",
-            tags=["tag1", "tag2"],
+            tags=tags,
             metadata={},
             overwrite=False,
             filenameOverride=True,
         )
+        self.assertEqual(resp["tags"],tags)
 
     def test_listFiles_case1(self):
         resp = self.pixelbinClient.assets.listFiles()
@@ -697,16 +699,18 @@ class TestPixelBin(unittest.TestCase):
         )
 
     def test_urlUpload(self):
+        tags = ["cat", "animal"]
         resp = self.pixelbinClient.assets.urlUpload(
             url="https://www.fetchfind.com/blog/wp-content/uploads/2017/08/cat-2734999_1920-5-common-cat-sounds.jpg",
             path=self.folder_name,
             name="2",
             access="public-read",
-            tags=["cat", "animal"],
+            tags=tags,
             metadata={},
             overwrite=False,
             filenameOverride=True,
         )
+        self.assertEqual(resp["tags"],tags)
 
     def test_createSignedUrl_case1(self):
         resp = self.pixelbinClient.assets.createSignedUrl()
@@ -727,15 +731,17 @@ class TestPixelBin(unittest.TestCase):
         resp = self.pixelbinClient.assets.updateFile(fileId="1", name=f"1_")
 
     def test_updateFile_case2(self):
+        tags=["updated-tag1", "updated-tag2"]
         resp = self.pixelbinClient.assets.updateFile(
             fileId=f"{self.folder_name}/1",
             name=f"{self.folder_name}_",
             path=self.folder_name,
             access="private",
             isActive=True,
-            tags=["tag1", "tag2"],
+            tags=tags,
             metadata={"key": "value"}
         )
+        self.assertEqual(resp["tags"],tags)
 
     def test_getFileByFileId(self):
         resp = self.pixelbinClient.assets.getFileByFileId(
@@ -749,6 +755,22 @@ class TestPixelBin(unittest.TestCase):
         resp = self.pixelbinClient.assets.updateFolder(
             folderId=f"{self.folder_name}", isActive=True
         )
+
+    def test_getFolderDetails(self):
+        resp = self.pixelbinClient.assets.getFolderDetails(
+            path="",
+            name=self.folder_name
+        )
+    
+    def test_getFolderDetails(self):
+        resp = self.pixelbinClient.assets.getFolderDetails(
+            path="",
+            name=self.folder_name
+        )
+
+    def test_getFolderAncestors(self):
+        resp = self.pixelbinClient.assets.createFolder(name="test", path="nested/folder")
+        result = self.pixelbinClient.assets.getFolderAncestors(_id=resp["_id"])
 
     def test_deleteFolder(self):
         resp = self.pixelbinClient.assets.listFiles()
@@ -766,6 +788,45 @@ class TestPixelBin(unittest.TestCase):
 
     def test_getModule(self):
         resp = self.pixelbinClient.assets.getModule(identifier="t")
+    
+    def test_addCredentials(self):
+        resp = self.pixelbinClient.assets.addCredentials(
+        credentials={"apiKey": "dummy_key_replace_with_real"},
+        pluginId="remove")
+    
+    def test_updateCredentials(self):
+        resp = self.pixelbinClient.assets.updateCredentials(
+        credentials={"apiKey": "dummy_key_replace_with_real"},
+        pluginId="remove")
+
+    def test_deleteCredentials(self):
+        resp = self.pixelbinClient.assets.deleteCredentials(
+        pluginId="remove")
+
+    def test_addPreset(self):
+        resp = self.pixelbinClient.assets.addPreset(
+        presetName="p1",
+        transformation="t.flip()~t.flop()",
+        params={"w":{"type":"integer","default":200},"h":{"type":"integer","default":400}})
+
+    def test_getPresets(self):
+        resp = self.pixelbinClient.assets.getPresets()
+    
+    def test_updatePresets(self):
+        resp = self.pixelbinClient.assets.updatePreset(
+        presetName="p1",
+        archived=True)
+    
+    def test_getPreset(self):
+        resp = self.pixelbinClient.assets.getPreset(
+        presetName="p1")
+
+    def test_deletePreset(self):
+        resp = self.pixelbinClient.assets.deletePreset(
+        presetName="p1")
+
+    def test_getDefaultAssetForPlayground(self):
+        resp = self.pixelbinClient.assets.getDefaultAssetForPlayground()
 
     def test_url_to_obj(self):
         from pixelbin.utils.url import url_to_obj

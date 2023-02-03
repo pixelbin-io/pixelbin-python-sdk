@@ -68,6 +68,13 @@ class AssetsValidator:
         
         pass 
     
+    class getFolderDetails(BaseSchema):
+        
+        path = fields.Str(required=False)
+        
+        name = fields.Str(required=False)
+         
+    
     class updateFolder(BaseSchema):
         
         folderId = fields.Str(required=False)
@@ -77,6 +84,52 @@ class AssetsValidator:
         
         _id = fields.Str(required=False)
          
+    
+    class getFolderAncestors(BaseSchema):
+        
+        _id = fields.Str(required=False)
+         
+    
+    class addCredentials(BaseSchema):
+        
+        pass 
+    
+    class updateCredentials(BaseSchema):
+        
+        pluginId = fields.Str(required=False)
+         
+    
+    class deleteCredentials(BaseSchema):
+        
+        pluginId = fields.Str(required=False)
+         
+    
+    class addPreset(BaseSchema):
+        
+        pass 
+    
+    class getPresets(BaseSchema):
+        
+        pass 
+    
+    class updatePreset(BaseSchema):
+        
+        presetName = fields.Str(required=False)
+         
+    
+    class deletePreset(BaseSchema):
+        
+        presetName = fields.Str(required=False)
+         
+    
+    class getPreset(BaseSchema):
+        
+        presetName = fields.Str(required=False)
+         
+    
+    class getDefaultAssetForPlayground(BaseSchema):
+        
+        pass 
     
     class getModules(BaseSchema):
         
