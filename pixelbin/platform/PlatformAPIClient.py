@@ -30,16 +30,16 @@ class APIClient:
             data = None
             
         if query and method.upper() == "GET":
-            get_parmas = {}
+            get_params = {}
             for k, v in query.items():
                 if isinstance(v, list):
                     for i in range(len(v)):
-                        get_parmas[f"{k}[{i}]"] = v[i]
+                        get_params[f"{k}[{i}]"] = v[i]
                 elif isinstance(v, bool):
-                    get_parmas[k] = ujson.dumps(v)
+                    get_params[k] = ujson.dumps(v)
                 else:
-                    get_parmas[k] = v
-            query = get_parmas
+                    get_params[k] = v
+            query = get_params
 
         query_string = await create_query_string(query)
 

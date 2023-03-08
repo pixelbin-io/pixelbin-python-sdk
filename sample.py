@@ -11,7 +11,7 @@ pixelbin = PixelbinClient(config)
 
 # Sync method call
 try:
-    result = pixelbin.assets.fileUpload(file=open("../../../1.jpeg","rb"))
+    result = pixelbin.assets.fileUpload(file=open("./tests/1.jpeg","rb"))
     # use result
     print(result)
 except Exception as e:
@@ -19,7 +19,7 @@ except Exception as e:
 
 # Async method call
 try:
-    result = asyncio.get_event_loop().run_until_complete(pixelbin.assets.fileUpload(file=open("../../../1.jpeg","rb")))
+    result = asyncio.get_event_loop().run_until_complete(pixelbin.assets.fileUpload(file=open("./tests/1.jpeg","rb")))
     # use result
     print(result)
 except Exception as e:
