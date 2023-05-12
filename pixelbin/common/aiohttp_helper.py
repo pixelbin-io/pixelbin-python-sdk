@@ -4,12 +4,17 @@ import time
 
 import aiohttp
 import ujson
+from typing import Union
 
 from .constants import HTTP_TIMEOUT
 from .date_helper import get_ist_now
 
 class AiohttpHelper:
     """Aiohttp Helper."""
+
+    @staticmethod
+    def __get_formdata():
+        return aiohttp.formdata.FormData(quote_fields=False)
 
     @staticmethod
     async def parse_data(data):
@@ -21,22 +26,11 @@ class AiohttpHelper:
             text = {}
 
         return text
-
-    async def request(self, method:str, url:str, params:dict, data:dict, headers:dict, timeout_allowed:int=HTTP_TIMEOUT) -> dict:
-        """
-        summary - call api using aiohttp 
-        
-        :param - method : request method type : Type - str
-        :param - url : url to be hit : Type - str
-        :param - params : query params : Type - dict
-        :param - data : request body data : Type - dict
-        :param - headers : request headers : Type - dict
-        :param - timeout_allowed : timeout for request in seconds : Type - int    
-        """
+    
+    async def __make_request(self, method:str, url:str, params:dict, data:Union[str, aiohttp.formdata.FormData], headers:dict, timeout_allowed:int) -> dict:
         start_time = time.time()
         timeout = aiohttp.ClientTimeout(total=timeout_allowed)
-        async with aiohttp.ClientSession(headers=headers, timeout=timeout) as session:
-            response = {
+        response = {
                 "url": url,
                 "method": method,
                 "params": params,
@@ -47,21 +41,10 @@ class AiohttpHelper:
                 "headers": "",
                 "cookies": None,
                 "error_message": "",
-            }
-            if data:
-                if "file" in data.keys():
-                    fdata = aiohttp.formdata.FormData()
-                    for k, v in data.items():
-                        if isinstance(v, list):
-                            for ele in v:
-                                fdata.add_field(k,ele)
-                        else:                                
-                            value = ujson.dumps(v, escape_forward_slashes=False) if isinstance(v, dict) or isinstance(v, bool) else v
-                            fdata.add_field(k,value)
-                    data = fdata
-                else:
-                    data = ujson.dumps(data, escape_forward_slashes=False)
-            async with session.request(method.upper(), url=url, params=params, data=data) as resp:        
+        }
+
+        async with aiohttp.ClientSession(headers=headers, timeout=timeout) as session:
+           async with session.request(method.upper(), url=url, params=params, data=data) as resp:        
                 response["status_code"] = resp.status
                 response["headers"] = dict(resp.headers)
                 response["cookies"] = dict(resp.cookies)
@@ -76,4 +59,32 @@ class AiohttpHelper:
                     response["status_code"] = 999
                     response["latency"] = (time.time() - start_time)
                     response["text"] = request_error
-            return response
+        return response
+
+    async def request(self, method:str, url:str, params:dict, data:dict, headers:dict, timeout_allowed:int=HTTP_TIMEOUT) -> dict:
+        """
+        summary - call api using aiohttp 
+        
+        :param - method : request method type : Type - str
+        :param - url : url to be hit : Type - str
+        :param - params : query params : Type - dict
+        :param - data : request body data : Type - dict
+        :param - headers : request headers : Type - dict
+        :param - timeout_allowed : timeout for request in seconds : Type - int    
+        """
+        if data:
+            if "file" in data.keys():
+                form_data = self.__get_formdata()
+                for k, v in data.items():
+                    if isinstance(v, list):
+                        for ele in v:
+                            form_data.add_field(k,ele)
+                    else:                                
+                        value = ujson.dumps(v, escape_forward_slashes=False) if isinstance(v, dict) or isinstance(v, bool) else v
+                        form_data.add_field(k,value)
+                data = form_data
+            else:
+                data = ujson.dumps(data, escape_forward_slashes=False)
+            
+        response = await self.__make_request(method=method, url=url, params=params, data=data, headers=headers, timeout_allowed=timeout_allowed)
+        return response
