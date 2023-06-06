@@ -1,3 +1,7 @@
+# 2.2.0
+
+-   Added a method for obtaining the context of a file via url.
+
 # 2.1.1
 
 -   Removed unused model
