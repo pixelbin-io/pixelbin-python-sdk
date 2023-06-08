@@ -15,8 +15,10 @@ from .enums import AccessEnum
 
 
 
+
 from .models.AssetsValidator import AssetsValidator
 from .models.OrganizationValidator import OrganizationValidator
+from .models.TransformationValidator import TransformationValidator
 
 
 class PixelbinClient:
@@ -31,6 +33,7 @@ class PixelbinClient:
         self.config = config
         self.assets = Assets(config)
         self.organization = Organization(config)
+        self.transformation = Transformation(config)
         
     
 
@@ -2071,6 +2074,78 @@ class Organization:
         """
         return asyncio.get_event_loop().run_until_complete(
             self.getAppOrgDetailsAsync()
+        )
+
+    
+    
+
+
+
+class Transformation:
+    def __init__(self, config):
+        self.config = config
+    
+    
+    
+    
+
+    
+    async def getTransformationContextAsync(
+        self, 
+        
+        url:str=None
+        ) -> dict:   
+        """
+        summary: Get transformation context
+        description: Get transformation context
+        :param - url : CDN URL with transformation.: Type - str 
+        
+        """
+
+        payload = {}
+        
+        if url is not None:
+            payload["url"] = url
+        
+
+        # Parameter validation
+        schema = TransformationValidator.getTransformationContext()
+        schema.dump(schema.load(payload))
+
+        
+
+        query_params = {}
+        
+        if url:
+            query_params['url'] = url
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/transformation/context",
+            query=query_params,
+            body=None,
+            contentType=""
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def getTransformationContext(
+        self, 
+        
+        url:str=None
+        ):   
+        """
+        summary: Get transformation context
+        description: Get transformation context
+        :param - url : CDN URL with transformation.: Type - str 
+        
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.getTransformationContextAsync(
+                url=url)
         )
 
     

@@ -728,7 +728,7 @@ except Exception as e:
 
 _Returned Response:_
 
-[FilesResponse](#filesresponse)
+[List[FilesResponse]](#filesresponse)
 
 Success
 
@@ -736,21 +736,23 @@ Success
 <summary><i>&nbsp; Example:</i></summary>
 
 ```json
-{
-    "_id": "dummy-uuid",
-    "name": "asset",
-    "path": "dir",
-    "fileId": "dir/asset",
-    "format": "jpeg",
-    "size": 1000,
-    "access": "private",
-    "isActive": true,
-    "tags": ["tag1", "tag2"],
-    "metadata": {
-        "key": "value"
-    },
-    "url": "https://domain.com/filename.jpeg"
-}
+[
+    {
+        "_id": "dummy-uuid",
+        "name": "asset",
+        "path": "dir",
+        "fileId": "dir/asset",
+        "format": "jpeg",
+        "size": 1000,
+        "access": "private",
+        "isActive": true,
+        "tags": ["tag1", "tag2"],
+        "metadata": {
+            "key": "value"
+        },
+        "url": "https://domain.com/filename.jpeg"
+    }
+]
 ```
 
 </details>

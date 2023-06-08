@@ -978,6 +978,34 @@ class TestPixelBin(unittest.TestCase):
             )
             self.assertEqual(resp, json.loads(mock_response["content"].decode()))
 
+    def test_getTransformationContext(self):
+        with mock.patch.object(
+            AiohttpHelper, "_AiohttpHelper__make_request"
+        ) as mock_request:
+            mock_response = MOCK_RESPONSE["getTransformationContext"]["response"]
+            mock_request.return_value = mock_response
+            resp = self.pixelbinClient.transformation.getTransformationContext(
+                # provide link of your image
+                url="/v2/still-band-3297fc/original/test.webp"
+            )
+            mock_request.assert_called_with(
+                method="get",
+                url=f"{CONFIG['domain']}/service/platform/transformation/context",
+                params={
+                    "url": "/v2/still-band-3297fc/original/test.webp"
+                },
+                data=None,
+                headers={
+                    "host": CONFIG["host"],
+                    "x-ebg-param": mock.ANY,
+                    "x-ebg-signature": mock.ANY,
+                    "Authorization": BEARER_TOKEN,
+                },
+                timeout_allowed=mock.ANY,
+            )
+            self.assertEqual(resp, json.loads(mock_response["content"].decode()))
+    
+
     def test_url_to_obj(self):
         from pixelbin.utils.url import url_to_obj
 
