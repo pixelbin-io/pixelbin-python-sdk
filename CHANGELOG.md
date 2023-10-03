@@ -1,3 +1,9 @@
+# 2.3.0
+
+-   Fixed bugs parsing `dpr` & `f_auto` in `obj_to_url` & `url_to_obj`
+-   Added support for parsing Custom Domains in `obj_to_url` and `url_to_obj`
+-   Improved support for worker urls in `obj_to_url` and `url_to_obj`
+
 # 2.2.0
 
 -   Added a method for obtaining the context of a file via url.

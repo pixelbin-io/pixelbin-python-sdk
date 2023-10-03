@@ -584,15 +584,15 @@ except Exception as e:
 
 ```
 
-| Argument | Type      | Required | Description                                                     |
-| -------- | --------- | -------- | --------------------------------------------------------------- |
-| fileId   | str       | yes      | Combination of `path` and `name`                                |
-| name     | str       | no       | Name of the file                                                |
-| path     | str       | no       | path of containing folder.                                      |
-| access   | str       | no       | Access level of asset, can be either `public-read` or `private` |
-| isActive | bool      | no       | Whether the file is active                                      |
-| tags     | List[str] | no       | Tags associated with the file                                   |
-| metadata | Any       | no       | Metadata associated with the file                               |
+| Argument | Type       | Required | Description                                                     |
+| -------- | ---------- | -------- | --------------------------------------------------------------- |
+| fileId   | str        | yes      | Combination of `path` and `name`                                |
+| name     | str        | no       | Name of the file                                                |
+| path     | str        | no       | path of containing folder.                                      |
+| access   | AccessEnum | no       | Access level of asset, can be either `public-read` or `private` |
+| isActive | bool       | no       | Whether the file is active                                      |
+| tags     | List[str]  | no       | Tags associated with the file                                   |
+| metadata | Any        | no       | Metadata associated with the file                               |
 
 _Returned Response:_
 
@@ -1872,16 +1872,16 @@ Success
 
 #### exploreItem
 
-| Properties | Type | Nullable | Description                                                     |
-| ---------- | ---- | -------- | --------------------------------------------------------------- |
-| \_id       | str  | yes      | id of the exploreItem                                           |
-| name       | str  | yes      | name of the item                                                |
-| type       | str  | yes      | Type of item whether `file` or `folder`                         |
-| path       | str  | yes      | Path of containing folder                                       |
-| fileId     | str  | no       | Combination of `path` and `name` of file                        |
-| format     | str  | no       | Format of the file                                              |
-| size       | int  | no       | Size of the file in bytes                                       |
-| access     | str  | no       | Access level of asset, can be either `public-read` or `private` |
+| Properties | Type       | Nullable | Description                                                     |
+| ---------- | ---------- | -------- | --------------------------------------------------------------- |
+| \_id       | str        | yes      | id of the exploreItem                                           |
+| name       | str        | yes      | name of the item                                                |
+| type       | str        | yes      | Type of item whether `file` or `folder`                         |
+| path       | str        | yes      | Path of containing folder                                       |
+| fileId     | str        | no       | Combination of `path` and `name` of file                        |
+| format     | str        | no       | Format of the file                                              |
+| size       | int        | no       | Size of the file in bytes                                       |
+| access     | AccessEnum | no       | Access level of asset, can be either `public-read` or `private` |
 
 #### page
 
@@ -1943,19 +1943,19 @@ Success
 
 #### UploadResponse
 
-| Properties | Type      | Nullable | Description                                                 |
-| ---------- | --------- | -------- | ----------------------------------------------------------- |
-| \_id       | str       | yes      | \_id of the item                                            |
-| fileId     | str       | yes      | Combination of `path` and `name` of file                    |
-| name       | str       | yes      | name of the item                                            |
-| path       | str       | yes      | path to the parent folder                                   |
-| format     | str       | yes      | format of the file                                          |
-| size       | int       | yes      | size of file in bytes                                       |
-| access     | str       | yes      | Access level of asset, can be either public-read or private |
-| tags       | List[str] | no       | tags associated with the item                               |
-| metadata   | Any       | no       | metadata associated with the item                           |
-| url        | str       | no       | url of the item                                             |
-| thumbnail  | str       | no       | url of item thumbnail                                       |
+| Properties | Type       | Nullable | Description                                                 |
+| ---------- | ---------- | -------- | ----------------------------------------------------------- |
+| \_id       | str        | yes      | \_id of the item                                            |
+| fileId     | str        | yes      | Combination of `path` and `name` of file                    |
+| name       | str        | yes      | name of the item                                            |
+| path       | str        | yes      | path to the parent folder                                   |
+| format     | str        | yes      | format of the file                                          |
+| size       | int        | yes      | size of file in bytes                                       |
+| access     | AccessEnum | yes      | Access level of asset, can be either public-read or private |
+| tags       | List[str]  | no       | tags associated with the item                               |
+| metadata   | Any        | no       | metadata associated with the item                           |
+| url        | str        | no       | url of the item                                             |
+| thumbnail  | str        | no       | url of item thumbnail                                       |
 
 #### SignedUploadRequest
 
@@ -1987,31 +1987,31 @@ Success
 
 #### FilesResponse
 
-| Properties | Type      | Nullable | Description                                                    |
-| ---------- | --------- | -------- | -------------------------------------------------------------- |
-| \_id       | str       | yes      | \_id of the file                                               |
-| name       | str       | yes      | name of the file                                               |
-| path       | str       | yes      | path of containing folder.                                     |
-| fileId     | str       | yes      | Combination of `path` and `name` of file                       |
-| format     | str       | yes      | format of the file                                             |
-| size       | int       | yes      | size of the file in bytes                                      |
-| access     | str       | yes      | Access level of file, can be either `public-read` or `private` |
-| isActive   | bool      | yes      | Whether the file is active                                     |
-| tags       | List[str] | no       | Tags associated with the file                                  |
-| metadata   | Any       | no       | Metadata associated with the file                              |
-| url        | str       | no       | url of the file                                                |
-| thumbnail  | str       | no       | url of the thumbnail of the file                               |
+| Properties | Type       | Nullable | Description                                                    |
+| ---------- | ---------- | -------- | -------------------------------------------------------------- |
+| \_id       | str        | yes      | \_id of the file                                               |
+| name       | str        | yes      | name of the file                                               |
+| path       | str        | yes      | path of containing folder.                                     |
+| fileId     | str        | yes      | Combination of `path` and `name` of file                       |
+| format     | str        | yes      | format of the file                                             |
+| size       | int        | yes      | size of the file in bytes                                      |
+| access     | AccessEnum | yes      | Access level of file, can be either `public-read` or `private` |
+| isActive   | bool       | yes      | Whether the file is active                                     |
+| tags       | List[str]  | no       | Tags associated with the file                                  |
+| metadata   | Any        | no       | Metadata associated with the file                              |
+| url        | str        | no       | url of the file                                                |
+| thumbnail  | str        | no       | url of the thumbnail of the file                               |
 
 #### UpdateFileRequest
 
-| Properties | Type      | Nullable | Description                                                     |
-| ---------- | --------- | -------- | --------------------------------------------------------------- |
-| name       | str       | no       | Name of the file                                                |
-| path       | str       | no       | path of containing folder.                                      |
-| access     | str       | no       | Access level of asset, can be either `public-read` or `private` |
-| isActive   | bool      | no       | Whether the file is active                                      |
-| tags       | List[str] | no       | Tags associated with the file                                   |
-| metadata   | Any       | no       | Metadata associated with the file                               |
+| Properties | Type       | Nullable | Description                                                     |
+| ---------- | ---------- | -------- | --------------------------------------------------------------- |
+| name       | str        | no       | Name of the file                                                |
+| path       | str        | no       | path of containing folder.                                      |
+| access     | AccessEnum | no       | Access level of asset, can be either `public-read` or `private` |
+| isActive   | bool       | no       | Whether the file is active                                      |
+| tags       | List[str]  | no       | Tags associated with the file                                   |
+| metadata   | Any        | no       | Metadata associated with the file                               |
 
 #### FoldersResponse
 
