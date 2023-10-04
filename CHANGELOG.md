@@ -1,3 +1,7 @@
+# 2.4.0
+
+-   Added support for generating signed Custom Domain and PixelBin CDN urls
+
 # 2.3.0
 
 -   Fixed bugs parsing `dpr` & `f_auto` in `obj_to_url` & `url_to_obj`

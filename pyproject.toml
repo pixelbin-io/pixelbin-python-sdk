@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pixelbin"
-version = "2.3.0"
+version = "2.4.0"
 description = "Pixelbin SDK for Python"
 authors = ["Pixelbin <dev@pixelbin.io>"]
 license = "MIT"
