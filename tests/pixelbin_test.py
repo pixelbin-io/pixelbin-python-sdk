@@ -25,8 +25,9 @@ BEARER_TOKEN = (
 
 class TestPixelBin(unittest.TestCase):
     def setUp(self):
-        self.config = CONFIG
+        self.maxDiff = None
 
+        self.config = CONFIG
         from pixelbin import PixelbinConfig, PixelbinClient
 
         self.pixelbinConfig = PixelbinConfig(config=self.config)
@@ -991,9 +992,7 @@ class TestPixelBin(unittest.TestCase):
             mock_request.assert_called_with(
                 method="get",
                 url=f"{CONFIG['domain']}/service/platform/transformation/context",
-                params={
-                    "url": "/v2/still-band-3297fc/original/test.webp"
-                },
+                params={"url": "/v2/still-band-3297fc/original/test.webp"},
                 data=None,
                 headers={
                     "host": CONFIG["host"],
@@ -1004,16 +1003,19 @@ class TestPixelBin(unittest.TestCase):
                 timeout_allowed=mock.ANY,
             )
             self.assertEqual(resp, json.loads(mock_response["content"].decode()))
-    
 
     def test_url_to_obj(self):
         from pixelbin.utils.url import url_to_obj
 
         for case in self.urls_to_obj:
             url = case["url"]
+            opts = case["opts"]
             expected_obj = case["obj"]
-            obj = url_to_obj(url)
-            self.assertDictEqual(obj, expected_obj)
+            try:
+                obj = url_to_obj(url, opts=opts)
+                self.assertDictEqual(obj, expected_obj)
+            except Exception as err:
+                self.assertEqual(err.args[0], case["error"])
 
     def test_obj_to_url(self):
         from pixelbin.utils.url import obj_to_url
@@ -1037,10 +1039,13 @@ class TestPixelBin(unittest.TestCase):
             "version": "v2",
             "zone": "z-slug",
             "cloudName": "red-scene-95b6ea",
-            "options": {"dpr": 5.5, "f_auto": True},
+            "options": {"dpr": 5.5},
             "transformations": [{}],
         }
-        with self.assertRaises(PixelbinIllegalQueryParameterError):
+        with self.assertRaises(
+            PixelbinIllegalQueryParameterError,
+            msg="DPR value should be numeric and should be between 0.1 to 5.0",
+        ):
             obj_to_url(obj)
 
     def test_failure_for_option_fauto_queryParam(self):
@@ -1053,10 +1058,12 @@ class TestPixelBin(unittest.TestCase):
             "version": "v2",
             "zone": "z-slug",
             "cloudName": "red-scene-95b6ea",
-            "options": {"dpr": 2.5, "f_auto": "abc"},
+            "options": {"f_auto": "abc"},
             "transformations": [{}],
         }
-        with self.assertRaises(PixelbinIllegalQueryParameterError):
+        with self.assertRaises(
+            PixelbinIllegalQueryParameterError, msg="F_auto value should be boolean"
+        ):
             obj_to_url(obj)
 
 

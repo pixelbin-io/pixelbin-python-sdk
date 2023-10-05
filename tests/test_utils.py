@@ -750,15 +750,12 @@ MOCK_RESPONSE = {
             "params": {},
             "data": {
                 "context": {
-                    "req": {
-                        "query": {},
-                        "headers": {}
-                    },
+                    "req": {"query": {}, "headers": {}},
                     "meta": {
                         "size": 218409,
                         "width": 1140,
                         "format": "jpeg",
-                        "height": 760
+                        "height": 760,
                     },
                     "steps": [],
                     "headers": {
@@ -766,9 +763,9 @@ MOCK_RESPONSE = {
                         "x-real-ip": "125.22.87.250",
                         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
                         "accept-encoding": "br,gzip",
-                        "accept-language": "en-US,en;q=0.9"
+                        "accept-language": "en-US,en;q=0.9",
                     },
-                    "params": {}
+                    "params": {},
                 }
             },
             "external_call_request_time": "2023-03-16 16:20:58.370522+05:30",
@@ -791,7 +788,28 @@ MOCK_RESPONSE = {
 
 URLS_TO_OBJ = [
     {
+        "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/original/W2.jpeg",
+        "opts": {
+            "is_custom_domain": False,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": "broken-butterfly-3b12f1",
+            "pattern": "original",
+            "filePath": "W2.jpeg",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.pixelbin.io",
+            "transformations": [],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
         "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/t.resize(h:600,w:800)/W2.jpeg",
+        "opts": {
+            "is_custom_domain": False,
+        },
         "obj": {
             "version": "v2",
             "cloudName": "broken-butterfly-3b12f1",
@@ -810,10 +828,15 @@ URLS_TO_OBJ = [
                     ],
                 }
             ],
+            "worker": False,
+            "workerPath": "",
         },
     },
     {
         "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/z-slug/t.resize(h:600,w:800)/W2.jpeg",
+        "opts": {
+            "is_custom_domain": False,
+        },
         "obj": {
             "version": "v2",
             "cloudName": "broken-butterfly-3b12f1",
@@ -832,10 +855,15 @@ URLS_TO_OBJ = [
                     ],
                 }
             ],
+            "worker": False,
+            "workerPath": "",
         },
     },
     {
         "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/t.resize(h:600,w:800)~t.rotate(a:-249)/W2.jpeg",
+        "opts": {
+            "is_custom_domain": False,
+        },
         "obj": {
             "version": "v2",
             "cloudName": "broken-butterfly-3b12f1",
@@ -859,10 +887,15 @@ URLS_TO_OBJ = [
                     "values": [{"key": "a", "value": "-249"}],
                 },
             ],
+            "worker": False,
+            "workerPath": "",
         },
     },
     {
         "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/t.resize(h:600,w:800)~t.rotate(a:-249)~t.flip()~t.trim(t:217)/W2.jpeg",
+        "opts": {
+            "is_custom_domain": False,
+        },
         "obj": {
             "version": "v2",
             "cloudName": "broken-butterfly-3b12f1",
@@ -892,10 +925,15 @@ URLS_TO_OBJ = [
                     "values": [{"key": "t", "value": "217"}],
                 },
             ],
+            "worker": False,
+            "workerPath": "",
         },
     },
     {
         "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/t.resize(h:200,w:100)~p:preset1(a:100,b:2.1,c:test)/W2.jpeg",
+        "opts": {
+            "is_custom_domain": False,
+        },
         "obj": {
             "version": "v2",
             "cloudName": "broken-butterfly-3b12f1",
@@ -923,10 +961,15 @@ URLS_TO_OBJ = [
                     ],
                 },
             ],
+            "worker": False,
+            "workerPath": "",
         },
     },
     {
         "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/t.resize(h:200,w:100)~p:preset1/W2.jpeg",
+        "opts": {
+            "is_custom_domain": False,
+        },
         "obj": {
             "version": "v2",
             "cloudName": "broken-butterfly-3b12f1",
@@ -949,10 +992,15 @@ URLS_TO_OBJ = [
                     "name": "preset1",
                 },
             ],
+            "worker": False,
+            "workerPath": "",
         },
     },
     {
         "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/t.resize(h:200,w:100)~p:preset1()/W2.jpeg",
+        "opts": {
+            "is_custom_domain": False,
+        },
         "obj": {
             "version": "v2",
             "cloudName": "broken-butterfly-3b12f1",
@@ -975,10 +1023,15 @@ URLS_TO_OBJ = [
                     "name": "preset1",
                 },
             ],
+            "worker": False,
+            "workerPath": "",
         },
     },
     {
         "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/t.resize(h:200,w:100)~p:preset1(a:12/W2.jpeg",
+        "opts": {
+            "is_custom_domain": False,
+        },
         "obj": {
             "version": "v2",
             "cloudName": "broken-butterfly-3b12f1",
@@ -1002,10 +1055,15 @@ URLS_TO_OBJ = [
                     "values": [{"key": "a", "value": "12"}],
                 },
             ],
+            "worker": False,
+            "workerPath": "",
         },
     },
     {
-        "url": "https://cdn.pixelbin.io/v2/feel/erase.bg(shadow:true)~t.merge(m:underlay,i:eU44YkFJOHlVMmZrWVRDOUNTRm1D,b:screen,r:true)/MZZKB3e1hT48o0NYJ2Kxh.jpeg?dpr=2.0&f_auto=True",
+        "url": "https://cdn.pixelbin.io/v2/feel/erase.bg(shadow:true)~t.merge(m:underlay,i:eU44YkFJOHlVMmZrWVRDOUNTRm1D,b:screen,r:true)/MZZKB3e1hT48o0NYJ2Kxh.jpeg?dpr=2.0&f_auto=true",
+        "opts": {
+            "is_custom_domain": False,
+        },
         "obj": {
             "version": "v2",
             "baseUrl": "https://cdn.pixelbin.io",
@@ -1051,6 +1109,621 @@ URLS_TO_OBJ = [
                     "name": "merge",
                 },
             ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.pixelbin.io/v2/feel/erase.bg()/MZZKB3e1hT48o0NYJ2Kxh.jpeg?dpr=auto",
+        "opts": {
+            "is_custom_domain": False,
+        },
+        "obj": {
+            "version": "v2",
+            "baseUrl": "https://cdn.pixelbin.io",
+            "filePath": "MZZKB3e1hT48o0NYJ2Kxh.jpeg",
+            "pattern": "erase.bg()",
+            "cloudName": "feel",
+            "options": {
+                "dpr": "auto",
+            },
+            "zone": None,
+            "transformations": [
+                {
+                    "plugin": "erase",
+                    "name": "bg",
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.pixelbin.io/v2/feel/erase.bg()/asbc.jpeg?f_auto=false",
+        "opts": {
+            "is_custom_domain": False,
+        },
+        "obj": {
+            "version": "v2",
+            "baseUrl": "https://cdn.pixelbin.io",
+            "filePath": "asbc.jpeg",
+            "pattern": "erase.bg()",
+            "cloudName": "feel",
+            "options": {
+                "f_auto": False,
+            },
+            "zone": None,
+            "transformations": [
+                {
+                    "plugin": "erase",
+                    "name": "bg",
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/wrkr/image.jpeg",
+        "opts": {
+            "is_custom_domain": False,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": "broken-butterfly-3b12f1",
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.pixelbin.io",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/wrkr/resize:w200,h200/image.jpeg",
+        "opts": {
+            "is_custom_domain": False,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": "broken-butterfly-3b12f1",
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.pixelbin.io",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "resize:w200,h200/image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/abcdef/wrkr/image.jpeg",
+        "opts": {
+            "is_custom_domain": False,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": "broken-butterfly-3b12f1",
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": "abcdef",
+            "baseUrl": "https://cdn.pixelbin.io",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/abcdef/wrkr/resize:w200,h200/image.jpeg",
+        "opts": {
+            "is_custom_domain": False,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": "broken-butterfly-3b12f1",
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": "abcdef",
+            "baseUrl": "https://cdn.pixelbin.io",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "resize:w200,h200/image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/abcdef/wrkr/resize:w200,h200/image.jpeg?dpr=1.0",
+        "opts": {
+            "is_custom_domain": False,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": "broken-butterfly-3b12f1",
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": "abcdef",
+            "baseUrl": "https://cdn.pixelbin.io",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "resize:w200,h200/image.jpeg",
+            "options": {
+                "dpr": 1,
+            },
+        },
+    },
+    # custom domain urls
+    {
+        "url": "https://cdn.twist.vision/v2/original/W2.jpeg",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "original",
+            "filePath": "W2.jpeg",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:600,w:800)/W2.jpeg",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "t.resize(h:600,w:800)",
+            "filePath": "W2.jpeg",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "600"},
+                        {"key": "w", "value": "800"},
+                    ],
+                }
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/z-slug/t.resize(h:600,w:800)/W2.jpeg",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "t.resize(h:600,w:800)",
+            "filePath": "W2.jpeg",
+            "options": {},
+            "zone": "z-slug",
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "600"},
+                        {"key": "w", "value": "800"},
+                    ],
+                }
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:600,w:800)~t.rotate(a:-249)/W2.jpeg",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "t.resize(h:600,w:800)~t.rotate(a:-249)",
+            "filePath": "W2.jpeg",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "600"},
+                        {"key": "w", "value": "800"},
+                    ],
+                },
+                {
+                    "plugin": "t",
+                    "name": "rotate",
+                    "values": [{"key": "a", "value": "-249"}],
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:600,w:800)~t.rotate(a:-249)~t.flip()~t.trim(t:217)/W2.jpeg",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "t.resize(h:600,w:800)~t.rotate(a:-249)~t.flip()~t.trim(t:217)",
+            "filePath": "W2.jpeg",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "600"},
+                        {"key": "w", "value": "800"},
+                    ],
+                },
+                {
+                    "plugin": "t",
+                    "name": "rotate",
+                    "values": [{"key": "a", "value": "-249"}],
+                },
+                {"plugin": "t", "name": "flip"},
+                {
+                    "plugin": "t",
+                    "name": "trim",
+                    "values": [{"key": "t", "value": "217"}],
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:200,w:100)~p:preset1(a:100,b:2.1,c:test)/W2.jpeg",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "t.resize(h:200,w:100)~p:preset1(a:100,b:2.1,c:test)",
+            "filePath": "W2.jpeg",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "200"},
+                        {"key": "w", "value": "100"},
+                    ],
+                },
+                {
+                    "plugin": "p",
+                    "name": "preset1",
+                    "values": [
+                        {"key": "a", "value": "100"},
+                        {"key": "b", "value": "2.1"},
+                        {"key": "c", "value": "test"},
+                    ],
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:200,w:100)~p:preset1/W2.jpeg",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "t.resize(h:200,w:100)~p:preset1",
+            "filePath": "W2.jpeg",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "200"},
+                        {"key": "w", "value": "100"},
+                    ],
+                },
+                {
+                    "plugin": "p",
+                    "name": "preset1",
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:200,w:100)~p:preset1()/W2.jpeg",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "t.resize(h:200,w:100)~p:preset1()",
+            "filePath": "W2.jpeg",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "200"},
+                        {"key": "w", "value": "100"},
+                    ],
+                },
+                {
+                    "plugin": "p",
+                    "name": "preset1",
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:200,w:100)~p:preset1(a:12/W2.jpeg",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "t.resize(h:200,w:100)~p:preset1(a:12",
+            "filePath": "W2.jpeg",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "200"},
+                        {"key": "w", "value": "100"},
+                    ],
+                },
+                {
+                    "plugin": "p",
+                    "name": "preset1",
+                    "values": [{"key": "a", "value": "12"}],
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/erase.bg(shadow:true)~t.merge(m:underlay,i:eU44YkFJOHlVMmZrWVRDOUNTRm1D,b:screen,r:true)/MZZKB3e1hT48o0NYJ2Kxh.jpeg?dpr=2.0&f_auto=true",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "baseUrl": "https://cdn.twist.vision",
+            "filePath": "MZZKB3e1hT48o0NYJ2Kxh.jpeg",
+            "pattern": "erase.bg(shadow:true)~t.merge(m:underlay,i:eU44YkFJOHlVMmZrWVRDOUNTRm1D,b:screen,r:true)",
+            "cloudName": None,
+            "options": {
+                "dpr": 2.0,
+                "f_auto": True,
+            },
+            "zone": None,
+            "transformations": [
+                {
+                    "values": [
+                        {
+                            "key": "shadow",
+                            "value": "true",
+                        },
+                    ],
+                    "plugin": "erase",
+                    "name": "bg",
+                },
+                {
+                    "values": [
+                        {
+                            "key": "m",
+                            "value": "underlay",
+                        },
+                        {
+                            "key": "i",
+                            "value": "eU44YkFJOHlVMmZrWVRDOUNTRm1D",
+                        },
+                        {
+                            "key": "b",
+                            "value": "screen",
+                        },
+                        {
+                            "key": "r",
+                            "value": "true",
+                        },
+                    ],
+                    "plugin": "t",
+                    "name": "merge",
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/erase.bg()/MZZKB3e1hT48o0NYJ2Kxh.jpeg?dpr=auto",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "baseUrl": "https://cdn.twist.vision",
+            "filePath": "MZZKB3e1hT48o0NYJ2Kxh.jpeg",
+            "pattern": "erase.bg()",
+            "cloudName": None,
+            "options": {
+                "dpr": "auto",
+            },
+            "zone": None,
+            "transformations": [
+                {
+                    "plugin": "erase",
+                    "name": "bg",
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/erase.bg()/asbc.jpeg?f_auto=false",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "baseUrl": "https://cdn.twist.vision",
+            "filePath": "asbc.jpeg",
+            "pattern": "erase.bg()",
+            "cloudName": None,
+            "options": {
+                "f_auto": False,
+            },
+            "zone": None,
+            "transformations": [
+                {
+                    "plugin": "erase",
+                    "name": "bg",
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/wrkr/image.jpeg",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/wrkr/resize:w200,h200/image.jpeg",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "resize:w200,h200/image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/abcdef/wrkr/image.jpeg",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": "abcdef",
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/abcdef/wrkr/resize:w200,h200/image.jpeg",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": "abcdef",
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "resize:w200,h200/image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/abcdef/wrkr/resize:w200,h200/image.jpeg?dpr=1.0",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": "abcdef",
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "resize:w200,h200/image.jpeg",
+            "options": {
+                "dpr": 1,
+            },
         },
     },
 ]
@@ -1328,7 +2001,7 @@ OBJ_TO_URL = [
         "error": "key not specified in 'resize'",
     },
     {
-        "url": "https://cdn.pixelbin.io/v2/feel/erase.bg(shadow:true)~t.merge(m:underlay,i:eU44YkFJOHlVMmZrWVRDOUNTRm1D,b:screen,r:true)/MZZKB3e1hT48o0NYJ2Kxh.jpeg?dpr=2.0&f_auto=True",
+        "url": "https://cdn.pixelbin.io/v2/feel/erase.bg(shadow:true)~t.merge(m:underlay,i:eU44YkFJOHlVMmZrWVRDOUNTRm1D,b:screen,r:true)/MZZKB3e1hT48o0NYJ2Kxh.jpeg?dpr=2.0&f_auto=true",
         "obj": {
             "version": "v2",
             "baseUrl": "https://cdn.pixelbin.io",
@@ -1374,6 +2047,577 @@ OBJ_TO_URL = [
                     "name": "merge",
                 },
             ],
+        },
+    },
+    {
+        "url": "https://cdn.pixelbin.io/v2/feel/erase.bg()/MZZKB3e1hT48o0NYJ2Kxh.jpeg?dpr=auto",
+        "obj": {
+            "version": "v2",
+            "baseUrl": "https://cdn.pixelbin.io",
+            "filePath": "MZZKB3e1hT48o0NYJ2Kxh.jpeg",
+            "pattern": "erase.bg()",
+            "cloudName": "feel",
+            "options": {
+                "dpr": "auto",
+            },
+            "zone": None,
+            "transformations": [
+                {
+                    "plugin": "erase",
+                    "name": "bg",
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.pixelbin.io/v2/feel/erase.bg()/asbc.jpeg?f_auto=false",
+        "obj": {
+            "version": "v2",
+            "baseUrl": "https://cdn.pixelbin.io",
+            "filePath": "asbc.jpeg",
+            "pattern": "erase.bg()",
+            "cloudName": "feel",
+            "options": {
+                "f_auto": False,
+            },
+            "zone": None,
+            "transformations": [
+                {
+                    "plugin": "erase",
+                    "name": "bg",
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/wrkr/image.jpeg",
+        "obj": {
+            "version": "v2",
+            "cloudName": "broken-butterfly-3b12f1",
+            "isCustomDomain": False,
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.pixelbin.io",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/wrkr/resize:w200,h200/image.jpeg",
+        "obj": {
+            "version": "v2",
+            "cloudName": "broken-butterfly-3b12f1",
+            "isCustomDomain": False,
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.pixelbin.io",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "resize:w200,h200/image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/abcdef/wrkr/image.jpeg",
+        "obj": {
+            "version": "v2",
+            "cloudName": "broken-butterfly-3b12f1",
+            "isCustomDomain": False,
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": "abcdef",
+            "baseUrl": "https://cdn.pixelbin.io",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/abcdef/wrkr/resize:w200,h200/image.jpeg",
+        "obj": {
+            "version": "v2",
+            "cloudName": "broken-butterfly-3b12f1",
+            "isCustomDomain": False,
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": "abcdef",
+            "baseUrl": "https://cdn.pixelbin.io",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "resize:w200,h200/image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.pixelbin.io/v2/broken-butterfly-3b12f1/abcdef/wrkr/resize:w200,h200/image.jpeg?dpr=1.0",
+        "obj": {
+            "version": "v2",
+            "cloudName": "broken-butterfly-3b12f1",
+            "isCustomDomain": False,
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": "abcdef",
+            "baseUrl": "https://cdn.pixelbin.io",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "resize:w200,h200/image.jpeg",
+            "options": {
+                "dpr": 1,
+            },
+        },
+    },
+    # custom domain
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:600,w:800)/W2.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "t.resize(h:600,w:800)",
+            "filePath": "W2.jpeg",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "600"},
+                        {"key": "w", "value": "800"},
+                    ],
+                }
+            ],
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/z-slug/t.resize(h:600,w:800)/W2.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "t.resize(h:600,w:800)",
+            "filePath": "W2.jpeg",
+            "options": {},
+            "zone": "z-slug",
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "600"},
+                        {"key": "w", "value": "800"},
+                    ],
+                }
+            ],
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:600,w:800)~t.rotate(a:-249)/W2.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "t.resize(h:600,w:800)~t.rotate(a:-249)",
+            "filePath": "W2.jpeg",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "600"},
+                        {"key": "w", "value": "800"},
+                    ],
+                },
+                {
+                    "plugin": "t",
+                    "name": "rotate",
+                    "values": [{"key": "a", "value": "-249"}],
+                },
+            ],
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:600,w:800)~t.rotate(a:-249)~t.flip()~t.trim(t:217)/W2.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "t.resize(h:600,w:800)~t.rotate(a:-249)~t.flip()~t.trim(t:217)",
+            "filePath": "W2.jpeg",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "600"},
+                        {"key": "w", "value": "800"},
+                    ],
+                },
+                {
+                    "plugin": "t",
+                    "name": "rotate",
+                    "values": [{"key": "a", "value": "-249"}],
+                },
+                {"plugin": "t", "name": "flip"},
+                {
+                    "plugin": "t",
+                    "name": "trim",
+                    "values": [{"key": "t", "value": "217"}],
+                },
+            ],
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:200,w:100)~p:preset1(a:100,b:2.1,c:test)/W2.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "t.resize(h:200,w:100)~p:preset1(a:100,b:2.1,c:test)",
+            "filePath": "W2.jpeg",
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "200"},
+                        {"key": "w", "value": "100"},
+                    ],
+                },
+                {
+                    "plugin": "p",
+                    "name": "preset1",
+                    "values": [
+                        {"key": "a", "value": "100"},
+                        {"key": "b", "value": "2.1"},
+                        {"key": "c", "value": "test"},
+                    ],
+                },
+            ],
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:200,w:100)~p:preset1/W2.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "t.resize(h:200,w:100)~p:preset1",
+            "filePath": "W2.jpeg",
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "200"},
+                        {"key": "w", "value": "100"},
+                    ],
+                },
+                {
+                    "plugin": "p",
+                    "name": "preset1",
+                },
+            ],
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:200,w:100)~p:preset1(a:12)/W2.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "t.resize(h:200,w:100)~p:preset1(a:12",
+            "filePath": "W2.jpeg",
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "200"},
+                        {"key": "w", "value": "100"},
+                    ],
+                },
+                {
+                    "plugin": "p",
+                    "name": "preset1",
+                    "values": [{"key": "a", "value": "12"}],
+                },
+            ],
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:200,w:100)~p:preset1/W2.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "t.resize(h:200,w:100)~p:preset1(a:12",
+            "filePath": "W2.jpeg",
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": "200"},
+                        {"key": "w", "value": "100"},
+                    ],
+                },
+                {"plugin": "p", "name": "preset1", "values": []},
+            ],
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:,w:100)~p:preset1/W2.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "t.resize(h:,w:100)~p:preset1(a:12",
+            "filePath": "W2.jpeg",
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [
+                        {"key": "h", "value": ""},
+                        {"key": "w", "value": "100"},
+                    ],
+                },
+                {"plugin": "p", "name": "preset1", "values": []},
+            ],
+        },
+        "error": "value not specified for 'h' in 'resize'",
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:200,w:100)~p:preset1/W2.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "t.resize(h:200,w:100)~p:preset1(a:12",
+            "filePath": "W2.jpeg",
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [{"value": ""}, {"key": "w", "value": "100"}],
+                },
+                {"plugin": "p", "name": "preset1", "values": []},
+            ],
+        },
+        "error": "key not specified in 'resize'",
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/t.resize(h:200,w:100)~p:preset1/W2.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "t.resize(h:200,w:100)~p:preset1(a:12",
+            "filePath": "W2.jpeg",
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [
+                {
+                    "plugin": "t",
+                    "name": "resize",
+                    "values": [{}, {"key": "w", "value": "100"}],
+                },
+                {"plugin": "p", "name": "preset1", "values": []},
+            ],
+        },
+        "error": "key not specified in 'resize'",
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/erase.bg(shadow:true)~t.merge(m:underlay,i:eU44YkFJOHlVMmZrWVRDOUNTRm1D,b:screen,r:true)/MZZKB3e1hT48o0NYJ2Kxh.jpeg?dpr=2.0&f_auto=true",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "baseUrl": "https://cdn.twist.vision",
+            "filePath": "MZZKB3e1hT48o0NYJ2Kxh.jpeg",
+            "pattern": "erase.bg(shadow:true)~t.merge(m:underlay,i:eU44YkFJOHlVMmZrWVRDOUNTRm1D,b:screen,r:true)",
+            "options": {
+                "dpr": 2.0,
+                "f_auto": True,
+            },
+            "zone": None,
+            "transformations": [
+                {
+                    "values": [
+                        {
+                            "key": "shadow",
+                            "value": "true",
+                        },
+                    ],
+                    "plugin": "erase",
+                    "name": "bg",
+                },
+                {
+                    "values": [
+                        {
+                            "key": "m",
+                            "value": "underlay",
+                        },
+                        {
+                            "key": "i",
+                            "value": "eU44YkFJOHlVMmZrWVRDOUNTRm1D",
+                        },
+                        {
+                            "key": "b",
+                            "value": "screen",
+                        },
+                        {
+                            "key": "r",
+                            "value": "true",
+                        },
+                    ],
+                    "plugin": "t",
+                    "name": "merge",
+                },
+            ],
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/erase.bg()/MZZKB3e1hT48o0NYJ2Kxh.jpeg?dpr=auto",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "baseUrl": "https://cdn.twist.vision",
+            "filePath": "MZZKB3e1hT48o0NYJ2Kxh.jpeg",
+            "pattern": "erase.bg()",
+            # "cloudName": None,
+            "options": {
+                "dpr": "auto",
+            },
+            "zone": None,
+            "transformations": [
+                {
+                    "plugin": "erase",
+                    "name": "bg",
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/erase.bg()/asbc.jpeg?f_auto=false",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "baseUrl": "https://cdn.twist.vision",
+            "filePath": "asbc.jpeg",
+            "pattern": "erase.bg()",
+            # "cloudName": None,
+            "options": {
+                "f_auto": False,
+            },
+            "zone": None,
+            "transformations": [
+                {
+                    "plugin": "erase",
+                    "name": "bg",
+                },
+            ],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/wrkr/image.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/wrkr/resize:w200,h200/image.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "resize:w200,h200/image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/abcdef/wrkr/image.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": "abcdef",
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/abcdef/wrkr/resize:w200,h200/image.jpeg",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": "abcdef",
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "resize:w200,h200/image.jpeg",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/abcdef/wrkr/resize:w200,h200/image.jpeg?dpr=1.0",
+        "obj": {
+            "isCustomDomain": True,
+            "version": "v2",
+            "pattern": "",
+            "filePath": "",
+            "options": {},
+            "zone": "abcdef",
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [],
+            "worker": True,
+            "workerPath": "resize:w200,h200/image.jpeg",
+            "options": {
+                "dpr": 1,
+            },
         },
     },
 ]

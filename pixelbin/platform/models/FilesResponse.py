@@ -46,7 +46,7 @@ class FilesResponse(BaseSchema):
     
     size = fields.Int(required=False)
     
-    access = fields.Str(required=False)
+    access = fields.Str(required=False, validate=OneOf([val.value for val in AccessEnum.__members__.values()]))
     
     isActive = fields.Boolean(required=False)
     
