@@ -6,8 +6,9 @@ from unittest import mock
 from pixelbin.common.exceptions import PixelbinInvalidCredentialError
 from pixelbin.common.aiohttp_helper import AiohttpHelper
 from aiohttp import FormData
-from test_utils import URLS_TO_OBJ, OBJ_TO_URL, MOCK_RESPONSE
+from test_utils import URLS_TO_OBJ, OBJ_TO_URL, MOCK_RESPONSE, SIGN_URL_CASES
 import base64
+from urllib import parse
 
 
 sys.path.append(__file__.replace("/tests/pixelbin_test.py", ""))
@@ -39,6 +40,7 @@ class TestPixelBin(unittest.TestCase):
         self.folder_path = "/"
         self.urls_to_obj = URLS_TO_OBJ
         self.obj_to_urls = OBJ_TO_URL
+        self.sign_url_cases = SIGN_URL_CASES
 
     def test_pixelbin_config_and_client(self):
         self.assertEqual(self.pixelbinConfig.domain, self.config["domain"])
@@ -1065,6 +1067,26 @@ class TestPixelBin(unittest.TestCase):
             PixelbinIllegalQueryParameterError, msg="F_auto value should be boolean"
         ):
             obj_to_url(obj)
+
+    def test_should_sign_url(self):
+        from pixelbin.utils.security import sign_url
+
+        for case in self.sign_url_cases:
+            args = case["input"]
+            try:
+                signed_url = sign_url(
+                    url=args["url"],
+                    expiry_seconds=args["expiry_seconds"],
+                    token_id=args["token_id"],
+                    token=args["token"],
+                )
+                parsed_url = parse.urlparse(signed_url)
+                parsed_qs = parse.parse_qs(parsed_url.query)
+                self.assertTrue("pbs" in parsed_qs)
+                self.assertTrue("pbe" in parsed_qs)
+                self.assertTrue("pbt" in parsed_qs)
+            except Exception as err:
+                self.assertEqual(err.args[0], case["error"])
 
 
 class SequentialTestLoader(unittest.TestLoader):
