@@ -584,15 +584,15 @@ except Exception as e:
 
 ```
 
-| Argument | Type      | Required | Description                                                     |
-| -------- | --------- | -------- | --------------------------------------------------------------- |
-| fileId   | str       | yes      | Combination of `path` and `name`                                |
-| name     | str       | no       | Name of the file                                                |
-| path     | str       | no       | path of containing folder.                                      |
-| access   | str       | no       | Access level of asset, can be either `public-read` or `private` |
-| isActive | bool      | no       | Whether the file is active                                      |
-| tags     | List[str] | no       | Tags associated with the file                                   |
-| metadata | Any       | no       | Metadata associated with the file                               |
+| Argument | Type       | Required | Description                                                     |
+| -------- | ---------- | -------- | --------------------------------------------------------------- |
+| fileId   | str        | yes      | Combination of `path` and `name`                                |
+| name     | str        | no       | Name of the file                                                |
+| path     | str        | no       | path of containing folder.                                      |
+| access   | AccessEnum | no       | Access level of asset, can be either `public-read` or `private` |
+| isActive | bool       | no       | Whether the file is active                                      |
+| tags     | List[str]  | no       | Tags associated with the file                                   |
+| metadata | Any        | no       | Metadata associated with the file                               |
 
 _Returned Response:_
 
@@ -1872,16 +1872,16 @@ Success
 
 #### exploreItem
 
-| Properties | Type | Nullable | Description                                                     |
-| ---------- | ---- | -------- | --------------------------------------------------------------- |
-| \_id       | str  | yes      | id of the exploreItem                                           |
-| name       | str  | yes      | name of the item                                                |
-| type       | str  | yes      | Type of item whether `file` or `folder`                         |
-| path       | str  | yes      | Path of containing folder                                       |
-| fileId     | str  | no       | Combination of `path` and `name` of file                        |
-| format     | str  | no       | Format of the file                                              |
-| size       | int  | no       | Size of the file in bytes                                       |
-| access     | str  | no       | Access level of asset, can be either `public-read` or `private` |
+| Properties | Type                      | Nullable | Description                                                     |
+| ---------- | ------------------------- | -------- | --------------------------------------------------------------- |
+| \_id       | str                       | yes      | id of the exploreItem                                           |
+| name       | str                       | yes      | name of the item                                                |
+| type       | str                       | yes      | Type of item whether `file` or `folder`                         |
+| path       | str                       | yes      | Path of containing folder                                       |
+| fileId     | str                       | no       | Combination of `path` and `name` of file                        |
+| format     | str                       | no       | Format of the file                                              |
+| size       | int                       | no       | Size of the file in bytes                                       |
+| access     | [AccessEnum](#accessenum) | no       | Access level of asset, can be either `public-read` or `private` |
 
 #### page
 
@@ -1898,83 +1898,83 @@ Success
 | Properties | Type              | Nullable | Description                  |
 | ---------- | ----------------- | -------- | ---------------------------- |
 | items      | List[exploreItem] | yes      | exploreItems in current page |
-| page       | page              | yes      | page details                 |
+| page       | [page](#page)     | yes      | page details                 |
 
 #### ListFilesResponse
 
 | Properties | Type              | Nullable | Description                  |
 | ---------- | ----------------- | -------- | ---------------------------- |
 | items      | List[exploreItem] | yes      | exploreItems in current page |
-| page       | page              | yes      | page details                 |
+| page       | [page](#page)     | yes      | page details                 |
 
 #### exploreFolderResponse
 
-| Properties | Type              | Nullable | Description                  |
-| ---------- | ----------------- | -------- | ---------------------------- |
-| folder     | folderItem        | yes      | requested folder item        |
-| items      | List[exploreItem] | yes      | exploreItems in current page |
-| page       | page              | yes      | page details                 |
+| Properties | Type                      | Nullable | Description                  |
+| ---------- | ------------------------- | -------- | ---------------------------- |
+| folder     | [folderItem](#folderitem) | yes      | requested folder item        |
+| items      | List[exploreItem]         | yes      | exploreItems in current page |
+| page       | [page](#page)             | yes      | page details                 |
 
 #### FileUploadRequest
 
-| Properties       | Type       | Nullable | Description                                                                                                                                                                                                                      |
-| ---------------- | ---------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| file             | FileIO     | yes      | Asset file                                                                                                                                                                                                                       |
-| path             | str        | no       | Path where you want to store the asset. Path of containing folder                                                                                                                                                                |
-| name             | str        | no       | Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe                                                                                                 |
-| access           | AccessEnum | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
-| tags             | List[str]  | no       | Asset tags                                                                                                                                                                                                                       |
-| metadata         | Any        | no       | Asset related metadata                                                                                                                                                                                                           |
-| overwrite        | bool       | no       | Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`.                                                                                                         |
-| filenameOverride | bool       | no       | If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. |
+| Properties       | Type                      | Nullable | Description                                                                                                                                                                                                                      |
+| ---------------- | ------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| file             | FileIO                    | yes      | Asset file                                                                                                                                                                                                                       |
+| path             | str                       | no       | Path where you want to store the asset. Path of containing folder                                                                                                                                                                |
+| name             | str                       | no       | Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe                                                                                                 |
+| access           | [AccessEnum](#accessenum) | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
+| tags             | List[str]                 | no       | Asset tags                                                                                                                                                                                                                       |
+| metadata         | Any                       | no       | Asset related metadata                                                                                                                                                                                                           |
+| overwrite        | bool                      | no       | Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`.                                                                                                         |
+| filenameOverride | bool                      | no       | If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. |
 
 #### UrlUploadRequest
 
-| Properties       | Type       | Nullable | Description                                                                                                                                                                                                                      |
-| ---------------- | ---------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| url              | str        | yes      | Asset URL                                                                                                                                                                                                                        |
-| path             | str        | no       | Path where you want to store the asset. Path of containing folder.                                                                                                                                                               |
-| name             | str        | no       | Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe                                                                                                 |
-| access           | AccessEnum | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
-| tags             | List[str]  | no       | Asset tags                                                                                                                                                                                                                       |
-| metadata         | Any        | no       | Asset related metadata                                                                                                                                                                                                           |
-| overwrite        | bool       | no       | Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`.                                                                                                         |
-| filenameOverride | bool       | no       | If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. |
+| Properties       | Type                      | Nullable | Description                                                                                                                                                                                                                      |
+| ---------------- | ------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| url              | str                       | yes      | Asset URL                                                                                                                                                                                                                        |
+| path             | str                       | no       | Path where you want to store the asset. Path of containing folder.                                                                                                                                                               |
+| name             | str                       | no       | Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe                                                                                                 |
+| access           | [AccessEnum](#accessenum) | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
+| tags             | List[str]                 | no       | Asset tags                                                                                                                                                                                                                       |
+| metadata         | Any                       | no       | Asset related metadata                                                                                                                                                                                                           |
+| overwrite        | bool                      | no       | Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`.                                                                                                         |
+| filenameOverride | bool                      | no       | If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. |
 
 #### UploadResponse
 
-| Properties | Type      | Nullable | Description                                                 |
-| ---------- | --------- | -------- | ----------------------------------------------------------- |
-| \_id       | str       | yes      | \_id of the item                                            |
-| fileId     | str       | yes      | Combination of `path` and `name` of file                    |
-| name       | str       | yes      | name of the item                                            |
-| path       | str       | yes      | path to the parent folder                                   |
-| format     | str       | yes      | format of the file                                          |
-| size       | int       | yes      | size of file in bytes                                       |
-| access     | str       | yes      | Access level of asset, can be either public-read or private |
-| tags       | List[str] | no       | tags associated with the item                               |
-| metadata   | Any       | no       | metadata associated with the item                           |
-| url        | str       | no       | url of the item                                             |
-| thumbnail  | str       | no       | url of item thumbnail                                       |
+| Properties | Type                      | Nullable | Description                                                 |
+| ---------- | ------------------------- | -------- | ----------------------------------------------------------- |
+| \_id       | str                       | yes      | \_id of the item                                            |
+| fileId     | str                       | yes      | Combination of `path` and `name` of file                    |
+| name       | str                       | yes      | name of the item                                            |
+| path       | str                       | yes      | path to the parent folder                                   |
+| format     | str                       | yes      | format of the file                                          |
+| size       | int                       | yes      | size of file in bytes                                       |
+| access     | [AccessEnum](#accessenum) | yes      | Access level of asset, can be either public-read or private |
+| tags       | List[str]                 | no       | tags associated with the item                               |
+| metadata   | Any                       | no       | metadata associated with the item                           |
+| url        | str                       | no       | url of the item                                             |
+| thumbnail  | str                       | no       | url of item thumbnail                                       |
 
 #### SignedUploadRequest
 
-| Properties       | Type       | Nullable | Description                                                                                                                                                                                                                      |
-| ---------------- | ---------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| name             | str        | no       | name of the file                                                                                                                                                                                                                 |
-| path             | str        | no       | Path of containing folder.                                                                                                                                                                                                       |
-| format           | str        | no       | Format of the file                                                                                                                                                                                                               |
-| access           | AccessEnum | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
-| tags             | List[str]  | no       | Tags associated with the file.                                                                                                                                                                                                   |
-| metadata         | Any        | no       | Metadata associated with the file.                                                                                                                                                                                               |
-| overwrite        | bool       | no       | Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`.                                                                                                         |
-| filenameOverride | bool       | no       | If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. |
+| Properties       | Type                      | Nullable | Description                                                                                                                                                                                                                      |
+| ---------------- | ------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| name             | str                       | no       | name of the file                                                                                                                                                                                                                 |
+| path             | str                       | no       | Path of containing folder.                                                                                                                                                                                                       |
+| format           | str                       | no       | Format of the file                                                                                                                                                                                                               |
+| access           | [AccessEnum](#accessenum) | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
+| tags             | List[str]                 | no       | Tags associated with the file.                                                                                                                                                                                                   |
+| metadata         | Any                       | no       | Metadata associated with the file.                                                                                                                                                                                               |
+| overwrite        | bool                      | no       | Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`.                                                                                                         |
+| filenameOverride | bool                      | no       | If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. |
 
 #### SignedUploadResponse
 
-| Properties     | Type         | Nullable | Description                                  |
-| -------------- | ------------ | -------- | -------------------------------------------- |
-| s3PresignedUrl | PresignedUrl | yes      | `signedDetails` for upload with frontend sdk |
+| Properties     | Type                          | Nullable | Description                                  |
+| -------------- | ----------------------------- | -------- | -------------------------------------------- |
+| s3PresignedUrl | [PresignedUrl](#presignedurl) | yes      | `signedDetails` for upload with frontend sdk |
 |  |
 
 #### PresignedUrl
@@ -1987,31 +1987,31 @@ Success
 
 #### FilesResponse
 
-| Properties | Type      | Nullable | Description                                                    |
-| ---------- | --------- | -------- | -------------------------------------------------------------- |
-| \_id       | str       | yes      | \_id of the file                                               |
-| name       | str       | yes      | name of the file                                               |
-| path       | str       | yes      | path of containing folder.                                     |
-| fileId     | str       | yes      | Combination of `path` and `name` of file                       |
-| format     | str       | yes      | format of the file                                             |
-| size       | int       | yes      | size of the file in bytes                                      |
-| access     | str       | yes      | Access level of file, can be either `public-read` or `private` |
-| isActive   | bool      | yes      | Whether the file is active                                     |
-| tags       | List[str] | no       | Tags associated with the file                                  |
-| metadata   | Any       | no       | Metadata associated with the file                              |
-| url        | str       | no       | url of the file                                                |
-| thumbnail  | str       | no       | url of the thumbnail of the file                               |
+| Properties | Type                      | Nullable | Description                                                    |
+| ---------- | ------------------------- | -------- | -------------------------------------------------------------- |
+| \_id       | str                       | yes      | \_id of the file                                               |
+| name       | str                       | yes      | name of the file                                               |
+| path       | str                       | yes      | path of containing folder.                                     |
+| fileId     | str                       | yes      | Combination of `path` and `name` of file                       |
+| format     | str                       | yes      | format of the file                                             |
+| size       | int                       | yes      | size of the file in bytes                                      |
+| access     | [AccessEnum](#accessenum) | yes      | Access level of file, can be either `public-read` or `private` |
+| isActive   | bool                      | yes      | Whether the file is active                                     |
+| tags       | List[str]                 | no       | Tags associated with the file                                  |
+| metadata   | Any                       | no       | Metadata associated with the file                              |
+| url        | str                       | no       | url of the file                                                |
+| thumbnail  | str                       | no       | url of the thumbnail of the file                               |
 
 #### UpdateFileRequest
 
-| Properties | Type      | Nullable | Description                                                     |
-| ---------- | --------- | -------- | --------------------------------------------------------------- |
-| name       | str       | no       | Name of the file                                                |
-| path       | str       | no       | path of containing folder.                                      |
-| access     | str       | no       | Access level of asset, can be either `public-read` or `private` |
-| isActive   | bool      | no       | Whether the file is active                                      |
-| tags       | List[str] | no       | Tags associated with the file                                   |
-| metadata   | Any       | no       | Metadata associated with the file                               |
+| Properties | Type                      | Nullable | Description                                                     |
+| ---------- | ------------------------- | -------- | --------------------------------------------------------------- |
+| name       | str                       | no       | Name of the file                                                |
+| path       | str                       | no       | path of containing folder.                                      |
+| access     | [AccessEnum](#accessenum) | no       | Access level of asset, can be either `public-read` or `private` |
+| isActive   | bool                      | no       | Whether the file is active                                      |
+| tags       | List[str]                 | no       | Tags associated with the file                                   |
+| metadata   | Any                       | no       | Metadata associated with the file                               |
 
 #### FoldersResponse
 
@@ -2037,11 +2037,11 @@ Success
 
 #### TransformationModulesResponse
 
-| Properties | Type      | Nullable | Description                                         |
-| ---------- | --------- | -------- | --------------------------------------------------- |
-| delimiters | Delimiter | no       | Delimiter for parsing plugin schema                 |
-| plugins    | Any       | no       | Transformations currently supported by the pixelbin |
-| presets    | List[Any] | no       | List of saved presets                               |
+| Properties | Type                    | Nullable | Description                                         |
+| ---------- | ----------------------- | -------- | --------------------------------------------------- |
+| delimiters | [Delimiter](#delimiter) | no       | Delimiter for parsing plugin schema                 |
+| plugins    | Any                     | no       | Transformations currently supported by the pixelbin |
+| presets    | List[Any]               | no       | List of saved presets                               |
 
 #### DeleteMultipleFilesRequest
 
@@ -2119,10 +2119,10 @@ Success
 
 #### GetAncestorsResponse
 
-| Properties | Type                  | Nullable | Description |
-| ---------- | --------------------- | -------- | ----------- |
-| folder     | folderItem            | no       |             |
-| ancestors  | List[FoldersResponse] | no       |             |
+| Properties | Type                      | Nullable | Description |
+| ---------- | ------------------------- | -------- | ----------- |
+| folder     | [folderItem](#folderitem) | no       |             |
+| ancestors  | List[FoldersResponse]     | no       |             |
 
 #### GetFilesWithConstraintsItem
 
@@ -2168,7 +2168,7 @@ Success
 | Properties | Type                    | Nullable | Description             |
 | ---------- | ----------------------- | -------- | ----------------------- |
 | items      | List[AddPresetResponse] | yes      | Presets in current page |
-| page       | page                    | yes      | page details            |
+| page       | [page](#page)           | yes      | page details            |
 
 ### Enums
 

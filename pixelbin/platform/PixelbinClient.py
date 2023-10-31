@@ -702,7 +702,7 @@ which can be then used to upload your asset.
         fileId:str=None,
         name:str=None, 
         path:str=None, 
-        access:str=None, 
+        access:AccessEnum=None, 
         isActive:bool=None, 
         tags:List[str]=None, 
         metadata:Any=None
@@ -714,7 +714,7 @@ which can be then used to upload your asset.
         
         :param - name : Name of the file : Type - str
         :param - path : path of containing folder. : Type - str
-        :param - access : Access level of asset, can be either `public-read` or `private` : Type - str
+        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
         :param - isActive : Whether the file is active : Type - bool
         :param - tags : Tags associated with the file : Type - List[str]
         :param - metadata : Metadata associated with the file : Type - Any
@@ -778,7 +778,7 @@ which can be then used to upload your asset.
         fileId:str=None,
         name:str=None, 
         path:str=None, 
-        access:str=None, 
+        access:AccessEnum=None, 
         isActive:bool=None, 
         tags:List[str]=None, 
         metadata:Any=None
@@ -790,7 +790,7 @@ which can be then used to upload your asset.
         
         :param - name : Name of the file : Type - str
         :param - path : path of containing folder. : Type - str
-        :param - access : Access level of asset, can be either `public-read` or `private` : Type - str
+        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
         :param - isActive : Whether the file is active : Type - bool
         :param - tags : Tags associated with the file : Type - List[str]
         :param - metadata : Metadata associated with the file : Type - Any

@@ -44,7 +44,7 @@ class UploadResponse(BaseSchema):
     
     size = fields.Int(required=False)
     
-    access = fields.Str(required=False)
+    access = fields.Str(required=False, validate=OneOf([val.value for val in AccessEnum.__members__.values()]))
     
     tags = fields.List(fields.Str(required=False), required=False)
     

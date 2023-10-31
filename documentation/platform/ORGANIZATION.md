@@ -104,10 +104,10 @@ Success. Returns a JSON object as shown below. Refer `AppOrgDetails` for more de
 
 #### AppOrgDetails
 
-| Properties | Type                     | Nullable | Description |
-| ---------- | ------------------------ | -------- | ----------- |
-| app        | AppSchema                | no       |             |
-| org        | OrganizationDetailSchema | no       |             |
+| Properties | Type                                                  | Nullable | Description |
+| ---------- | ----------------------------------------------------- | -------- | ----------- |
+| app        | [AppSchema](#appschema)                               | no       |             |
+| org        | [OrganizationDetailSchema](#organizationdetailschema) | no       |             |
 
 #### ErrorSchema
 
