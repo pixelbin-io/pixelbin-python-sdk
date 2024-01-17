@@ -1,3 +1,7 @@
+# 3.1.1
+
+-   Fixed regex for Custom Domain URLs
+
 # 3.1.0
 
 -   Added support for generating signed Custom Domain and PixelBin CDN urls

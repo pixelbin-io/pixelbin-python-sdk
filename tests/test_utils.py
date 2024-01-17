@@ -1634,6 +1634,42 @@ URLS_TO_OBJ = [
         },
     },
     {
+        "url": "https://cdn.twist.vision/v2/original/z0/orgs/33/skills/icons/Fynd_Platform_Commerce_Extension.png",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "original",
+            "filePath": "z0/orgs/33/skills/icons/Fynd_Platform_Commerce_Extension.png",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
+        "url": "https://cdn.twist.vision/v2/original/z0/orgs/33/wrkr/icons/Fynd_Platform_Commerce_Extension.png",
+        "opts": {
+            "is_custom_domain": True,
+        },
+        "obj": {
+            "version": "v2",
+            "cloudName": None,
+            "pattern": "original",
+            "filePath": "z0/orgs/33/wrkr/icons/Fynd_Platform_Commerce_Extension.png",
+            "options": {},
+            "zone": None,
+            "baseUrl": "https://cdn.twist.vision",
+            "transformations": [],
+            "worker": False,
+            "workerPath": "",
+        },
+    },
+    {
         "url": "https://cdn.twist.vision/v2/wrkr/image.jpeg",
         "opts": {
             "is_custom_domain": True,
