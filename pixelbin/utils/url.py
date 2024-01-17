@@ -10,16 +10,16 @@ OPERTATION_SEPARATOR = "~"
 PARAMETER_SEPARATOR = ","
 VERSION2_REGEX = r"^v[1-2]$"
 PIXELBIN_DOMAIN_REGEX = {
-    "URL_WITHOUT_ZONE": r"\/([a-zA-Z0-9_-]*)\/(.+)\/(.*)",
     "URL_WITH_ZONE": r"^\/([a-zA-Z0-9_-]*)\/([a-zA-Z0-9_-]{6})\/(.+)\/(.*)$",
+    "URL_WITHOUT_ZONE": r"^\/([a-zA-Z0-9_-]*)\/(.+)\/(.*)",
     "URL_WITH_WORKER_AND_ZONE": r"^\/([a-zA-Z0-9_-]*)\/([a-zA-Z0-9_-]{6})\/wrkr\/(.*)$",
     "URL_WITH_WORKER": r"^\/([a-zA-Z0-9_-]*)\/wrkr\/(.*)$",
 }
 CUSTOM_DOMAIN_REGEX = {
-    "URL_WITHOUT_ZONE": r"\/(.+)\/(.*)",
-    "URL_WITH_ZONE": r"\/([a-zA-Z0-9_-]{6})\/(.+)\/(.*)$",
-    "URL_WITH_WORKER_AND_ZONE": r"\/([a-zA-Z0-9_-]{6})\/wrkr\/(.*)$",
-    "URL_WITH_WORKER": r"\/wrkr\/(.*)$",
+    "URL_WITH_ZONE": r"^\/([a-zA-Z0-9_-]{6})\/(.+)\/(.*)$",
+    "URL_WITHOUT_ZONE": r"^\/(.+)\/(.*)",
+    "URL_WITH_WORKER_AND_ZONE": r"^\/([a-zA-Z0-9_-]{6})\/wrkr\/(.*)$",
+    "URL_WITH_WORKER": r"^\/wrkr\/(.*)$",
 }
 ZONE_SLUG = r"([a-zA-Z0-9_-]{6})"
 BASE_URL = "https://cdn.pixelbin.io"
