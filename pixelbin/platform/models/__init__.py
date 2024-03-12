@@ -36,13 +36,9 @@ from .CreateFolderRequest import CreateFolderRequest
     
 from .UpdateFolderRequest import UpdateFolderRequest
     
-from .TransformationModulesResponse import TransformationModulesResponse
-    
 from .DeleteMultipleFilesRequest import DeleteMultipleFilesRequest
     
 from .Delimiter import Delimiter
-    
-from .TransformationModuleResponse import TransformationModuleResponse
     
 from .Credentials import Credentials
     
@@ -69,6 +65,16 @@ from .AddPresetResponse import AddPresetResponse
 from .UpdatePresetRequest import UpdatePresetRequest
     
 from .GetPresetsResponse import GetPresetsResponse
+    
+from .TransformationModuleResponse import TransformationModuleResponse
+    
+from .TransformationModulesResponse import TransformationModulesResponse
+    
+from .SignedUploadRequestV2 import SignedUploadRequestV2
+    
+from .SignedUploadV2Response import SignedUploadV2Response
+    
+from .PresignedUrlV2 import PresignedUrlV2
     
 
     

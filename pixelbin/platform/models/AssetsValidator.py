@@ -7,37 +7,18 @@ from ..models.BaseSchema import BaseSchema
 
 class AssetsValidator:
     
-    class fileUpload(BaseSchema):
+    class addCredentials(BaseSchema):
         
         pass 
     
-    class urlUpload(BaseSchema):
+    class updateCredentials(BaseSchema):
         
-        pass 
+        pluginId = fields.Str(required=False)
+         
     
-    class createSignedUrl(BaseSchema):
+    class deleteCredentials(BaseSchema):
         
-        pass 
-    
-    class listFiles(BaseSchema):
-        
-        name = fields.Str(required=False)
-        
-        path = fields.Str(required=False)
-        
-        format = fields.Str(required=False)
-        
-        tags = fields.List(fields.Str(required=False), required=False)
-        
-        onlyFiles = fields.Boolean(required=False)
-        
-        onlyFolders = fields.Boolean(required=False)
-        
-        pageNo = fields.Int(required=False)
-        
-        pageSize = fields.Int(required=False)
-        
-        sort = fields.Str(required=False)
+        pluginId = fields.Str(required=False)
          
     
     class getFileById(BaseSchema):
@@ -90,18 +71,38 @@ class AssetsValidator:
         _id = fields.Str(required=False)
          
     
-    class addCredentials(BaseSchema):
+    class listFiles(BaseSchema):
+        
+        name = fields.Str(required=False)
+        
+        path = fields.Str(required=False)
+        
+        format = fields.Str(required=False)
+        
+        tags = fields.List(fields.Str(required=False), required=False)
+        
+        onlyFiles = fields.Boolean(required=False)
+        
+        onlyFolders = fields.Boolean(required=False)
+        
+        pageNo = fields.Int(required=False)
+        
+        pageSize = fields.Int(required=False)
+        
+        sort = fields.Str(required=False)
+         
+    
+    class getDefaultAssetForPlayground(BaseSchema):
         
         pass 
     
-    class updateCredentials(BaseSchema):
+    class getModules(BaseSchema):
         
-        pluginId = fields.Str(required=False)
-         
+        pass 
     
-    class deleteCredentials(BaseSchema):
+    class getModule(BaseSchema):
         
-        pluginId = fields.Str(required=False)
+        identifier = fields.Str(required=False)
          
     
     class addPreset(BaseSchema):
@@ -127,16 +128,19 @@ class AssetsValidator:
         presetName = fields.Str(required=False)
          
     
-    class getDefaultAssetForPlayground(BaseSchema):
+    class fileUpload(BaseSchema):
         
         pass 
     
-    class getModules(BaseSchema):
+    class urlUpload(BaseSchema):
         
         pass 
     
-    class getModule(BaseSchema):
+    class createSignedUrl(BaseSchema):
         
-        identifier = fields.Str(required=False)
-         
+        pass 
+    
+    class createSignedUrlV2(BaseSchema):
+        
+        pass 
     
