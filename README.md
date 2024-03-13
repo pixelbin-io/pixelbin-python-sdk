@@ -53,12 +53,12 @@ except Exception as e:
 
 Generate a signed PixelBin url
 
-| Parameter                  | Description                                          | Example                                                                                    |
-| -------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `url` (string)             | A valid Pixelbin URL to be signed                    | `https://cdn.pixelbin.io/v2/dummy-cloudname/original/__playground/playground-default.jpeg` |
-| `expiry_seconds` (int)     | Number of seconds the signed URL should be valid for | `20`                                                                                       |
-| `token_id` (int or string) | ID of the token used for signing                     | `42`                                                                                       |
-| `token` (string)           | Value of the token used for signing                  | `dummy-token`                                                                              |
+| Parameter              | Description                                          | Example                                                                                    |
+| ---------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `url` (string)         | A valid Pixelbin URL to be signed                    | `https://cdn.pixelbin.io/v2/dummy-cloudname/original/__playground/playground-default.jpeg` |
+| `expiry_seconds` (int) | Number of seconds the signed URL should be valid for | `20`                                                                                       |
+| `access_key` (string)  | Access key of the token used for signing             | `6227274d-92c9-4b74-bef8-2528542516d8`                                                     |
+| `token` (string)       | Value of the token used for signing                  | `dummy-token`                                                                              |
 
 Example:
 
@@ -68,11 +68,11 @@ from pixelbin.utils.security import sign_url
 signed_url = sign_url(
     "https://cdn.pixelbin.io/v2/dummy-cloudname/original/__playground/playground-default.jpeg", # url
     20, # expiry_seconds
-    42, # token_id
+    "6227274d-92c9-4b74-bef8-2528542516d8", # access_key
     "dummy-token", # token
 );
 # signed_url
-# https://cdn.pixelbin.io/v2/dummy-cloudname/original/__playground/playground-default.jpeg?pbs=8eb6a00af74e57967a42316e4de238aa88d92961649764fad1832c1bff101f25&pbe=1695635915&pbt=1
+# https://cdn.pixelbin.io/v2/dummy-cloudname/original/__playground/playground-default.jpeg?pbs=8eb6a00af74e57967a42316e4de238aa88d92961649764fad1832c1bff101f25&pbe=1695635915&pbt=6227274d-92c9-4b74-bef8-2528542516d8
 ```
 
 Usage with custom domain url
