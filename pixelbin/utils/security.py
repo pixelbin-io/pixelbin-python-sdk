@@ -1,4 +1,3 @@
-from typing import Union
 import time
 import hmac
 import hashlib
@@ -15,17 +14,16 @@ def hmac_sha256(key: str, message: str):
 def generate_signature(url_path: str, expiry_timestamp: int, key: str):
     if url_path.startswith("/"):
         url_path = url_path[1:]
-    url_path = parse.quote(url_path)
     signature = hmac_sha256(key, f"{url_path}{expiry_timestamp}")
     return signature
 
 
-def sign_url(url: str, expiry_seconds: int, token_id: Union[int, str], token: str):
+def sign_url(url: str, expiry_seconds: int, access_key: str, token: str):
     if not isinstance(expiry_seconds, int):
         raise PixelbinIllegalArgumentError("expiry_seconds must be an integer")
 
-    if not isinstance(token_id, (int, str)):
-        raise PixelbinIllegalArgumentError("token_id must be an integer or string")
+    if not isinstance(access_key, (int, str)):
+        raise PixelbinIllegalArgumentError("access_key must be a string")
 
     if not isinstance(token, str):
         raise PixelbinIllegalArgumentError("token must be a string")
@@ -43,7 +41,7 @@ def sign_url(url: str, expiry_seconds: int, token_id: Union[int, str], token: st
 
     url_query["pbs"] = signature
     url_query["pbe"] = expiry_timestamp
-    url_query["pbt"] = token_id
+    url_query["pbt"] = access_key
 
     url_parts = url_parts._replace(query=parse.urlencode(url_query, doseq=True))
 

@@ -35,7 +35,7 @@ try:
     signed_url = security.sign_url(
         "https://test.example.com/v2/original/__playground/playground-default.jpeg",
         600,
-        42,
+        "c1adc3ba-75b6-492c-bfb4-e879f2ae61fe",
         "dummy-token",
     )
     print(signed_url)
