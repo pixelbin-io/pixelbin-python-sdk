@@ -420,6 +420,73 @@ class TestPixelBin(unittest.TestCase):
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
+    def test_createSignedUrlV2_case1(self):
+        with mock.patch.object(
+            AiohttpHelper, "_AiohttpHelper__make_request"
+        ) as mock_request:
+            mock_response = MOCK_RESPONSE["createSignedURLV2_1"]["response"]
+            mock_request.return_value = mock_response
+            resp = self.pixelbinClient.assets.createSignedUrlV2()
+            mock_request.assert_called_with(
+                method="post",
+                url=f"{CONFIG['domain']}/service/platform/assets/v2.0/upload/signed-url",
+                params={},
+                data={},
+                headers={
+                    "host": CONFIG["host"],
+                    "x-ebg-param": mock.ANY,
+                    "x-ebg-signature": mock.ANY,
+                    "Authorization": BEARER_TOKEN,
+                },
+                timeout_allowed=mock.ANY,
+            )
+            self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
+
+    def test_createSignedUrlV2_case2(self):
+        with mock.patch.object(
+            AiohttpHelper, "_AiohttpHelper__make_request"
+        ) as mock_request:
+            mock_response = MOCK_RESPONSE["createSignedURL2"]["response"]
+            mock_request.return_value = mock_response
+            resp = self.pixelbinClient.assets.createSignedUrlV2(
+                name="1",
+                path=self.folder_name,
+                format="jpeg",
+                access="public-read",
+                tags=["tag1", "tag2"],
+                metadata={},
+                overwrite=False,
+                filenameOverride=True,
+            )
+            mock_data = ujson.dumps(
+                {
+                    "name": "1",
+                    "path": "testdir",
+                    "format": "jpeg",
+                    "access": "public-read",
+                    "tags": ["tag1", "tag2"],
+                    "metadata": {},
+                    "overwrite": False,
+                    "filenameOverride": True,
+                },
+                escape_forward_slashes=False,
+            )
+            mock_request.assert_called_with(
+                method="post",
+                url=f"{CONFIG['domain']}/service/platform/assets/v2.0/upload/signed-url",
+                params={},
+                data=mock_data,
+                headers={
+                    "host": CONFIG["host"],
+                    "x-ebg-param": mock.ANY,
+                    "x-ebg-signature": mock.ANY,
+                    "Authorization": BEARER_TOKEN,
+                    "Content-Type": "application/json",
+                },
+                timeout_allowed=mock.ANY,
+            )
+            self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
+
     def test_updateFile_case1(self):
         with mock.patch.object(
             AiohttpHelper, "_AiohttpHelper__make_request"

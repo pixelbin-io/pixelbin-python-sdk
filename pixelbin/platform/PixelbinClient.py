@@ -47,70 +47,41 @@ class Assets:
     
     
 
-       
-    async def fileUploadAsync(
+        
+    async def addCredentialsAsync(
         self, 
         
-        file:FileIO=None, 
-        path:str=None, 
-        name:str=None, 
-        access:AccessEnum=None, 
-        tags:List[str]=None, 
-        metadata:Any=None, 
-        overwrite:bool=None, 
-        filenameOverride:bool=None
+        credentials:Any=None, 
+        pluginId:str=None
         ) -> dict:   
         """
-        summary: Upload File
-        description: Upload File to Pixelbin
+        summary: Add credentials for a transformation module.
+        description: Add a transformation modules's credentials for an organization.
+
         
-        :param - file : Asset file : Type - FileIO
-        :param - path : Path where you want to store the asset. Path of containing folder : Type - str
-        :param - name : Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe : Type - str
-        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
-        :param - tags : Asset tags : Type - List[str]
-        :param - metadata : Asset related metadata : Type - Any
-        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
-        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
+        :param - credentials : Credentials of the plugin : Type - Any
+        :param - pluginId : Unique identifier for the plugin this credential belongs to : Type - str
         """
 
         payload = {}
         
 
         # Parameter validation
-        schema = AssetsValidator.fileUpload()
+        schema = AssetsValidator.addCredentials()
         schema.dump(schema.load(payload))
 
         
         body = {}
         
-        if file is not None:
-            body["file"] = file
+        if credentials is not None:
+            body["credentials"] = credentials
         
-        if path is not None:
-            body["path"] = path
-        
-        if name is not None:
-            body["name"] = name
-        
-        if access is not None:
-            body["access"] = access
-        
-        if tags is not None:
-            body["tags"] = tags
-        
-        if metadata is not None:
-            body["metadata"] = metadata
-        
-        if overwrite is not None:
-            body["overwrite"] = overwrite
-        
-        if filenameOverride is not None:
-            body["filenameOverride"] = filenameOverride
+        if pluginId is not None:
+            body["pluginId"] = pluginId
         
         # Body validation
-        from .models.FileUploadRequest import FileUploadRequest
-        schema = FileUploadRequest()
+        from .models.AddCredentialsRequest import AddCredentialsRequest
+        schema = AddCredentialsRequest()
         schema.dump(schema.load(body))
         
 
@@ -120,130 +91,7 @@ class Assets:
         response = await APIClient.execute(
             conf=self.config,
             method="post",
-            url=f"/service/platform/assets/v1.0/upload/direct",
-            query=query_params,
-            body=body,
-            contentType="multipart/form-data"
-            )
-        if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
-        return ujson.loads(response["content"])
-
-    def fileUpload(
-        self, 
-        
-        file:FileIO=None, 
-        path:str=None, 
-        name:str=None, 
-        access:AccessEnum=None, 
-        tags:List[str]=None, 
-        metadata:Any=None, 
-        overwrite:bool=None, 
-        filenameOverride:bool=None
-        ):   
-        """
-        summary: Upload File
-        description: Upload File to Pixelbin
-        
-        :param - file : Asset file : Type - FileIO
-        :param - path : Path where you want to store the asset. Path of containing folder : Type - str
-        :param - name : Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe : Type - str
-        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
-        :param - tags : Asset tags : Type - List[str]
-        :param - metadata : Asset related metadata : Type - Any
-        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
-        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
-        """
-        return asyncio.get_event_loop().run_until_complete(
-            self.fileUploadAsync(
-                file=file, 
-                path=path, 
-                name=name, 
-                access=access, 
-                tags=tags, 
-                metadata=metadata, 
-                overwrite=overwrite, 
-                filenameOverride=filenameOverride)
-        )
-
-    
-    
-    
-
-        
-    async def urlUploadAsync(
-        self, 
-        
-        url:str=None, 
-        path:str=None, 
-        name:str=None, 
-        access:AccessEnum=None, 
-        tags:List[str]=None, 
-        metadata:Any=None, 
-        overwrite:bool=None, 
-        filenameOverride:bool=None
-        ) -> dict:   
-        """
-        summary: Upload Asset with url
-        description: Upload Asset with url
-        
-        :param - url : Asset URL : Type - str
-        :param - path : Path where you want to store the asset. Path of containing folder. : Type - str
-        :param - name : Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe : Type - str
-        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
-        :param - tags : Asset tags : Type - List[str]
-        :param - metadata : Asset related metadata : Type - Any
-        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
-        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
-        """
-
-        payload = {}
-        
-
-        # Parameter validation
-        schema = AssetsValidator.urlUpload()
-        schema.dump(schema.load(payload))
-
-        
-        body = {}
-        
-        if url is not None:
-            body["url"] = url
-        
-        if path is not None:
-            body["path"] = path
-        
-        if name is not None:
-            body["name"] = name
-        
-        if access is not None:
-            body["access"] = access
-        
-        if tags is not None:
-            body["tags"] = tags
-        
-        if metadata is not None:
-            body["metadata"] = metadata
-        
-        if overwrite is not None:
-            body["overwrite"] = overwrite
-        
-        if filenameOverride is not None:
-            body["filenameOverride"] = filenameOverride
-        
-        # Body validation
-        from .models.UrlUploadRequest import UrlUploadRequest
-        schema = UrlUploadRequest()
-        schema.dump(schema.load(body))
-        
-
-        query_params = {}
-        
-
-        response = await APIClient.execute(
-            conf=self.config,
-            method="post",
-            url=f"/service/platform/assets/v1.0/upload/url",
+            url=f"/service/platform/assets/v1.0/credentials",
             query=query_params,
             body=body,
             contentType="application/json"
@@ -252,41 +100,24 @@ class Assets:
             raise PixelbinServerResponseError(str(response["content"]))
         return ujson.loads(response["content"])
 
-    def urlUpload(
+    def addCredentials(
         self, 
         
-        url:str=None, 
-        path:str=None, 
-        name:str=None, 
-        access:AccessEnum=None, 
-        tags:List[str]=None, 
-        metadata:Any=None, 
-        overwrite:bool=None, 
-        filenameOverride:bool=None
+        credentials:Any=None, 
+        pluginId:str=None
         ):   
         """
-        summary: Upload Asset with url
-        description: Upload Asset with url
+        summary: Add credentials for a transformation module.
+        description: Add a transformation modules's credentials for an organization.
+
         
-        :param - url : Asset URL : Type - str
-        :param - path : Path where you want to store the asset. Path of containing folder. : Type - str
-        :param - name : Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe : Type - str
-        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
-        :param - tags : Asset tags : Type - List[str]
-        :param - metadata : Asset related metadata : Type - Any
-        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
-        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
+        :param - credentials : Credentials of the plugin : Type - Any
+        :param - pluginId : Unique identifier for the plugin this credential belongs to : Type - str
         """
         return asyncio.get_event_loop().run_until_complete(
-            self.urlUploadAsync(
-                url=url, 
-                path=path, 
-                name=name, 
-                access=access, 
-                tags=tags, 
-                metadata=metadata, 
-                overwrite=overwrite, 
-                filenameOverride=filenameOverride)
+            self.addCredentialsAsync(
+                credentials=credentials, 
+                pluginId=pluginId)
         )
 
     
@@ -294,71 +125,40 @@ class Assets:
     
 
         
-    async def createSignedUrlAsync(
+    async def updateCredentialsAsync(
         self, 
         
-        name:str=None, 
-        path:str=None, 
-        format:str=None, 
-        access:AccessEnum=None, 
-        tags:List[str]=None, 
-        metadata:Any=None, 
-        overwrite:bool=None, 
-        filenameOverride:bool=None
+        pluginId:str=None,
+        credentials:Any=None
         ) -> dict:   
         """
-        summary: S3 Signed URL upload
-        description: For the given asset details, a S3 signed URL will be generated,
-which can be then used to upload your asset.
+        summary: Update credentials of a transformation module.
+        description: Update credentials of a transformation module, for an organization.
 
+        :param - pluginId : ID of the plugin whose credentials are being updated: Type - str 
         
-        :param - name : name of the file : Type - str
-        :param - path : Path of containing folder. : Type - str
-        :param - format : Format of the file : Type - str
-        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
-        :param - tags : Tags associated with the file. : Type - List[str]
-        :param - metadata : Metadata associated with the file. : Type - Any
-        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
-        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
+        :param - credentials : Credentials of the plugin : Type - Any
         """
 
         payload = {}
         
+        if pluginId is not None:
+            payload["pluginId"] = pluginId
+        
 
         # Parameter validation
-        schema = AssetsValidator.createSignedUrl()
+        schema = AssetsValidator.updateCredentials()
         schema.dump(schema.load(payload))
 
         
         body = {}
         
-        if name is not None:
-            body["name"] = name
-        
-        if path is not None:
-            body["path"] = path
-        
-        if format is not None:
-            body["format"] = format
-        
-        if access is not None:
-            body["access"] = access
-        
-        if tags is not None:
-            body["tags"] = tags
-        
-        if metadata is not None:
-            body["metadata"] = metadata
-        
-        if overwrite is not None:
-            body["overwrite"] = overwrite
-        
-        if filenameOverride is not None:
-            body["filenameOverride"] = filenameOverride
+        if credentials is not None:
+            body["credentials"] = credentials
         
         # Body validation
-        from .models.SignedUploadRequest import SignedUploadRequest
-        schema = SignedUploadRequest()
+        from .models.UpdateCredentialsRequest import UpdateCredentialsRequest
+        schema = UpdateCredentialsRequest()
         schema.dump(schema.load(body))
         
 
@@ -367,8 +167,8 @@ which can be then used to upload your asset.
 
         response = await APIClient.execute(
             conf=self.config,
-            method="post",
-            url=f"/service/platform/assets/v1.0/upload/signed-url",
+            method="patch",
+            url=f"/service/platform/assets/v1.0/credentials/{pluginId}",
             query=query_params,
             body=body,
             contentType="application/json"
@@ -377,43 +177,24 @@ which can be then used to upload your asset.
             raise PixelbinServerResponseError(str(response["content"]))
         return ujson.loads(response["content"])
 
-    def createSignedUrl(
+    def updateCredentials(
         self, 
         
-        name:str=None, 
-        path:str=None, 
-        format:str=None, 
-        access:AccessEnum=None, 
-        tags:List[str]=None, 
-        metadata:Any=None, 
-        overwrite:bool=None, 
-        filenameOverride:bool=None
+        pluginId:str=None,
+        credentials:Any=None
         ):   
         """
-        summary: S3 Signed URL upload
-        description: For the given asset details, a S3 signed URL will be generated,
-which can be then used to upload your asset.
+        summary: Update credentials of a transformation module.
+        description: Update credentials of a transformation module, for an organization.
 
+        :param - pluginId : ID of the plugin whose credentials are being updated: Type - str 
         
-        :param - name : name of the file : Type - str
-        :param - path : Path of containing folder. : Type - str
-        :param - format : Format of the file : Type - str
-        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
-        :param - tags : Tags associated with the file. : Type - List[str]
-        :param - metadata : Metadata associated with the file. : Type - Any
-        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
-        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
+        :param - credentials : Credentials of the plugin : Type - Any
         """
         return asyncio.get_event_loop().run_until_complete(
-            self.createSignedUrlAsync(
-                name=name, 
-                path=path, 
-                format=format, 
-                access=access, 
-                tags=tags, 
-                metadata=metadata, 
-                overwrite=overwrite, 
-                filenameOverride=filenameOverride)
+            self.updateCredentialsAsync(
+                pluginId=pluginId,
+                credentials=credentials)
         )
 
     
@@ -421,106 +202,38 @@ which can be then used to upload your asset.
     
 
     
-    async def listFilesAsync(
+    async def deleteCredentialsAsync(
         self, 
         
-        name:str=None, 
-        path:str=None, 
-        format:str=None, 
-        tags:List[Any]=None, 
-        onlyFiles:bool=None, 
-        onlyFolders:bool=None, 
-        pageNo:int=None, 
-        pageSize:int=None, 
-        sort:str=None
+        pluginId:str=None
         ) -> dict:   
         """
-        summary: List and search files and folders.
-        description: List all files and folders in root folder. Search for files if name is provided. If path is provided, search in the specified path.
+        summary: Delete credentials of a transformation module.
+        description: Delete credentials of a transformation module, for an organization.
 
-        :param - name : Find items with matching name: Type - str 
-        :param - path : Find items with matching path: Type - str 
-        :param - format : Find items with matching format: Type - str 
-        :param - tags : Find items containing these tags: Type - List[str] 
-        :param - onlyFiles : If true will fetch only files: Type - bool 
-        :param - onlyFolders : If true will fetch only folders: Type - bool 
-        :param - pageNo : Page No.: Type - int 
-        :param - pageSize : Page Size: Type - int 
-        :param - sort : Key to sort results by. A "-" suffix will sort results in descending orders.
-: Type - str 
+        :param - pluginId : ID of the plugin whose credentials are being deleted: Type - str 
         
         """
 
         payload = {}
         
-        if name is not None:
-            payload["name"] = name
-        
-        if path is not None:
-            payload["path"] = path
-        
-        if format is not None:
-            payload["format"] = format
-        
-        if tags is not None:
-            payload["tags"] = tags
-        
-        if onlyFiles is not None:
-            payload["onlyFiles"] = onlyFiles
-        
-        if onlyFolders is not None:
-            payload["onlyFolders"] = onlyFolders
-        
-        if pageNo is not None:
-            payload["pageNo"] = pageNo
-        
-        if pageSize is not None:
-            payload["pageSize"] = pageSize
-        
-        if sort is not None:
-            payload["sort"] = sort
+        if pluginId is not None:
+            payload["pluginId"] = pluginId
         
 
         # Parameter validation
-        schema = AssetsValidator.listFiles()
+        schema = AssetsValidator.deleteCredentials()
         schema.dump(schema.load(payload))
 
         
 
         query_params = {}
         
-        if name:
-            query_params['name'] = name
-        
-        if path:
-            query_params['path'] = path
-        
-        if format:
-            query_params['format'] = format
-        
-        if tags:
-            query_params['tags'] = tags
-        
-        if onlyFiles:
-            query_params['onlyFiles'] = onlyFiles
-        
-        if onlyFolders:
-            query_params['onlyFolders'] = onlyFolders
-        
-        if pageNo:
-            query_params['pageNo'] = pageNo
-        
-        if pageSize:
-            query_params['pageSize'] = pageSize
-        
-        if sort:
-            query_params['sort'] = sort
-        
 
         response = await APIClient.execute(
             conf=self.config,
-            method="get",
-            url=f"/service/platform/assets/v1.0/listFiles",
+            method="delete",
+            url=f"/service/platform/assets/v1.0/credentials/{pluginId}",
             query=query_params,
             body=None,
             contentType=""
@@ -529,46 +242,21 @@ which can be then used to upload your asset.
             raise PixelbinServerResponseError(str(response["content"]))
         return ujson.loads(response["content"])
 
-    def listFiles(
+    def deleteCredentials(
         self, 
         
-        name:str=None, 
-        path:str=None, 
-        format:str=None, 
-        tags:List[Any]=None, 
-        onlyFiles:bool=None, 
-        onlyFolders:bool=None, 
-        pageNo:int=None, 
-        pageSize:int=None, 
-        sort:str=None
+        pluginId:str=None
         ):   
         """
-        summary: List and search files and folders.
-        description: List all files and folders in root folder. Search for files if name is provided. If path is provided, search in the specified path.
+        summary: Delete credentials of a transformation module.
+        description: Delete credentials of a transformation module, for an organization.
 
-        :param - name : Find items with matching name: Type - str 
-        :param - path : Find items with matching path: Type - str 
-        :param - format : Find items with matching format: Type - str 
-        :param - tags : Find items containing these tags: Type - List[str] 
-        :param - onlyFiles : If true will fetch only files: Type - bool 
-        :param - onlyFolders : If true will fetch only folders: Type - bool 
-        :param - pageNo : Page No.: Type - int 
-        :param - pageSize : Page Size: Type - int 
-        :param - sort : Key to sort results by. A "-" suffix will sort results in descending orders.
-: Type - str 
+        :param - pluginId : ID of the plugin whose credentials are being deleted: Type - str 
         
         """
         return asyncio.get_event_loop().run_until_complete(
-            self.listFilesAsync(
-                name=name, 
-                path=path, 
-                format=format, 
-                tags=tags, 
-                onlyFiles=onlyFiles, 
-                onlyFolders=onlyFolders, 
-                pageNo=pageNo, 
-                pageSize=pageSize, 
-                sort=sort)
+            self.deleteCredentialsAsync(
+                pluginId=pluginId)
         )
 
     
@@ -713,7 +401,7 @@ which can be then used to upload your asset.
         :param - fileId : Combination of `path` and `name`: Type - str 
         
         :param - name : Name of the file : Type - str
-        :param - path : path of containing folder. : Type - str
+        :param - path : Path of the file : Type - str
         :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
         :param - isActive : Whether the file is active : Type - bool
         :param - tags : Tags associated with the file : Type - List[str]
@@ -789,7 +477,7 @@ which can be then used to upload your asset.
         :param - fileId : Combination of `path` and `name`: Type - str 
         
         :param - name : Name of the file : Type - str
-        :param - path : path of containing folder. : Type - str
+        :param - path : Path of the file : Type - str
         :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
         :param - isActive : Whether the file is active : Type - bool
         :param - tags : Tags associated with the file : Type - List[str]
@@ -950,7 +638,7 @@ which can be then used to upload your asset.
 
         
         :param - name : Name of the folder : Type - str
-        :param - path : path of containing folder. : Type - str
+        :param - path : Path of the folder : Type - str
         """
 
         payload = {}
@@ -1002,7 +690,7 @@ which can be then used to upload your asset.
 
         
         :param - name : Name of the folder : Type - str
-        :param - path : path of containing folder. : Type - str
+        :param - path : Path of the folder : Type - str
         """
         return asyncio.get_event_loop().run_until_complete(
             self.createFolderAsync(
@@ -1295,193 +983,107 @@ We currently do not support updating folder name or path.
     
     
 
-        
-    async def addCredentialsAsync(
+    
+    async def listFilesAsync(
         self, 
         
-        credentials:Any=None, 
-        pluginId:str=None
+        name:str=None, 
+        path:str=None, 
+        format:str=None, 
+        tags:List[Any]=None, 
+        onlyFiles:bool=None, 
+        onlyFolders:bool=None, 
+        pageNo:int=None, 
+        pageSize:int=None, 
+        sort:str=None
         ) -> dict:   
         """
-        summary: Add credentials for a transformation module.
-        description: Add a transformation modules's credentials for an organization.
+        summary: List and search files and folders.
+        description: List all files and folders in root folder. Search for files if name is provided. If path is provided, search in the specified path.
 
-        
-        :param - credentials : Credentials of the plugin : Type - Any
-        :param - pluginId : Unique identifier for the plugin this credential belongs to : Type - str
-        """
-
-        payload = {}
-        
-
-        # Parameter validation
-        schema = AssetsValidator.addCredentials()
-        schema.dump(schema.load(payload))
-
-        
-        body = {}
-        
-        if credentials is not None:
-            body["credentials"] = credentials
-        
-        if pluginId is not None:
-            body["pluginId"] = pluginId
-        
-        # Body validation
-        from .models.AddCredentialsRequest import AddCredentialsRequest
-        schema = AddCredentialsRequest()
-        schema.dump(schema.load(body))
-        
-
-        query_params = {}
-        
-
-        response = await APIClient.execute(
-            conf=self.config,
-            method="post",
-            url=f"/service/platform/assets/v1.0/credentials",
-            query=query_params,
-            body=body,
-            contentType="application/json"
-            )
-        if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
-        return ujson.loads(response["content"])
-
-    def addCredentials(
-        self, 
-        
-        credentials:Any=None, 
-        pluginId:str=None
-        ):   
-        """
-        summary: Add credentials for a transformation module.
-        description: Add a transformation modules's credentials for an organization.
-
-        
-        :param - credentials : Credentials of the plugin : Type - Any
-        :param - pluginId : Unique identifier for the plugin this credential belongs to : Type - str
-        """
-        return asyncio.get_event_loop().run_until_complete(
-            self.addCredentialsAsync(
-                credentials=credentials, 
-                pluginId=pluginId)
-        )
-
-    
-    
-    
-
-        
-    async def updateCredentialsAsync(
-        self, 
-        
-        pluginId:str=None,
-        credentials:Any=None
-        ) -> dict:   
-        """
-        summary: Update credentials of a transformation module.
-        description: Update credentials of a transformation module, for an organization.
-
-        :param - pluginId : ID of the plugin whose credentials are being updated: Type - str 
-        
-        :param - credentials : Credentials of the plugin : Type - Any
-        """
-
-        payload = {}
-        
-        if pluginId is not None:
-            payload["pluginId"] = pluginId
-        
-
-        # Parameter validation
-        schema = AssetsValidator.updateCredentials()
-        schema.dump(schema.load(payload))
-
-        
-        body = {}
-        
-        if credentials is not None:
-            body["credentials"] = credentials
-        
-        # Body validation
-        from .models.UpdateCredentialsRequest import UpdateCredentialsRequest
-        schema = UpdateCredentialsRequest()
-        schema.dump(schema.load(body))
-        
-
-        query_params = {}
-        
-
-        response = await APIClient.execute(
-            conf=self.config,
-            method="patch",
-            url=f"/service/platform/assets/v1.0/credentials/{pluginId}",
-            query=query_params,
-            body=body,
-            contentType="application/json"
-            )
-        if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
-        return ujson.loads(response["content"])
-
-    def updateCredentials(
-        self, 
-        
-        pluginId:str=None,
-        credentials:Any=None
-        ):   
-        """
-        summary: Update credentials of a transformation module.
-        description: Update credentials of a transformation module, for an organization.
-
-        :param - pluginId : ID of the plugin whose credentials are being updated: Type - str 
-        
-        :param - credentials : Credentials of the plugin : Type - Any
-        """
-        return asyncio.get_event_loop().run_until_complete(
-            self.updateCredentialsAsync(
-                pluginId=pluginId,
-                credentials=credentials)
-        )
-
-    
-    
-    
-
-    
-    async def deleteCredentialsAsync(
-        self, 
-        
-        pluginId:str=None
-        ) -> dict:   
-        """
-        summary: Delete credentials of a transformation module.
-        description: Delete credentials of a transformation module, for an organization.
-
-        :param - pluginId : ID of the plugin whose credentials are being deleted: Type - str 
+        :param - name : Find items with matching name: Type - str 
+        :param - path : Find items with matching path: Type - str 
+        :param - format : Find items with matching format: Type - str 
+        :param - tags : Find items containing these tags: Type - List[str] 
+        :param - onlyFiles : If true will fetch only files: Type - bool 
+        :param - onlyFolders : If true will fetch only folders: Type - bool 
+        :param - pageNo : Page No.: Type - int 
+        :param - pageSize : Page Size: Type - int 
+        :param - sort : Key to sort results by. A "-" suffix will sort results in descending orders.
+: Type - str 
         
         """
 
         payload = {}
         
-        if pluginId is not None:
-            payload["pluginId"] = pluginId
+        if name is not None:
+            payload["name"] = name
+        
+        if path is not None:
+            payload["path"] = path
+        
+        if format is not None:
+            payload["format"] = format
+        
+        if tags is not None:
+            payload["tags"] = tags
+        
+        if onlyFiles is not None:
+            payload["onlyFiles"] = onlyFiles
+        
+        if onlyFolders is not None:
+            payload["onlyFolders"] = onlyFolders
+        
+        if pageNo is not None:
+            payload["pageNo"] = pageNo
+        
+        if pageSize is not None:
+            payload["pageSize"] = pageSize
+        
+        if sort is not None:
+            payload["sort"] = sort
         
 
         # Parameter validation
-        schema = AssetsValidator.deleteCredentials()
+        schema = AssetsValidator.listFiles()
         schema.dump(schema.load(payload))
 
         
 
         query_params = {}
         
+        if name:
+            query_params['name'] = name
+        
+        if path:
+            query_params['path'] = path
+        
+        if format:
+            query_params['format'] = format
+        
+        if tags:
+            query_params['tags'] = tags
+        
+        if onlyFiles:
+            query_params['onlyFiles'] = onlyFiles
+        
+        if onlyFolders:
+            query_params['onlyFolders'] = onlyFolders
+        
+        if pageNo:
+            query_params['pageNo'] = pageNo
+        
+        if pageSize:
+            query_params['pageSize'] = pageSize
+        
+        if sort:
+            query_params['sort'] = sort
+        
 
         response = await APIClient.execute(
             conf=self.config,
-            method="delete",
-            url=f"/service/platform/assets/v1.0/credentials/{pluginId}",
+            method="get",
+            url=f"/service/platform/assets/v1.0/listFiles",
             query=query_params,
             body=None,
             contentType=""
@@ -1490,21 +1092,214 @@ We currently do not support updating folder name or path.
             raise PixelbinServerResponseError(str(response["content"]))
         return ujson.loads(response["content"])
 
-    def deleteCredentials(
+    def listFiles(
         self, 
         
-        pluginId:str=None
+        name:str=None, 
+        path:str=None, 
+        format:str=None, 
+        tags:List[Any]=None, 
+        onlyFiles:bool=None, 
+        onlyFolders:bool=None, 
+        pageNo:int=None, 
+        pageSize:int=None, 
+        sort:str=None
         ):   
         """
-        summary: Delete credentials of a transformation module.
-        description: Delete credentials of a transformation module, for an organization.
+        summary: List and search files and folders.
+        description: List all files and folders in root folder. Search for files if name is provided. If path is provided, search in the specified path.
 
-        :param - pluginId : ID of the plugin whose credentials are being deleted: Type - str 
+        :param - name : Find items with matching name: Type - str 
+        :param - path : Find items with matching path: Type - str 
+        :param - format : Find items with matching format: Type - str 
+        :param - tags : Find items containing these tags: Type - List[str] 
+        :param - onlyFiles : If true will fetch only files: Type - bool 
+        :param - onlyFolders : If true will fetch only folders: Type - bool 
+        :param - pageNo : Page No.: Type - int 
+        :param - pageSize : Page Size: Type - int 
+        :param - sort : Key to sort results by. A "-" suffix will sort results in descending orders.
+: Type - str 
         
         """
         return asyncio.get_event_loop().run_until_complete(
-            self.deleteCredentialsAsync(
-                pluginId=pluginId)
+            self.listFilesAsync(
+                name=name, 
+                path=path, 
+                format=format, 
+                tags=tags, 
+                onlyFiles=onlyFiles, 
+                onlyFolders=onlyFolders, 
+                pageNo=pageNo, 
+                pageSize=pageSize, 
+                sort=sort)
+        )
+
+    
+    
+    
+
+    
+    async def getDefaultAssetForPlaygroundAsync(
+        self, 
+        
+        ) -> dict:   
+        """
+        summary: Get default asset for playground
+        description: Get default asset for playground
+        
+        """
+
+        payload = {}
+        
+
+        # Parameter validation
+        schema = AssetsValidator.getDefaultAssetForPlayground()
+        schema.dump(schema.load(payload))
+
+        
+
+        query_params = {}
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/assets/v1.0/playground/default",
+            query=query_params,
+            body=None,
+            contentType=""
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def getDefaultAssetForPlayground(
+        self, 
+        
+        ):   
+        """
+        summary: Get default asset for playground
+        description: Get default asset for playground
+        
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.getDefaultAssetForPlaygroundAsync()
+        )
+
+    
+    
+    
+
+    
+    async def getModulesAsync(
+        self, 
+        
+        ) -> dict:   
+        """
+        summary: Get all transformation modules
+        description: Get all transformation modules.
+
+        
+        """
+
+        payload = {}
+        
+
+        # Parameter validation
+        schema = AssetsValidator.getModules()
+        schema.dump(schema.load(payload))
+
+        
+
+        query_params = {}
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/assets/v1.0/playground/plugins",
+            query=query_params,
+            body=None,
+            contentType=""
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def getModules(
+        self, 
+        
+        ):   
+        """
+        summary: Get all transformation modules
+        description: Get all transformation modules.
+
+        
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.getModulesAsync()
+        )
+
+    
+    
+    
+
+    
+    async def getModuleAsync(
+        self, 
+        
+        identifier:str=None
+        ) -> dict:   
+        """
+        summary: Get Transformation Module by module identifier
+        description: Get Transformation Module by module identifier
+
+        :param - identifier : identifier of Transformation Module: Type - str 
+        
+        """
+
+        payload = {}
+        
+        if identifier is not None:
+            payload["identifier"] = identifier
+        
+
+        # Parameter validation
+        schema = AssetsValidator.getModule()
+        schema.dump(schema.load(payload))
+
+        
+
+        query_params = {}
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="get",
+            url=f"/service/platform/assets/v1.0/playground/plugins/{identifier}",
+            query=query_params,
+            body=None,
+            contentType=""
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def getModule(
+        self, 
+        
+        identifier:str=None
+        ):   
+        """
+        summary: Get Transformation Module by module identifier
+        description: Get Transformation Module by module identifier
+
+        :param - identifier : identifier of Transformation Module: Type - str 
+        
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.getModuleAsync(
+                identifier=identifier)
         )
 
     
@@ -1851,24 +1646,71 @@ We currently do not support updating folder name or path.
     
     
 
-    
-    async def getDefaultAssetForPlaygroundAsync(
+       
+    async def fileUploadAsync(
         self, 
         
+        file:FileIO=None, 
+        path:str=None, 
+        name:str=None, 
+        access:AccessEnum=None, 
+        tags:List[str]=None, 
+        metadata:Any=None, 
+        overwrite:bool=None, 
+        filenameOverride:bool=None
         ) -> dict:   
         """
-        summary: Get default asset for playground
-        description: Get default asset for playground
+        summary: Upload File
+        description: Upload File to Pixelbin
         
+        :param - file : Asset file : Type - FileIO
+        :param - path : Path where you want to store the asset : Type - str
+        :param - name : Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe : Type - str
+        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
+        :param - tags : Asset tags : Type - List[str]
+        :param - metadata : Asset related metadata : Type - Any
+        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
+        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
         """
 
         payload = {}
         
 
         # Parameter validation
-        schema = AssetsValidator.getDefaultAssetForPlayground()
+        schema = AssetsValidator.fileUpload()
         schema.dump(schema.load(payload))
 
+        
+        body = {}
+        
+        if file is not None:
+            body["file"] = file
+        
+        if path is not None:
+            body["path"] = path
+        
+        if name is not None:
+            body["name"] = name
+        
+        if access is not None:
+            body["access"] = access
+        
+        if tags is not None:
+            body["tags"] = tags
+        
+        if metadata is not None:
+            body["metadata"] = metadata
+        
+        if overwrite is not None:
+            body["overwrite"] = overwrite
+        
+        if filenameOverride is not None:
+            body["filenameOverride"] = filenameOverride
+        
+        # Body validation
+        from .models.FileUploadRequest import FileUploadRequest
+        schema = FileUploadRequest()
+        schema.dump(schema.load(body))
         
 
         query_params = {}
@@ -1876,52 +1718,122 @@ We currently do not support updating folder name or path.
 
         response = await APIClient.execute(
             conf=self.config,
-            method="get",
-            url=f"/service/platform/assets/v1.0/playground/default",
+            method="post",
+            url=f"/service/platform/assets/v1.0/upload/direct",
             query=query_params,
-            body=None,
-            contentType=""
+            body=body,
+            contentType="multipart/form-data"
             )
         if response["status_code"] != 200:
             raise PixelbinServerResponseError(str(response["content"]))
         return ujson.loads(response["content"])
 
-    def getDefaultAssetForPlayground(
+    def fileUpload(
         self, 
         
+        file:FileIO=None, 
+        path:str=None, 
+        name:str=None, 
+        access:AccessEnum=None, 
+        tags:List[str]=None, 
+        metadata:Any=None, 
+        overwrite:bool=None, 
+        filenameOverride:bool=None
         ):   
         """
-        summary: Get default asset for playground
-        description: Get default asset for playground
+        summary: Upload File
+        description: Upload File to Pixelbin
         
+        :param - file : Asset file : Type - FileIO
+        :param - path : Path where you want to store the asset : Type - str
+        :param - name : Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe : Type - str
+        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
+        :param - tags : Asset tags : Type - List[str]
+        :param - metadata : Asset related metadata : Type - Any
+        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
+        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
         """
         return asyncio.get_event_loop().run_until_complete(
-            self.getDefaultAssetForPlaygroundAsync()
+            self.fileUploadAsync(
+                file=file, 
+                path=path, 
+                name=name, 
+                access=access, 
+                tags=tags, 
+                metadata=metadata, 
+                overwrite=overwrite, 
+                filenameOverride=filenameOverride)
         )
 
     
     
     
 
-    
-    async def getModulesAsync(
+        
+    async def urlUploadAsync(
         self, 
         
+        url:str=None, 
+        path:str=None, 
+        name:str=None, 
+        access:AccessEnum=None, 
+        tags:List[str]=None, 
+        metadata:Any=None, 
+        overwrite:bool=None, 
+        filenameOverride:bool=None
         ) -> dict:   
         """
-        summary: Get all transformation modules
-        description: Get all transformation modules.
-
+        summary: Upload Asset with url
+        description: Upload Asset with url
         
+        :param - url : Asset URL : Type - str
+        :param - path : Path where you want to store the asset : Type - str
+        :param - name : Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe : Type - str
+        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
+        :param - tags : Asset tags : Type - List[str]
+        :param - metadata : Asset related metadata : Type - Any
+        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
+        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
         """
 
         payload = {}
         
 
         # Parameter validation
-        schema = AssetsValidator.getModules()
+        schema = AssetsValidator.urlUpload()
         schema.dump(schema.load(payload))
 
+        
+        body = {}
+        
+        if url is not None:
+            body["url"] = url
+        
+        if path is not None:
+            body["path"] = path
+        
+        if name is not None:
+            body["name"] = name
+        
+        if access is not None:
+            body["access"] = access
+        
+        if tags is not None:
+            body["tags"] = tags
+        
+        if metadata is not None:
+            body["metadata"] = metadata
+        
+        if overwrite is not None:
+            body["overwrite"] = overwrite
+        
+        if filenameOverride is not None:
+            body["filenameOverride"] = filenameOverride
+        
+        # Body validation
+        from .models.UrlUploadRequest import UrlUploadRequest
+        schema = UrlUploadRequest()
+        schema.dump(schema.load(body))
         
 
         query_params = {}
@@ -1929,58 +1841,124 @@ We currently do not support updating folder name or path.
 
         response = await APIClient.execute(
             conf=self.config,
-            method="get",
-            url=f"/service/platform/assets/v1.0/playground/plugins",
+            method="post",
+            url=f"/service/platform/assets/v1.0/upload/url",
             query=query_params,
-            body=None,
-            contentType=""
+            body=body,
+            contentType="application/json"
             )
         if response["status_code"] != 200:
             raise PixelbinServerResponseError(str(response["content"]))
         return ujson.loads(response["content"])
 
-    def getModules(
+    def urlUpload(
         self, 
         
+        url:str=None, 
+        path:str=None, 
+        name:str=None, 
+        access:AccessEnum=None, 
+        tags:List[str]=None, 
+        metadata:Any=None, 
+        overwrite:bool=None, 
+        filenameOverride:bool=None
         ):   
         """
-        summary: Get all transformation modules
-        description: Get all transformation modules.
-
+        summary: Upload Asset with url
+        description: Upload Asset with url
         
+        :param - url : Asset URL : Type - str
+        :param - path : Path where you want to store the asset : Type - str
+        :param - name : Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe : Type - str
+        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
+        :param - tags : Asset tags : Type - List[str]
+        :param - metadata : Asset related metadata : Type - Any
+        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
+        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
         """
         return asyncio.get_event_loop().run_until_complete(
-            self.getModulesAsync()
+            self.urlUploadAsync(
+                url=url, 
+                path=path, 
+                name=name, 
+                access=access, 
+                tags=tags, 
+                metadata=metadata, 
+                overwrite=overwrite, 
+                filenameOverride=filenameOverride)
         )
 
     
     
     
 
-    
-    async def getModuleAsync(
+        
+    async def createSignedUrlAsync(
         self, 
         
-        identifier:str=None
+        name:str=None, 
+        path:str=None, 
+        format:str=None, 
+        access:AccessEnum=None, 
+        tags:List[str]=None, 
+        metadata:Any=None, 
+        overwrite:bool=None, 
+        filenameOverride:bool=None
         ) -> dict:   
         """
-        summary: Get Transformation Module by module identifier
-        description: Get Transformation Module by module identifier
+        summary: S3 Signed URL upload
+        description: For the given asset details, a S3 signed URL will be generated,
+which can be then used to upload your asset.
 
-        :param - identifier : identifier of Transformation Module: Type - str 
         
+        :param - name : name of the file : Type - str
+        :param - path : Path of the file : Type - str
+        :param - format : Format of the file : Type - str
+        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
+        :param - tags : Tags associated with the file. : Type - List[str]
+        :param - metadata : Metadata associated with the file. : Type - Any
+        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
+        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
         """
 
         payload = {}
         
-        if identifier is not None:
-            payload["identifier"] = identifier
-        
 
         # Parameter validation
-        schema = AssetsValidator.getModule()
+        schema = AssetsValidator.createSignedUrl()
         schema.dump(schema.load(payload))
 
+        
+        body = {}
+        
+        if name is not None:
+            body["name"] = name
+        
+        if path is not None:
+            body["path"] = path
+        
+        if format is not None:
+            body["format"] = format
+        
+        if access is not None:
+            body["access"] = access
+        
+        if tags is not None:
+            body["tags"] = tags
+        
+        if metadata is not None:
+            body["metadata"] = metadata
+        
+        if overwrite is not None:
+            body["overwrite"] = overwrite
+        
+        if filenameOverride is not None:
+            body["filenameOverride"] = filenameOverride
+        
+        # Body validation
+        from .models.SignedUploadRequest import SignedUploadRequest
+        schema = SignedUploadRequest()
+        schema.dump(schema.load(body))
         
 
         query_params = {}
@@ -1988,31 +1966,184 @@ We currently do not support updating folder name or path.
 
         response = await APIClient.execute(
             conf=self.config,
-            method="get",
-            url=f"/service/platform/assets/v1.0/playground/plugins/{identifier}",
+            method="post",
+            url=f"/service/platform/assets/v1.0/upload/signed-url",
             query=query_params,
-            body=None,
-            contentType=""
+            body=body,
+            contentType="application/json"
             )
         if response["status_code"] != 200:
             raise PixelbinServerResponseError(str(response["content"]))
         return ujson.loads(response["content"])
 
-    def getModule(
+    def createSignedUrl(
         self, 
         
-        identifier:str=None
+        name:str=None, 
+        path:str=None, 
+        format:str=None, 
+        access:AccessEnum=None, 
+        tags:List[str]=None, 
+        metadata:Any=None, 
+        overwrite:bool=None, 
+        filenameOverride:bool=None
         ):   
         """
-        summary: Get Transformation Module by module identifier
-        description: Get Transformation Module by module identifier
+        summary: S3 Signed URL upload
+        description: For the given asset details, a S3 signed URL will be generated,
+which can be then used to upload your asset.
 
-        :param - identifier : identifier of Transformation Module: Type - str 
         
+        :param - name : name of the file : Type - str
+        :param - path : Path of the file : Type - str
+        :param - format : Format of the file : Type - str
+        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
+        :param - tags : Tags associated with the file. : Type - List[str]
+        :param - metadata : Metadata associated with the file. : Type - Any
+        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
+        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
         """
         return asyncio.get_event_loop().run_until_complete(
-            self.getModuleAsync(
-                identifier=identifier)
+            self.createSignedUrlAsync(
+                name=name, 
+                path=path, 
+                format=format, 
+                access=access, 
+                tags=tags, 
+                metadata=metadata, 
+                overwrite=overwrite, 
+                filenameOverride=filenameOverride)
+        )
+
+    
+    
+    
+
+        
+    async def createSignedUrlV2Async(
+        self, 
+        
+        name:str=None, 
+        path:str=None, 
+        format:str=None, 
+        access:AccessEnum=None, 
+        tags:List[str]=None, 
+        metadata:Any=None, 
+        overwrite:bool=None, 
+        filenameOverride:bool=None, 
+        expiry:int=None
+        ) -> dict:   
+        """
+        summary: Signed multipart upload
+        description: For the given asset details, a presigned URL will be generated, which can be then used to upload your asset in chunks via multipart upload.
+        
+        :param - name : name of the file : Type - str
+        :param - path : Path of containing folder. : Type - str
+        :param - format : Format of the file : Type - str
+        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
+        :param - tags : Tags associated with the file. : Type - List[str]
+        :param - metadata : Metadata associated with the file. : Type - Any
+        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
+        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
+        :param - expiry : Expiry time in seconds for the signed URL. Defaults to 3000 seconds. : Type - int
+        """
+
+        payload = {}
+        
+
+        # Parameter validation
+        schema = AssetsValidator.createSignedUrlV2()
+        schema.dump(schema.load(payload))
+
+        
+        body = {}
+        
+        if name is not None:
+            body["name"] = name
+        
+        if path is not None:
+            body["path"] = path
+        
+        if format is not None:
+            body["format"] = format
+        
+        if access is not None:
+            body["access"] = access
+        
+        if tags is not None:
+            body["tags"] = tags
+        
+        if metadata is not None:
+            body["metadata"] = metadata
+        
+        if overwrite is not None:
+            body["overwrite"] = overwrite
+        
+        if filenameOverride is not None:
+            body["filenameOverride"] = filenameOverride
+        
+        if expiry is not None:
+            body["expiry"] = expiry
+        
+        # Body validation
+        from .models.SignedUploadRequestV2 import SignedUploadRequestV2
+        schema = SignedUploadRequestV2()
+        schema.dump(schema.load(body))
+        
+
+        query_params = {}
+        
+
+        response = await APIClient.execute(
+            conf=self.config,
+            method="post",
+            url=f"/service/platform/assets/v2.0/upload/signed-url",
+            query=query_params,
+            body=body,
+            contentType="application/json"
+            )
+        if response["status_code"] != 200:
+            raise PixelbinServerResponseError(str(response["content"]))
+        return ujson.loads(response["content"])
+
+    def createSignedUrlV2(
+        self, 
+        
+        name:str=None, 
+        path:str=None, 
+        format:str=None, 
+        access:AccessEnum=None, 
+        tags:List[str]=None, 
+        metadata:Any=None, 
+        overwrite:bool=None, 
+        filenameOverride:bool=None, 
+        expiry:int=None
+        ):   
+        """
+        summary: Signed multipart upload
+        description: For the given asset details, a presigned URL will be generated, which can be then used to upload your asset in chunks via multipart upload.
+        
+        :param - name : name of the file : Type - str
+        :param - path : Path of containing folder. : Type - str
+        :param - format : Format of the file : Type - str
+        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
+        :param - tags : Tags associated with the file. : Type - List[str]
+        :param - metadata : Metadata associated with the file. : Type - Any
+        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
+        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
+        :param - expiry : Expiry time in seconds for the signed URL. Defaults to 3000 seconds. : Type - int
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.createSignedUrlV2Async(
+                name=name, 
+                path=path, 
+                format=format, 
+                access=access, 
+                tags=tags, 
+                metadata=metadata, 
+                overwrite=overwrite, 
+                filenameOverride=filenameOverride, 
+                expiry=expiry)
         )
 
     

@@ -4,11 +4,9 @@
 
 Asset Uploader Service
 
--   [fileUpload](#fileupload)
--   [urlUpload](#urlupload)
--   [createSignedUrl](#createsignedurl)
--   [listFiles](#listfiles)
--   [listFilesPaginator](#listfilespaginator)
+-   [addCredentials](#addcredentials)
+-   [updateCredentials](#updatecredentials)
+-   [deleteCredentials](#deletecredentials)
 -   [getFileById](#getfilebyid)
 -   [getFileByFileId](#getfilebyfileid)
 -   [updateFile](#updatefile)
@@ -19,23 +17,26 @@ Asset Uploader Service
 -   [updateFolder](#updatefolder)
 -   [deleteFolder](#deletefolder)
 -   [getFolderAncestors](#getfolderancestors)
--   [addCredentials](#addcredentials)
--   [updateCredentials](#updatecredentials)
--   [deleteCredentials](#deletecredentials)
+-   [listFiles](#listfiles)
+-   [listFilesPaginator](#listfilespaginator)
+-   [getDefaultAssetForPlayground](#getdefaultassetforplayground)
+-   [getModules](#getmodules)
+-   [getModule](#getmodule)
 -   [addPreset](#addpreset)
 -   [getPresets](#getpresets)
 -   [updatePreset](#updatepreset)
 -   [deletePreset](#deletepreset)
 -   [getPreset](#getpreset)
--   [getDefaultAssetForPlayground](#getdefaultassetforplayground)
--   [getModules](#getmodules)
--   [getModule](#getmodule)
+-   [fileUpload](#fileupload)
+-   [urlUpload](#urlupload)
+-   [createSignedUrl](#createsignedurl)
+-   [createSignedUrlV2](#createsignedurlv2)
 
 ## Methods with example and description
 
-### fileUpload
+### addCredentials
 
-**Summary**: Upload File
+**Summary**: Add credentials for a transformation module.
 
 ```python
 import asyncio
@@ -50,52 +51,34 @@ pixelbin:PixelbinClient = PixelbinClient(config=config)
 
 # Sync method call
 try:
-    result = pixelbin.assets.fileUpload(
-        file=open("your-file-path", "rb"),
-        path="path/to/containing/folder",
-        name="filename",
-        access="public-read",
-        tags=["tag1","tag2"],
-        metadata={},
-        overwrite=False,
-        filenameOverride=True)
+    result = pixelbin.assets.addCredentials(
+        credentials={"region":"ap-south-1","accessKeyId":"123456789ABC","secretAccessKey":"DUMMY1234567890"},
+        pluginId="awsRek")
     # use result
 except Exception as e:
     print(e)
 
 # Async method call
 try:
-    result = asyncio.run(pixelbin.assets.fileUploadAsync(
-        file=open("your-file-path", "rb"),
-        path="path/to/containing/folder",
-        name="filename",
-        access="public-read",
-        tags=["tag1","tag2"],
-        metadata={},
-        overwrite=False,
-        filenameOverride=True))
+    result = asyncio.run(pixelbin.assets.addCredentialsAsync(
+        credentials={"region":"ap-south-1","accessKeyId":"123456789ABC","secretAccessKey":"DUMMY1234567890"},
+        pluginId="awsRek"))
     # use result
 except Exception as e:
     print(e)
 
 ```
 
-| Argument         | Type       | Required | Description                                                                                                                                                                                                                      |
-| ---------------- | ---------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| file             | FileIO     | yes      | Asset file                                                                                                                                                                                                                       |
-| path             | str        | no       | Path where you want to store the asset. Path of containing folder                                                                                                                                                                |
-| name             | str        | no       | Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe                                                                                                 |
-| access           | AccessEnum | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
-| tags             | List[str]  | no       | Asset tags                                                                                                                                                                                                                       |
-| metadata         | Any        | no       | Asset related metadata                                                                                                                                                                                                           |
-| overwrite        | bool       | no       | Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`.                                                                                                         |
-| filenameOverride | bool       | no       | If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. |
+| Argument    | Type | Required | Description                                                 |
+| ----------- | ---- | -------- | ----------------------------------------------------------- |
+| credentials | Any  | yes      | Credentials of the plugin                                   |
+| pluginId    | str  | yes      | Unique identifier for the plugin this credential belongs to |
 
-Upload File to Pixelbin
+Add a transformation modules's credentials for an organization.
 
 _Returned Response:_
 
-[UploadResponse](#uploadresponse)
+[AddCredentialsResponse](#addcredentialsresponse)
 
 Success
 
@@ -104,27 +87,19 @@ Success
 
 ```json
 {
-    "_id": "dummy-uuid",
-    "name": "asset",
-    "path": "dir",
-    "fileId": "dir/asset",
-    "format": "jpeg",
-    "size": 1000,
-    "access": "private",
-    "isActive": true,
-    "tags": ["tag1", "tag2"],
-    "metadata": {
-        "key": "value"
-    },
-    "url": "https://domain.com/filename.jpeg"
+    "_id": "123ee789-7ae8-4336-b9bd-e4f33c049002",
+    "createdAt": "2022-10-04T09:52:09.545Z",
+    "updatedAt": "2022-10-04T09:52:09.545Z",
+    "orgId": 23,
+    "pluginId": "awsRek"
 }
 ```
 
 </details>
 
-### urlUpload
+### updateCredentials
 
-**Summary**: Upload Asset with url
+**Summary**: Update credentials of a transformation module.
 
 ```python
 import asyncio
@@ -139,52 +114,34 @@ pixelbin:PixelbinClient = PixelbinClient(config=config)
 
 # Sync method call
 try:
-    result = pixelbin.assets.urlUpload(
-        url="www.dummy.com/image.png",
-        path="path/to/containing/folder",
-        name="filename",
-        access="public-read",
-        tags=["tag1","tag2"],
-        metadata={},
-        overwrite=False,
-        filenameOverride=True)
+    result = pixelbin.assets.updateCredentials(
+        pluginId="awsRek",
+        credentials={"region":"ap-south-1","accessKeyId":"123456789ABC","secretAccessKey":"DUMMY1234567890"})
     # use result
 except Exception as e:
     print(e)
 
 # Async method call
 try:
-    result = asyncio.run(pixelbin.assets.urlUploadAsync(
-        url="www.dummy.com/image.png",
-        path="path/to/containing/folder",
-        name="filename",
-        access="public-read",
-        tags=["tag1","tag2"],
-        metadata={},
-        overwrite=False,
-        filenameOverride=True))
+    result = asyncio.run(pixelbin.assets.updateCredentialsAsync(
+        pluginId="awsRek",
+        credentials={"region":"ap-south-1","accessKeyId":"123456789ABC","secretAccessKey":"DUMMY1234567890"}))
     # use result
 except Exception as e:
     print(e)
 
 ```
 
-| Argument         | Type       | Required | Description                                                                                                                                                                                                                      |
-| ---------------- | ---------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| url              | str        | yes      | Asset URL                                                                                                                                                                                                                        |
-| path             | str        | no       | Path where you want to store the asset. Path of containing folder.                                                                                                                                                               |
-| name             | str        | no       | Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe                                                                                                 |
-| access           | AccessEnum | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
-| tags             | List[str]  | no       | Asset tags                                                                                                                                                                                                                       |
-| metadata         | Any        | no       | Asset related metadata                                                                                                                                                                                                           |
-| overwrite        | bool       | no       | Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`.                                                                                                         |
-| filenameOverride | bool       | no       | If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. |
+| Argument    | Type | Required | Description                                          |
+| ----------- | ---- | -------- | ---------------------------------------------------- |
+| pluginId    | str  | yes      | ID of the plugin whose credentials are being updated |
+| credentials | Any  | yes      | Credentials of the plugin                            |
 
-Upload Asset with url
+Update credentials of a transformation module, for an organization.
 
 _Returned Response:_
 
-[UploadResponse](#uploadresponse)
+[AddCredentialsResponse](#addcredentialsresponse)
 
 Success
 
@@ -193,111 +150,19 @@ Success
 
 ```json
 {
-    "_id": "dummy-uuid",
-    "name": "asset",
-    "path": "dir",
-    "fileId": "dir/asset",
-    "format": "jpeg",
-    "size": 1000,
-    "access": "private",
-    "isActive": true,
-    "tags": ["tag1", "tag2"],
-    "metadata": {
-        "key": "value"
-    },
-    "url": "https://domain.com/filename.jpeg"
+    "_id": "123ee789-7ae8-4336-b9bd-e4f33c049002",
+    "createdAt": "2022-10-04T09:52:09.545Z",
+    "updatedAt": "2022-10-04T09:52:09.545Z",
+    "orgId": 23,
+    "pluginId": "awsRek"
 }
 ```
 
 </details>
 
-### createSignedUrl
+### deleteCredentials
 
-**Summary**: S3 Signed URL upload
-
-```python
-import asyncio
-from pixelbin import PixelbinClient, PixelbinConfig
-
-config = PixelbinConfig({
-    "domain": "https://api.pixelbin.io",
-    "apiSecret": "API_SECRECT_TOKEN",
-})
-
-pixelbin:PixelbinClient = PixelbinClient(config=config)
-
-# Sync method call
-try:
-    result = pixelbin.assets.createSignedUrl(
-        name="filename",
-        path="path/to/containing/folder",
-        format="jpeg",
-        access="public-read",
-        tags=["tag1","tag2"],
-        metadata={},
-        overwrite=False,
-        filenameOverride=True)
-    # use result
-except Exception as e:
-    print(e)
-
-# Async method call
-try:
-    result = asyncio.run(pixelbin.assets.createSignedUrlAsync(
-        name="filename",
-        path="path/to/containing/folder",
-        format="jpeg",
-        access="public-read",
-        tags=["tag1","tag2"],
-        metadata={},
-        overwrite=False,
-        filenameOverride=True))
-    # use result
-except Exception as e:
-    print(e)
-
-```
-
-| Argument         | Type       | Required | Description                                                                                                                                                                                                                      |
-| ---------------- | ---------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| name             | str        | no       | name of the file                                                                                                                                                                                                                 |
-| path             | str        | no       | Path of containing folder.                                                                                                                                                                                                       |
-| format           | str        | no       | Format of the file                                                                                                                                                                                                               |
-| access           | AccessEnum | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
-| tags             | List[str]  | no       | Tags associated with the file.                                                                                                                                                                                                   |
-| metadata         | Any        | no       | Metadata associated with the file.                                                                                                                                                                                               |
-| overwrite        | bool       | no       | Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`.                                                                                                         |
-| filenameOverride | bool       | no       | If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. |
-
-For the given asset details, a S3 signed URL will be generated,
-which can be then used to upload your asset.
-
-_Returned Response:_
-
-[SignedUploadResponse](#signeduploadresponse)
-
-Success
-
-<details>
-<summary><i>&nbsp; Example:</i></summary>
-
-```json
-{
-    "s3PresignedUrl": {
-        "url": "https://domain.com/xyz",
-        "fields": {
-            "field1": "value",
-            "field2": "value"
-        }
-    }
-}
-```
-
-</details>
-
-### listFiles
-
-**Summary**: List and search files and folders.
+**Summary**: Delete credentials of a transformation module.
 
 ```python
 import asyncio
@@ -312,55 +177,31 @@ pixelbin:PixelbinClient = PixelbinClient(config=config)
 
 # Sync method call
 try:
-    result = pixelbin.assets.listFiles(
-        name="cat",
-        path="cat-photos",
-        format="jpeg",
-        tags=["cats","animals"],
-        onlyFiles="false",
-        onlyFolders="false",
-        pageNo=1,
-        pageSize=10,
-        sort="name")
+    result = pixelbin.assets.deleteCredentials(
+        pluginId="awsRek")
     # use result
 except Exception as e:
     print(e)
 
 # Async method call
 try:
-    result = asyncio.run(pixelbin.assets.listFilesAsync(
-        name="cat",
-        path="cat-photos",
-        format="jpeg",
-        tags=["cats","animals"],
-        onlyFiles="false",
-        onlyFolders="false",
-        pageNo=1,
-        pageSize=10,
-        sort="name"))
+    result = asyncio.run(pixelbin.assets.deleteCredentialsAsync(
+        pluginId="awsRek"))
     # use result
 except Exception as e:
     print(e)
 
 ```
 
-| Argument    | Type      | Required | Description                                                                  |
-| ----------- | --------- | -------- | ---------------------------------------------------------------------------- |
-| name        | str       | no       | Find items with matching name                                                |
-| path        | str       | no       | Find items with matching path                                                |
-| format      | str       | no       | Find items with matching format                                              |
-| tags        | List[str] | no       | Find items containing these tags                                             |
-| onlyFiles   | bool      | no       | If true will fetch only files                                                |
-| onlyFolders | bool      | no       | If true will fetch only folders                                              |
-| pageNo      | int       | no       | Page No.                                                                     |
-| pageSize    | int       | no       | Page Size                                                                    |
-| sort        | str       | no       | Key to sort results by. A "-" suffix will sort results in descending orders. |
+| Argument | Type | Required | Description                                          |
+| -------- | ---- | -------- | ---------------------------------------------------- |
+| pluginId | str  | yes      | ID of the plugin whose credentials are being deleted |
 
-List all files and folders in root folder. Search for files if name is provided. If path is provided, search in the specified path.
+Delete credentials of a transformation module, for an organization.
 
 _Returned Response:_
 
-[ListFilesResponse](#listfilesresponse)
+[AddCredentialsResponse](#addcredentialsresponse)
 
 Success
 
@@ -369,39 +210,11 @@ Success
 
 ```json
 {
-    "items": [
-        {
-            "_id": "dummy-uuid",
-            "name": "dir",
-            "type": "folder"
-        },
-        {
-            "_id": "dummy-uuid",
-            "name": "asset2",
-            "type": "file",
-            "path": "dir",
-            "fileId": "dir/asset2",
-            "format": "jpeg",
-            "size": 1000,
-            "access": "private"
-        },
-        {
-            "_id": "dummy-uuid",
-            "name": "asset1",
-            "type": "file",
-            "path": "dir",
-            "fileId": "dir/asset1",
-            "format": "jpeg",
-            "size": 1000,
-            "access": "private"
-        }
-    ],
-    "page": {
-        "type": "number",
-        "size": 4,
-        "current": 1,
-        "hasNext": false
-    }
+    "_id": "123ee789-7ae8-4336-b9bd-e4f33c049002",
+    "createdAt": "2022-10-04T09:52:09.545Z",
+    "updatedAt": "2022-10-04T09:52:09.545Z",
+    "orgId": 23,
+    "pluginId": "awsRek"
 }
 ```
 
@@ -588,7 +401,7 @@ except Exception as e:
 | -------- | ---------- | -------- | --------------------------------------------------------------- |
 | fileId   | str        | yes      | Combination of `path` and `name`                                |
 | name     | str        | no       | Name of the file                                                |
-| path     | str        | no       | path of containing folder.                                      |
+| path     | str        | no       | Path of the file                                                |
 | access   | AccessEnum | no       | Access level of asset, can be either `public-read` or `private` |
 | isActive | bool       | no       | Whether the file is active                                      |
 | tags     | List[str]  | no       | Tags associated with the file                                   |
@@ -792,10 +605,10 @@ except Exception as e:
 
 ```
 
-| Argument | Type | Required | Description                |
-| -------- | ---- | -------- | -------------------------- |
-| name     | str  | yes      | Name of the folder         |
-| path     | str  | no       | path of containing folder. |
+| Argument | Type | Required | Description        |
+| -------- | ---- | -------- | ------------------ |
+| name     | str  | yes      | Name of the folder |
+| path     | str  | no       | Path of the folder |
 
 Create a new folder at the specified path. Also creates the ancestors if they do not exist.
 
@@ -1090,9 +903,9 @@ Success
 
 </details>
 
-### addCredentials
+### listFiles
 
-**Summary**: Add credentials for a transformation module.
+**Summary**: List and search files and folders.
 
 ```python
 import asyncio
@@ -1107,34 +920,55 @@ pixelbin:PixelbinClient = PixelbinClient(config=config)
 
 # Sync method call
 try:
-    result = pixelbin.assets.addCredentials(
-        credentials={"region":"ap-south-1","accessKeyId":"123456789ABC","secretAccessKey":"DUMMY1234567890"},
-        pluginId="awsRek")
+    result = pixelbin.assets.listFiles(
+        name="cat",
+        path="cat-photos",
+        format="jpeg",
+        tags=["cats","animals"],
+        onlyFiles="false",
+        onlyFolders="false",
+        pageNo=1,
+        pageSize=10,
+        sort="name")
     # use result
 except Exception as e:
     print(e)
 
 # Async method call
 try:
-    result = asyncio.run(pixelbin.assets.addCredentialsAsync(
-        credentials={"region":"ap-south-1","accessKeyId":"123456789ABC","secretAccessKey":"DUMMY1234567890"},
-        pluginId="awsRek"))
+    result = asyncio.run(pixelbin.assets.listFilesAsync(
+        name="cat",
+        path="cat-photos",
+        format="jpeg",
+        tags=["cats","animals"],
+        onlyFiles="false",
+        onlyFolders="false",
+        pageNo=1,
+        pageSize=10,
+        sort="name"))
     # use result
 except Exception as e:
     print(e)
 
 ```
 
-| Argument    | Type | Required | Description                                                 |
-| ----------- | ---- | -------- | ----------------------------------------------------------- |
-| credentials | Any  | yes      | Credentials of the plugin                                   |
-| pluginId    | str  | yes      | Unique identifier for the plugin this credential belongs to |
+| Argument    | Type      | Required | Description                                                                  |
+| ----------- | --------- | -------- | ---------------------------------------------------------------------------- |
+| name        | str       | no       | Find items with matching name                                                |
+| path        | str       | no       | Find items with matching path                                                |
+| format      | str       | no       | Find items with matching format                                              |
+| tags        | List[str] | no       | Find items containing these tags                                             |
+| onlyFiles   | bool      | no       | If true will fetch only files                                                |
+| onlyFolders | bool      | no       | If true will fetch only folders                                              |
+| pageNo      | int       | no       | Page No.                                                                     |
+| pageSize    | int       | no       | Page Size                                                                    |
+| sort        | str       | no       | Key to sort results by. A "-" suffix will sort results in descending orders. |
 
-Add a transformation modules's credentials for an organization.
+List all files and folders in root folder. Search for files if name is provided. If path is provided, search in the specified path.
 
 _Returned Response:_
 
-[AddCredentialsResponse](#addcredentialsresponse)
+[ListFilesResponse](#listfilesresponse)
 
 Success
 
@@ -1143,19 +977,47 @@ Success
 
 ```json
 {
-    "_id": "123ee789-7ae8-4336-b9bd-e4f33c049002",
-    "createdAt": "2022-10-04T09:52:09.545Z",
-    "updatedAt": "2022-10-04T09:52:09.545Z",
-    "orgId": 23,
-    "pluginId": "awsRek"
+    "items": [
+        {
+            "_id": "dummy-uuid",
+            "name": "dir",
+            "type": "folder"
+        },
+        {
+            "_id": "dummy-uuid",
+            "name": "asset2",
+            "type": "file",
+            "path": "dir",
+            "fileId": "dir/asset2",
+            "format": "jpeg",
+            "size": 1000,
+            "access": "private"
+        },
+        {
+            "_id": "dummy-uuid",
+            "name": "asset1",
+            "type": "file",
+            "path": "dir",
+            "fileId": "dir/asset1",
+            "format": "jpeg",
+            "size": 1000,
+            "access": "private"
+        }
+    ],
+    "page": {
+        "type": "number",
+        "size": 4,
+        "current": 1,
+        "hasNext": false
+    }
 }
 ```
 
 </details>
 
-### updateCredentials
+### getDefaultAssetForPlayground
 
-**Summary**: Update credentials of a transformation module.
+**Summary**: Get default asset for playground
 
 ```python
 import asyncio
@@ -1170,34 +1032,25 @@ pixelbin:PixelbinClient = PixelbinClient(config=config)
 
 # Sync method call
 try:
-    result = pixelbin.assets.updateCredentials(
-        pluginId="awsRek",
-        credentials={"region":"ap-south-1","accessKeyId":"123456789ABC","secretAccessKey":"DUMMY1234567890"})
+    result = pixelbin.assets.getDefaultAssetForPlayground()
     # use result
 except Exception as e:
     print(e)
 
 # Async method call
 try:
-    result = asyncio.run(pixelbin.assets.updateCredentialsAsync(
-        pluginId="awsRek",
-        credentials={"region":"ap-south-1","accessKeyId":"123456789ABC","secretAccessKey":"DUMMY1234567890"}))
+    result = asyncio.run(pixelbin.assets.getDefaultAssetForPlaygroundAsync())
     # use result
 except Exception as e:
     print(e)
 
 ```
 
-| Argument    | Type | Required | Description                                          |
-| ----------- | ---- | -------- | ---------------------------------------------------- |
-| pluginId    | str  | yes      | ID of the plugin whose credentials are being updated |
-| credentials | Any  | yes      | Credentials of the plugin                            |
-
-Update credentials of a transformation module, for an organization.
+Get default asset for playground
 
 _Returned Response:_
 
-[AddCredentialsResponse](#addcredentialsresponse)
+[UploadResponse](#uploadresponse)
 
 Success
 
@@ -1206,19 +1059,27 @@ Success
 
 ```json
 {
-    "_id": "123ee789-7ae8-4336-b9bd-e4f33c049002",
-    "createdAt": "2022-10-04T09:52:09.545Z",
-    "updatedAt": "2022-10-04T09:52:09.545Z",
-    "orgId": 23,
-    "pluginId": "awsRek"
+    "_id": "dummy-uuid",
+    "name": "asset",
+    "path": "dir",
+    "fileId": "dir/asset",
+    "format": "jpeg",
+    "size": 1000,
+    "access": "private",
+    "isActive": true,
+    "tags": ["tag1", "tag2"],
+    "metadata": {
+        "key": "value"
+    },
+    "url": "https://domain.com/filename.jpeg"
 }
 ```
 
 </details>
 
-### deleteCredentials
+### getModules
 
-**Summary**: Delete credentials of a transformation module.
+**Summary**: Get all transformation modules
 
 ```python
 import asyncio
@@ -1233,31 +1094,25 @@ pixelbin:PixelbinClient = PixelbinClient(config=config)
 
 # Sync method call
 try:
-    result = pixelbin.assets.deleteCredentials(
-        pluginId="awsRek")
+    result = pixelbin.assets.getModules()
     # use result
 except Exception as e:
     print(e)
 
 # Async method call
 try:
-    result = asyncio.run(pixelbin.assets.deleteCredentialsAsync(
-        pluginId="awsRek"))
+    result = asyncio.run(pixelbin.assets.getModulesAsync())
     # use result
 except Exception as e:
     print(e)
 
 ```
 
-| Argument | Type | Required | Description                                          |
-| -------- | ---- | -------- | ---------------------------------------------------- |
-| pluginId | str  | yes      | ID of the plugin whose credentials are being deleted |
-
-Delete credentials of a transformation module, for an organization.
+Get all transformation modules.
 
 _Returned Response:_
 
-[AddCredentialsResponse](#addcredentialsresponse)
+[TransformationModulesResponse](#transformationmodulesresponse)
 
 Success
 
@@ -1266,11 +1121,125 @@ Success
 
 ```json
 {
-    "_id": "123ee789-7ae8-4336-b9bd-e4f33c049002",
-    "createdAt": "2022-10-04T09:52:09.545Z",
-    "updatedAt": "2022-10-04T09:52:09.545Z",
-    "orgId": 23,
-    "pluginId": "awsRek"
+    "delimiters": {
+        "operationSeparator": "~",
+        "parameterSeparator": ":"
+    },
+    "plugins": {
+        "erase": {
+            "identifier": "erase",
+            "name": "EraseBG",
+            "description": "EraseBG Background Removal Module",
+            "credentials": {
+                "required": false
+            },
+            "operations": [
+                {
+                    "params": {
+                        "name": "Industry Type",
+                        "type": "enum",
+                        "enum": ["general", "ecommerce"],
+                        "default": "general",
+                        "identifier": "i",
+                        "title": "Industry type"
+                    },
+                    "displayName": "Remove background of an image",
+                    "method": "bg",
+                    "description": "Remove the background of any image"
+                }
+            ],
+            "enabled": true
+        }
+    },
+    "presets": [
+        {
+            "_id": "dummy-id",
+            "createdAt": "2022-02-14T10:06:17.803Z",
+            "updatedAt": "2022-02-14T10:06:17.803Z",
+            "isActive": true,
+            "orgId": "265",
+            "presetName": "compressor",
+            "transformation": "t.compress(q:95)",
+            "archived": false
+        }
+    ]
+}
+```
+
+</details>
+
+### getModule
+
+**Summary**: Get Transformation Module by module identifier
+
+```python
+import asyncio
+from pixelbin import PixelbinClient, PixelbinConfig
+
+config = PixelbinConfig({
+    "domain": "https://api.pixelbin.io",
+    "apiSecret": "API_SECRECT_TOKEN",
+})
+
+pixelbin:PixelbinClient = PixelbinClient(config=config)
+
+# Sync method call
+try:
+    result = pixelbin.assets.getModule(
+        identifier="t")
+    # use result
+except Exception as e:
+    print(e)
+
+# Async method call
+try:
+    result = asyncio.run(pixelbin.assets.getModuleAsync(
+        identifier="t"))
+    # use result
+except Exception as e:
+    print(e)
+
+```
+
+| Argument   | Type | Required | Description                         |
+| ---------- | ---- | -------- | ----------------------------------- |
+| identifier | str  | yes      | identifier of Transformation Module |
+
+Get Transformation Module by module identifier
+
+_Returned Response:_
+
+[TransformationModuleResponse](#transformationmoduleresponse)
+
+Success
+
+<details>
+<summary><i>&nbsp; Example:</i></summary>
+
+```json
+{
+    "identifier": "erase",
+    "name": "EraseBG",
+    "description": "EraseBG Background Removal Module",
+    "credentials": {
+        "required": false
+    },
+    "operations": [
+        {
+            "params": {
+                "name": "Industry Type",
+                "type": "enum",
+                "enum": ["general", "ecommerce"],
+                "default": "general",
+                "identifier": "i",
+                "title": "Industry type"
+            },
+            "displayName": "Remove background of an image",
+            "method": "bg",
+            "description": "Remove the background of any image"
+        }
+    ],
+    "enabled": true
 }
 ```
 
@@ -1629,9 +1598,9 @@ Success
 
 </details>
 
-### getDefaultAssetForPlayground
+### fileUpload
 
-**Summary**: Get default asset for playground
+**Summary**: Upload File
 
 ```python
 import asyncio
@@ -1646,21 +1615,48 @@ pixelbin:PixelbinClient = PixelbinClient(config=config)
 
 # Sync method call
 try:
-    result = pixelbin.assets.getDefaultAssetForPlayground()
+    result = pixelbin.assets.fileUpload(
+        file=open("your-file-path", "rb"),
+        path="path/to/containing/folder",
+        name="filename",
+        access="public-read",
+        tags=["tag1","tag2"],
+        metadata={},
+        overwrite=False,
+        filenameOverride=True)
     # use result
 except Exception as e:
     print(e)
 
 # Async method call
 try:
-    result = asyncio.run(pixelbin.assets.getDefaultAssetForPlaygroundAsync())
+    result = asyncio.run(pixelbin.assets.fileUploadAsync(
+        file=open("your-file-path", "rb"),
+        path="path/to/containing/folder",
+        name="filename",
+        access="public-read",
+        tags=["tag1","tag2"],
+        metadata={},
+        overwrite=False,
+        filenameOverride=True))
     # use result
 except Exception as e:
     print(e)
 
 ```
 
-Get default asset for playground
+| Argument         | Type       | Required | Description                                                                                                                                                                                                                      |
+| ---------------- | ---------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| file             | FileIO     | yes      | Asset file                                                                                                                                                                                                                       |
+| path             | str        | no       | Path where you want to store the asset                                                                                                                                                                                           |
+| name             | str        | no       | Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe                                                                                                 |
+| access           | AccessEnum | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
+| tags             | List[str]  | no       | Asset tags                                                                                                                                                                                                                       |
+| metadata         | Any        | no       | Asset related metadata                                                                                                                                                                                                           |
+| overwrite        | bool       | no       | Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`.                                                                                                         |
+| filenameOverride | bool       | no       | If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. |
+
+Upload File to Pixelbin
 
 _Returned Response:_
 
@@ -1691,9 +1687,9 @@ Success
 
 </details>
 
-### getModules
+### urlUpload
 
-**Summary**: Get all transformation modules
+**Summary**: Upload Asset with url
 
 ```python
 import asyncio
@@ -1708,25 +1704,52 @@ pixelbin:PixelbinClient = PixelbinClient(config=config)
 
 # Sync method call
 try:
-    result = pixelbin.assets.getModules()
+    result = pixelbin.assets.urlUpload(
+        url="www.dummy.com/image.png",
+        path="path/to/containing/folder",
+        name="filename",
+        access="public-read",
+        tags=["tag1","tag2"],
+        metadata={},
+        overwrite=False,
+        filenameOverride=True)
     # use result
 except Exception as e:
     print(e)
 
 # Async method call
 try:
-    result = asyncio.run(pixelbin.assets.getModulesAsync())
+    result = asyncio.run(pixelbin.assets.urlUploadAsync(
+        url="www.dummy.com/image.png",
+        path="path/to/containing/folder",
+        name="filename",
+        access="public-read",
+        tags=["tag1","tag2"],
+        metadata={},
+        overwrite=False,
+        filenameOverride=True))
     # use result
 except Exception as e:
     print(e)
 
 ```
 
-Get all transformation modules.
+| Argument         | Type       | Required | Description                                                                                                                                                                                                                      |
+| ---------------- | ---------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| url              | str        | yes      | Asset URL                                                                                                                                                                                                                        |
+| path             | str        | no       | Path where you want to store the asset                                                                                                                                                                                           |
+| name             | str        | no       | Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe                                                                                                 |
+| access           | AccessEnum | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
+| tags             | List[str]  | no       | Asset tags                                                                                                                                                                                                                       |
+| metadata         | Any        | no       | Asset related metadata                                                                                                                                                                                                           |
+| overwrite        | bool       | no       | Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`.                                                                                                         |
+| filenameOverride | bool       | no       | If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. |
+
+Upload Asset with url
 
 _Returned Response:_
 
-[TransformationModulesResponse](#transformationmodulesresponse)
+[UploadResponse](#uploadresponse)
 
 Success
 
@@ -1735,56 +1758,27 @@ Success
 
 ```json
 {
-    "delimiters": {
-        "operationSeparator": "~",
-        "parameterSeparator": ":"
+    "_id": "dummy-uuid",
+    "name": "asset",
+    "path": "dir",
+    "fileId": "dir/asset",
+    "format": "jpeg",
+    "size": 1000,
+    "access": "private",
+    "isActive": true,
+    "tags": ["tag1", "tag2"],
+    "metadata": {
+        "key": "value"
     },
-    "plugins": {
-        "erase": {
-            "identifier": "erase",
-            "name": "EraseBG",
-            "description": "EraseBG Background Removal Module",
-            "credentials": {
-                "required": false
-            },
-            "operations": [
-                {
-                    "params": {
-                        "name": "Industry Type",
-                        "type": "enum",
-                        "enum": ["general", "ecommerce"],
-                        "default": "general",
-                        "identifier": "i",
-                        "title": "Industry type"
-                    },
-                    "displayName": "Remove background of an image",
-                    "method": "bg",
-                    "description": "Remove the background of any image"
-                }
-            ],
-            "enabled": true
-        }
-    },
-    "presets": [
-        {
-            "_id": "dummy-id",
-            "createdAt": "2022-02-14T10:06:17.803Z",
-            "updatedAt": "2022-02-14T10:06:17.803Z",
-            "isActive": true,
-            "orgId": "265",
-            "presetName": "compressor",
-            "transformation": "t.compress(q:95)",
-            "archived": false
-        }
-    ]
+    "url": "https://domain.com/filename.jpeg"
 }
 ```
 
 </details>
 
-### getModule
+### createSignedUrl
 
-**Summary**: Get Transformation Module by module identifier
+**Summary**: S3 Signed URL upload
 
 ```python
 import asyncio
@@ -1799,31 +1793,53 @@ pixelbin:PixelbinClient = PixelbinClient(config=config)
 
 # Sync method call
 try:
-    result = pixelbin.assets.getModule(
-        identifier="t")
+    result = pixelbin.assets.createSignedUrl(
+        name="filename",
+        path="path/to/containing/folder",
+        format="jpeg",
+        access="public-read",
+        tags=["tag1","tag2"],
+        metadata={},
+        overwrite=False,
+        filenameOverride=True)
     # use result
 except Exception as e:
     print(e)
 
 # Async method call
 try:
-    result = asyncio.run(pixelbin.assets.getModuleAsync(
-        identifier="t"))
+    result = asyncio.run(pixelbin.assets.createSignedUrlAsync(
+        name="filename",
+        path="path/to/containing/folder",
+        format="jpeg",
+        access="public-read",
+        tags=["tag1","tag2"],
+        metadata={},
+        overwrite=False,
+        filenameOverride=True))
     # use result
 except Exception as e:
     print(e)
 
 ```
 
-| Argument   | Type | Required | Description                         |
-| ---------- | ---- | -------- | ----------------------------------- |
-| identifier | str  | yes      | identifier of Transformation Module |
+| Argument         | Type       | Required | Description                                                                                                                                                                                                                      |
+| ---------------- | ---------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| name             | str        | no       | name of the file                                                                                                                                                                                                                 |
+| path             | str        | no       | Path of the file                                                                                                                                                                                                                 |
+| format           | str        | no       | Format of the file                                                                                                                                                                                                               |
+| access           | AccessEnum | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
+| tags             | List[str]  | no       | Tags associated with the file.                                                                                                                                                                                                   |
+| metadata         | Any        | no       | Metadata associated with the file.                                                                                                                                                                                               |
+| overwrite        | bool       | no       | Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`.                                                                                                         |
+| filenameOverride | bool       | no       | If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. |
 
-Get Transformation Module by module identifier
+For the given asset details, a S3 signed URL will be generated,
+which can be then used to upload your asset.
 
 _Returned Response:_
 
-[TransformationModuleResponse](#transformationmoduleresponse)
+[SignedUploadResponse](#signeduploadresponse)
 
 Success
 
@@ -1832,28 +1848,98 @@ Success
 
 ```json
 {
-    "identifier": "erase",
-    "name": "EraseBG",
-    "description": "EraseBG Background Removal Module",
-    "credentials": {
-        "required": false
-    },
-    "operations": [
-        {
-            "params": {
-                "name": "Industry Type",
-                "type": "enum",
-                "enum": ["general", "ecommerce"],
-                "default": "general",
-                "identifier": "i",
-                "title": "Industry type"
-            },
-            "displayName": "Remove background of an image",
-            "method": "bg",
-            "description": "Remove the background of any image"
+    "s3PresignedUrl": {
+        "url": "https://domain.com/xyz",
+        "fields": {
+            "field1": "value",
+            "field2": "value"
         }
-    ],
-    "enabled": true
+    }
+}
+```
+
+</details>
+
+### createSignedUrlV2
+
+**Summary**: Signed multipart upload
+
+```python
+import asyncio
+from pixelbin import PixelbinClient, PixelbinConfig
+
+config = PixelbinConfig({
+    "domain": "https://api.pixelbin.io",
+    "apiSecret": "API_SECRECT_TOKEN",
+})
+
+pixelbin:PixelbinClient = PixelbinClient(config=config)
+
+# Sync method call
+try:
+    result = pixelbin.assets.createSignedUrlV2(
+        name="filename",
+        path="path/to/containing/folder",
+        format="jpeg",
+        access="public-read",
+        tags=["tag1","tag2"],
+        metadata={},
+        overwrite=False,
+        filenameOverride=True,
+        expiry=3000)
+    # use result
+except Exception as e:
+    print(e)
+
+# Async method call
+try:
+    result = asyncio.run(pixelbin.assets.createSignedUrlV2Async(
+        name="filename",
+        path="path/to/containing/folder",
+        format="jpeg",
+        access="public-read",
+        tags=["tag1","tag2"],
+        metadata={},
+        overwrite=False,
+        filenameOverride=True,
+        expiry=3000))
+    # use result
+except Exception as e:
+    print(e)
+
+```
+
+| Argument         | Type       | Required | Description                                                                                                                                                                                                                      |
+| ---------------- | ---------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| name             | str        | no       | name of the file                                                                                                                                                                                                                 |
+| path             | str        | no       | Path of containing folder.                                                                                                                                                                                                       |
+| format           | str        | no       | Format of the file                                                                                                                                                                                                               |
+| access           | AccessEnum | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
+| tags             | List[str]  | no       | Tags associated with the file.                                                                                                                                                                                                   |
+| metadata         | Any        | no       | Metadata associated with the file.                                                                                                                                                                                               |
+| overwrite        | bool       | no       | Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`.                                                                                                         |
+| filenameOverride | bool       | no       | If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. |
+| expiry           | int        | no       | Expiry time in seconds for the signed URL. Defaults to 3000 seconds.                                                                                                                                                             |
+
+For the given asset details, a presigned URL will be generated, which can be then used to upload your asset in chunks via multipart upload.
+
+_Returned Response:_
+
+[SignedUploadV2Response](#signeduploadv2response)
+
+Success
+
+<details>
+<summary><i>&nbsp; Example:</i></summary>
+
+```json
+{
+    "presignedUrl": {
+        "url": "https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=8b49e6cdd446be379aa4396e1a&pbe=1700600070390&pbt=92661&pbo=143209&pbu=5fe187e8-8649-4546-9a28-ff551839e0f5",
+        "fields": {
+            "x-pixb-meta-assetdata": "{\"orgId\":1,\"type\":\"file\",\"name\":\"filename.jpeg\",\"path\":\"\",\"fileId\":\"filename.jpeg\",\"format\":\"jpeg\",\"s3Bucket\":\"erase-erase-erasebg-assets\",\"s3Key\":\"uploads/floral-sun-9617c8/original/a34f1d3-28bf-489c-9aff-cc549ac9e003.jpeg\",\"access\":\"public-read\",\"tags\":[],\"metadata\":{\"source\":\"signedUrl\",\"publicUploadId\":\"5fe187e8-8649-4546-9a28-ff551839e0f5\"},\"overwrite\":false,\"filenameOverride\":false}"
+        }
+    }
 }
 ```
 
@@ -1867,7 +1953,7 @@ Success
 | ---------- | ---- | -------- | ------------------------------------ |
 | \_id       | str  | yes      | Id of the folder item                |
 | name       | str  | yes      | Name of the folder item              |
-| path       | str  | yes      | Path of containing folder            |
+| path       | str  | yes      | Path of the folder item              |
 | type       | str  | yes      | Type of the item. `file` or `folder` |
 
 #### exploreItem
@@ -1877,8 +1963,8 @@ Success
 | \_id       | str                       | yes      | id of the exploreItem                                           |
 | name       | str                       | yes      | name of the item                                                |
 | type       | str                       | yes      | Type of item whether `file` or `folder`                         |
-| path       | str                       | yes      | Path of containing folder                                       |
-| fileId     | str                       | no       | Combination of `path` and `name` of file                        |
+| path       | str                       | yes      | Path of the folder item                                         |
+| fileId     | str                       | no       | FileId associated with the item. `path`+`name`                  |
 | format     | str                       | no       | Format of the file                                              |
 | size       | int                       | no       | Size of the file in bytes                                       |
 | access     | [AccessEnum](#accessenum) | no       | Access level of asset, can be either `public-read` or `private` |
@@ -1920,7 +2006,7 @@ Success
 | Properties       | Type                      | Nullable | Description                                                                                                                                                                                                                      |
 | ---------------- | ------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | file             | FileIO                    | yes      | Asset file                                                                                                                                                                                                                       |
-| path             | str                       | no       | Path where you want to store the asset. Path of containing folder                                                                                                                                                                |
+| path             | str                       | no       | Path where you want to store the asset                                                                                                                                                                                           |
 | name             | str                       | no       | Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe                                                                                                 |
 | access           | [AccessEnum](#accessenum) | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
 | tags             | List[str]                 | no       | Asset tags                                                                                                                                                                                                                       |
@@ -1933,7 +2019,7 @@ Success
 | Properties       | Type                      | Nullable | Description                                                                                                                                                                                                                      |
 | ---------------- | ------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | url              | str                       | yes      | Asset URL                                                                                                                                                                                                                        |
-| path             | str                       | no       | Path where you want to store the asset. Path of containing folder.                                                                                                                                                               |
+| path             | str                       | no       | Path where you want to store the asset                                                                                                                                                                                           |
 | name             | str                       | no       | Name of the asset, if not provided name of the file will be used. Note - The provided name will be slugified to make it URL safe                                                                                                 |
 | access           | [AccessEnum](#accessenum) | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
 | tags             | List[str]                 | no       | Asset tags                                                                                                                                                                                                                       |
@@ -1946,7 +2032,7 @@ Success
 | Properties | Type                      | Nullable | Description                                                 |
 | ---------- | ------------------------- | -------- | ----------------------------------------------------------- |
 | \_id       | str                       | yes      | \_id of the item                                            |
-| fileId     | str                       | yes      | Combination of `path` and `name` of file                    |
+| fileId     | str                       | yes      | FileId associated with the item. path+name                  |
 | name       | str                       | yes      | name of the item                                            |
 | path       | str                       | yes      | path to the parent folder                                   |
 | format     | str                       | yes      | format of the file                                          |
@@ -1962,7 +2048,7 @@ Success
 | Properties       | Type                      | Nullable | Description                                                                                                                                                                                                                      |
 | ---------------- | ------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | name             | str                       | no       | name of the file                                                                                                                                                                                                                 |
-| path             | str                       | no       | Path of containing folder.                                                                                                                                                                                                       |
+| path             | str                       | no       | Path of the file                                                                                                                                                                                                                 |
 | format           | str                       | no       | Format of the file                                                                                                                                                                                                               |
 | access           | [AccessEnum](#accessenum) | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
 | tags             | List[str]                 | no       | Tags associated with the file.                                                                                                                                                                                                   |
@@ -1991,8 +2077,8 @@ Success
 | ---------- | ------------------------- | -------- | -------------------------------------------------------------- |
 | \_id       | str                       | yes      | \_id of the file                                               |
 | name       | str                       | yes      | name of the file                                               |
-| path       | str                       | yes      | path of containing folder.                                     |
-| fileId     | str                       | yes      | Combination of `path` and `name` of file                       |
+| path       | str                       | yes      | path to the parent folder of the file                          |
+| fileId     | str                       | yes      | FileId associated with the item. `path`+`name`                 |
 | format     | str                       | yes      | format of the file                                             |
 | size       | int                       | yes      | size of the file in bytes                                      |
 | access     | [AccessEnum](#accessenum) | yes      | Access level of file, can be either `public-read` or `private` |
@@ -2007,7 +2093,7 @@ Success
 | Properties | Type                      | Nullable | Description                                                     |
 | ---------- | ------------------------- | -------- | --------------------------------------------------------------- |
 | name       | str                       | no       | Name of the file                                                |
-| path       | str                       | no       | path of containing folder.                                      |
+| path       | str                       | no       | Path of the file                                                |
 | access     | [AccessEnum](#accessenum) | no       | Access level of asset, can be either `public-read` or `private` |
 | isActive   | bool                      | no       | Whether the file is active                                      |
 | tags       | List[str]                 | no       | Tags associated with the file                                   |
@@ -2015,33 +2101,25 @@ Success
 
 #### FoldersResponse
 
-| Properties | Type | Nullable | Description                  |
-| ---------- | ---- | -------- | ---------------------------- |
-| \_id       | str  | yes      | \_id of the folder           |
-| name       | str  | yes      | name of the folder           |
-| path       | str  | yes      | path of containing folder.   |
-| isActive   | bool | yes      | whether the folder is active |
+| Properties | Type | Nullable | Description                             |
+| ---------- | ---- | -------- | --------------------------------------- |
+| \_id       | str  | yes      | \_id of the folder                      |
+| name       | str  | yes      | name of the folder                      |
+| path       | str  | yes      | path to the parent folder of the folder |
+| isActive   | bool | yes      | whether the folder is active            |
 
 #### CreateFolderRequest
 
-| Properties | Type | Nullable | Description                |
-| ---------- | ---- | -------- | -------------------------- |
-| name       | str  | yes      | Name of the folder         |
-| path       | str  | no       | path of containing folder. |
+| Properties | Type | Nullable | Description        |
+| ---------- | ---- | -------- | ------------------ |
+| name       | str  | yes      | Name of the folder |
+| path       | str  | no       | Path of the folder |
 
 #### UpdateFolderRequest
 
 | Properties | Type | Nullable | Description                  |
 | ---------- | ---- | -------- | ---------------------------- |
 | isActive   | bool | no       | whether the folder is active |
-
-#### TransformationModulesResponse
-
-| Properties | Type                    | Nullable | Description                                         |
-| ---------- | ----------------------- | -------- | --------------------------------------------------- |
-| delimiters | [Delimiter](#delimiter) | no       | Delimiter for parsing plugin schema                 |
-| plugins    | Any                     | no       | Transformations currently supported by the pixelbin |
-| presets    | List[Any]               | no       | List of saved presets                               |
 
 #### DeleteMultipleFilesRequest
 
@@ -2055,17 +2133,6 @@ Success
 | ------------------ | ---- | -------- | ------------------------------------------------------------------------ |
 | operationSeparator | str  | no       | separator to separate operations in the url pattern                      |
 | parameterSeparator | str  | no       | separator to separate parameters used with operations in the url pattern |
-
-#### TransformationModuleResponse
-
-| Properties  | Type      | Nullable | Description                                     |
-| ----------- | --------- | -------- | ----------------------------------------------- |
-| identifier  | str       | no       | identifier for the plugin type                  |
-| name        | str       | no       | name of the plugin                              |
-| description | str       | no       | description of the plugin                       |
-| credentials | Any       | no       | credentials, if any, associated with the plugin |
-| operations  | List[Any] | no       | supported operations in the plugin              |
-| enabled     | bool      | no       | whether the plugin is enabled                   |
 
 #### Credentials
 
@@ -2169,6 +2236,52 @@ Success
 | ---------- | ----------------------- | -------- | ----------------------- |
 | items      | List[AddPresetResponse] | yes      | Presets in current page |
 | page       | [page](#page)           | yes      | page details            |
+
+#### TransformationModuleResponse
+
+| Properties  | Type      | Nullable | Description                                     |
+| ----------- | --------- | -------- | ----------------------------------------------- |
+| identifier  | str       | no       | identifier for the plugin type                  |
+| name        | str       | no       | name of the plugin                              |
+| description | str       | no       | description of the plugin                       |
+| credentials | Any       | no       | credentials, if any, associated with the plugin |
+| operations  | List[Any] | no       | supported operations in the plugin              |
+| enabled     | bool      | no       | whether the plugin is enabled                   |
+
+#### TransformationModulesResponse
+
+| Properties | Type                    | Nullable | Description                                         |
+| ---------- | ----------------------- | -------- | --------------------------------------------------- |
+| delimiters | [Delimiter](#delimiter) | no       | Delimiter for parsing plugin schema                 |
+| plugins    | Any                     | no       | Transformations currently supported by the pixelbin |
+| presets    | List[Any]               | no       | List of saved presets                               |
+
+#### SignedUploadRequestV2
+
+| Properties       | Type                      | Nullable | Description                                                                                                                                                                                                                      |
+| ---------------- | ------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| name             | str                       | no       | name of the file                                                                                                                                                                                                                 |
+| path             | str                       | no       | Path of containing folder.                                                                                                                                                                                                       |
+| format           | str                       | no       | Format of the file                                                                                                                                                                                                               |
+| access           | [AccessEnum](#accessenum) | no       | Access level of asset, can be either `public-read` or `private`                                                                                                                                                                  |
+| tags             | List[str]                 | no       | Tags associated with the file.                                                                                                                                                                                                   |
+| metadata         | Any                       | no       | Metadata associated with the file.                                                                                                                                                                                               |
+| overwrite        | bool                      | no       | Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`.                                                                                                         |
+| filenameOverride | bool                      | no       | If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. |
+| expiry           | int                       | no       | Expiry time in seconds for the signed URL. Defaults to 3000 seconds.                                                                                                                                                             |
+
+#### SignedUploadV2Response
+
+| Properties   | Type                              | Nullable | Description                                 |
+| ------------ | --------------------------------- | -------- | ------------------------------------------- |
+| presignedUrl | [PresignedUrlV2](#presignedurlv2) | yes      | Presigned URL for uploading asset in chunks |
+
+#### PresignedUrlV2
+
+| Properties | Type | Nullable | Description                                 |
+| ---------- | ---- | -------- | ------------------------------------------- |
+| url        | str  | no       | Presigned URL for uploading asset in chunks |
+| fields     | Any  | no       | signed fields to be sent along with request |
 
 ### Enums
 

@@ -1,3 +1,7 @@
+# 3.2.0
+
+-   Added method for generating V2 Signed Multipart Upload Urls `createSignedUrlV2`
+
 # 3.1.1
 
 -   Fixed regex for Custom Domain URLs
