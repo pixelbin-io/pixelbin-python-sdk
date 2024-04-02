@@ -2725,7 +2725,7 @@ SIGN_URL_CASES = [
         "input": {
             "url": "https://cdn.pixelbin.io/v2/dummy-cloudname/original/__playground/playground-default.jpeg",
             "expiry_seconds": 20,
-            "token_id": 1,
+            "access_key": "c364b7b1-b7b8-4019-99b4-422a46b2bb44",
             "token": "dummy-token",
         },
     },
@@ -2733,7 +2733,7 @@ SIGN_URL_CASES = [
         "input": {
             "url": "https://test.imagebin.io/v2/original/__playground/playground-default.jpeg",
             "expiry_seconds": 20,
-            "token_id": 1,
+            "access_key": "c364b7b1-b7b8-4019-99b4-422a46b2bb44",
             "token": "dummy-token",
         },
     },
@@ -2741,7 +2741,7 @@ SIGN_URL_CASES = [
         "input": {
             "url": "https://cdn.pixelbin.io/v2/dummy-cloudname/original/__playground/playground-default.jpeg",
             "expiry_seconds": "twenty",
-            "token_id": 1,
+            "access_key": "c364b7b1-b7b8-4019-99b4-422a46b2bb44",
             "token": "dummy-token",
         },
         "error": "expiry_seconds must be an integer",
@@ -2750,7 +2750,7 @@ SIGN_URL_CASES = [
         "input": {
             "url": "https://cdn.pixelbin.io/v2/dummy-cloudname/original/__playground/playground-default.jpeg?pbs=2e7578ba14ef3294a3cc95209fad9801a6abdc917ab8f98e5d1ffb4645a6289e&pbe=1696403372&pbt=2583",
             "expiry_seconds": 20,
-            "token_id": 1,
+            "access_key": "c364b7b1-b7b8-4019-99b4-422a46b2bb44",
             "token": "dummy-token",
         },
         "error": "URL already has a signature",

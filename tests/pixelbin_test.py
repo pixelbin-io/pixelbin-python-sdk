@@ -1144,7 +1144,7 @@ class TestPixelBin(unittest.TestCase):
                 signed_url = sign_url(
                     url=args["url"],
                     expiry_seconds=args["expiry_seconds"],
-                    token_id=args["token_id"],
+                    access_key=args["access_key"],
                     token=args["token"],
                 )
                 parsed_url = parse.urlparse(signed_url)

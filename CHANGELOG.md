@@ -1,3 +1,7 @@
+# 4.0.0
+
+-   **Breaking Change:** Function signature of `sign_url` in `security.py` has been updated. The argument `token_id` has been replaced with `access_key`. Access key for a token can be found by going to console.pixelbin.io > `Settings` > `Tokens` > Click on any Token > `Access Key`.
+
 # 3.2.0
 
 -   Added method for generating V2 Signed Multipart Upload Urls `createSignedUrlV2`
