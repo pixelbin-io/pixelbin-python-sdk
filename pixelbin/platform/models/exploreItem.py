@@ -22,11 +22,19 @@ from ..models.BaseSchema import BaseSchema
 
 
 
+
+
+
+
+
+
 class exploreItem(BaseSchema):
     # Assets swagger.json
 
     
     _id = fields.Str(required=False)
+    
+    orgId = fields.Int(required=False)
     
     name = fields.Str(required=False)
     
@@ -41,5 +49,9 @@ class exploreItem(BaseSchema):
     size = fields.Int(required=False)
     
     access = fields.Str(required=False, validate=OneOf([val.value for val in AccessEnum.__members__.values()]))
+    
+    s3Bucket = fields.Str(required=False)
+    
+    s3Key = fields.Str(required=False)
     
 

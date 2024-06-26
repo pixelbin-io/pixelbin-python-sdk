@@ -111,7 +111,18 @@ class AssetsValidator:
     
     class getPresets(BaseSchema):
         
-        pass 
+        pageNo = fields.Int(required=False)
+        
+        pageSize = fields.Int(required=False)
+        
+        name = fields.Str(required=False)
+        
+        transformation = fields.Str(required=False)
+        
+        archived = fields.Boolean(required=False)
+        
+        sort = fields.List(fields.Str(required=False), required=False)
+         
     
     class updatePreset(BaseSchema):
         
