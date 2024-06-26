@@ -101,6 +101,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                     "Content-Type": "application/json",
                 },
+                trust_env=False,
             )
 
     def test_fileUpload_case1(self):
@@ -137,6 +138,7 @@ class TestPixelBin(unittest.TestCase):
                             "Authorization": BEARER_TOKEN,
                         },
                         timeout_allowed=mock.ANY,
+                        trust_env=False,
                     )
                     self.assertDictEqual(
                         resp, json.loads(mock_response["content"].decode())
@@ -197,6 +199,7 @@ class TestPixelBin(unittest.TestCase):
                             "Authorization": BEARER_TOKEN,
                         },
                         timeout_allowed=mock.ANY,
+                        trust_env=False,
                     )
                     self.assertDictEqual(
                         resp, json.loads(mock_response["content"].decode())
@@ -240,6 +243,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -262,6 +266,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -304,6 +309,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -350,6 +356,7 @@ class TestPixelBin(unittest.TestCase):
                     "Content-Type": "application/json",
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -372,6 +379,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -417,6 +425,7 @@ class TestPixelBin(unittest.TestCase):
                     "Content-Type": "application/json",
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -439,6 +448,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -484,6 +494,7 @@ class TestPixelBin(unittest.TestCase):
                     "Content-Type": "application/json",
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -513,6 +524,7 @@ class TestPixelBin(unittest.TestCase):
                     "Content-Type": "application/json",
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -556,6 +568,7 @@ class TestPixelBin(unittest.TestCase):
                     "Content-Type": "application/json",
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -580,6 +593,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -602,6 +616,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -633,6 +648,7 @@ class TestPixelBin(unittest.TestCase):
                     "Content-Type": "application/json",
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -662,6 +678,7 @@ class TestPixelBin(unittest.TestCase):
                     "Content-Type": "application/json",
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -686,6 +703,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -709,6 +727,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -732,6 +751,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -754,6 +774,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -776,6 +797,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -809,6 +831,7 @@ class TestPixelBin(unittest.TestCase):
                     "Content-Type": "application/json",
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -841,6 +864,7 @@ class TestPixelBin(unittest.TestCase):
                     "Content-Type": "application/json",
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -863,6 +887,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -904,6 +929,7 @@ class TestPixelBin(unittest.TestCase):
                     "Content-Type": "application/json",
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -926,6 +952,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -957,6 +984,7 @@ class TestPixelBin(unittest.TestCase):
                     "Content-Type": "application/json",
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -979,6 +1007,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -1001,6 +1030,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -1023,6 +1053,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -1045,6 +1076,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -1070,6 +1102,7 @@ class TestPixelBin(unittest.TestCase):
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
+                trust_env=False,
             )
             self.assertEqual(resp, json.loads(mock_response["content"].decode()))
 
@@ -1154,6 +1187,45 @@ class TestPixelBin(unittest.TestCase):
                 self.assertTrue("pbt" in parsed_qs)
             except Exception as err:
                 self.assertEqual(err.args[0], case["error"])
+    
+    def test_should_pass_trust_env_true(self):
+        from pixelbin import PixelbinConfig, PixelbinClient
+
+        TEST_CONFIG = {
+            "host": "api.pixelbin.io",
+            "domain": "https://api.pixelbin.io",
+            "apiSecret": "token",
+            "options": {
+                "httpClientOptions": {
+                    "trust_env": True
+                }
+            }
+        }
+        pixelbinConfig = PixelbinConfig(config=TEST_CONFIG)
+        pixelbinClient = PixelbinClient(config=pixelbinConfig)
+
+        with mock.patch.object(
+            AiohttpHelper, "_AiohttpHelper__make_request"
+        ) as mock_request:
+            mock_response = MOCK_RESPONSE["getPresets"]["response"]
+            mock_request.return_value = mock_response
+            resp = pixelbinClient.assets.getPresets()
+            mock_request.assert_called_with(
+                method="get",
+                url=f"{CONFIG['domain']}/service/platform/assets/v1.0/presets",
+                params={},
+                data=None,
+                headers={
+                    "host": CONFIG["host"],
+                    "x-ebg-param": mock.ANY,
+                    "x-ebg-signature": mock.ANY,
+                    "Authorization": BEARER_TOKEN,
+                },
+                timeout_allowed=mock.ANY,
+                trust_env=True,
+            )
+            self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
+        
 
 
 class SequentialTestLoader(unittest.TestLoader):

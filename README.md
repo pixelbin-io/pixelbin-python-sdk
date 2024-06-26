@@ -330,6 +330,47 @@ url = Pixelbin.utils.objToUrl(obj); # obj is as shown above
 # https://cdn.pixelbin.io/v2/your-cloud-name/z-slug/wrkr/resize:h100,w:200/folder/image.jpeg
 ```
 
+## Usage with proxy
+
+In case you are using a proxy, you can set `trust_env` to `True` in the `httpClientOptions` object in the `PixelbinConfig` object.
+The SDK will trust the environment settings for proxy configuration or ~/.netrc file if present.
+
+#### Quick Example
+
+```python
+import asyncio
+
+from pixelbin import PixelbinClient, PixelbinConfig
+
+# create client with your API_TOKEN
+config = PixelbinConfig({
+    "domain": "https://api.pixelbin.io",
+    "apiSecret": "API_TOKEN",
+    "options": {
+        "httpClientOptions": {
+            "trust_env": True
+        }
+    }
+})
+
+# Create a pixelbin instance
+pixelbin:PixelbinClient = PixelbinClient(config=config)
+
+# Sync method call
+try:
+    result = pixelbin.assets.listFiles()
+    print(result)
+except Exception as e:
+    print(e)
+
+# Async method call
+try:
+    result = asyncio.get_event_loop().run_until_complete(pixelbin.assets.listFilesAsync())
+    print(result)
+except Exception as e:
+    print(e)
+```
+
 ## Documentation
 
 -   [API docs](documentation/platform/README.md)

@@ -1395,15 +1395,44 @@ We currently do not support updating folder name or path.
     async def getPresetsAsync(
         self, 
         
+        pageNo:int=None, 
+        pageSize:int=None, 
+        name:str=None, 
+        transformation:str=None, 
+        archived:bool=None, 
+        sort:List[Any]=None
         ) -> dict:   
         """
-        summary: Get all presets.
-        description: Get all presets of an organization.
-
+        summary: Get presets for an organization
+        description: Retrieve presets for a specific organization.
+        :param - pageNo : Page number: Type - int 
+        :param - pageSize : Page size: Type - int 
+        :param - name : Preset name: Type - str 
+        :param - transformation : Transformation applied: Type - str 
+        :param - archived : Indicates whether the preset is archived or not: Type - bool 
+        :param - sort : Sort the results by a specific key: Type - List[str] 
         
         """
 
         payload = {}
+        
+        if pageNo is not None:
+            payload["pageNo"] = pageNo
+        
+        if pageSize is not None:
+            payload["pageSize"] = pageSize
+        
+        if name is not None:
+            payload["name"] = name
+        
+        if transformation is not None:
+            payload["transformation"] = transformation
+        
+        if archived is not None:
+            payload["archived"] = archived
+        
+        if sort is not None:
+            payload["sort"] = sort
         
 
         # Parameter validation
@@ -1413,6 +1442,24 @@ We currently do not support updating folder name or path.
         
 
         query_params = {}
+        
+        if pageNo:
+            query_params['pageNo'] = pageNo
+        
+        if pageSize:
+            query_params['pageSize'] = pageSize
+        
+        if name:
+            query_params['name'] = name
+        
+        if transformation:
+            query_params['transformation'] = transformation
+        
+        if archived:
+            query_params['archived'] = archived
+        
+        if sort:
+            query_params['sort'] = sort
         
 
         response = await APIClient.execute(
@@ -1430,15 +1477,32 @@ We currently do not support updating folder name or path.
     def getPresets(
         self, 
         
+        pageNo:int=None, 
+        pageSize:int=None, 
+        name:str=None, 
+        transformation:str=None, 
+        archived:bool=None, 
+        sort:List[Any]=None
         ):   
         """
-        summary: Get all presets.
-        description: Get all presets of an organization.
-
+        summary: Get presets for an organization
+        description: Retrieve presets for a specific organization.
+        :param - pageNo : Page number: Type - int 
+        :param - pageSize : Page size: Type - int 
+        :param - name : Preset name: Type - str 
+        :param - transformation : Transformation applied: Type - str 
+        :param - archived : Indicates whether the preset is archived or not: Type - bool 
+        :param - sort : Sort the results by a specific key: Type - List[str] 
         
         """
         return asyncio.get_event_loop().run_until_complete(
-            self.getPresetsAsync()
+            self.getPresetsAsync(
+                pageNo=pageNo, 
+                pageSize=pageSize, 
+                name=name, 
+                transformation=transformation, 
+                archived=archived, 
+                sort=sort)
         )
 
     

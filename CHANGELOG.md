@@ -1,3 +1,9 @@
+# 4.1.0
+
+-   Fixed parameters for `getPresets` method.
+-   Added support for using a proxy with the Pixelbin SDK by setting the `trust_env` option to `True` in the `httpClientOptions` object of `PixelbinConfig`.
+-   When `trust_env` is set to `True`, the SDK will trust the environment settings for proxy configuration or the `~/.netrc` file if present.
+
 # 4.0.0
 
 -   **Breaking Change:** Function signature of `sign_url` in `security.py` has been updated. The argument `token_id` has been replaced with `access_key`. Access key for a token can be found by going to console.pixelbin.io > `Settings` > `Tokens` > Click on any Token > `Access Key`.
