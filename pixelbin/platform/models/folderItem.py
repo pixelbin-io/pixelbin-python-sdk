@@ -14,11 +14,15 @@ from ..models.BaseSchema import BaseSchema
 
 
 
+
+
 class folderItem(BaseSchema):
     # Assets swagger.json
 
     
     _id = fields.Str(required=False)
+    
+    orgId = fields.Int(required=False)
     
     name = fields.Str(required=False)
     
