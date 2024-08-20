@@ -6,6 +6,11 @@ import ujson
 from typing import Union
 from urllib import parse
 from datetime import datetime
+import asyncio
+import random
+import time
+from functools import wraps
+from typing import Callable, Any
 
 
 async def create_query_string(params : dict={}) -> str:
@@ -71,3 +76,51 @@ async def add_signature_to_headers(domain: str, method: str, url: str, query_str
         if h_value:
             headers[h_key] = h_value
     return headers if not sign_query else query_string
+
+def retry(
+    max_retries: int = 5,
+    base_delay: float = 1,
+    max_delay: float = 60,
+    exp_factor: float = 2,
+    jitter: float = 0,
+    predicate: Callable[[Exception], bool] = lambda e: True,
+):
+    def decorator(func: Callable) -> Callable:
+        @wraps(func)
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
+            def calculate_delay(retry: int) -> float:
+                exponential_delay = min(max_delay, (exp_factor**retry) * base_delay)
+                return exponential_delay + random.uniform(0, jitter)
+
+            async def async_wrapper() -> Any:
+                for retry in range(max_retries + 1):
+                    try:
+                        return await func(*args, **kwargs)
+                    except Exception as exc:
+                        if retry == max_retries:
+                            raise
+                        if not predicate(exc):
+                            raise
+                        delay = calculate_delay(retry)
+                        await asyncio.sleep(delay)
+
+            def sync_wrapper() -> Any:
+                for retry in range(max_retries + 1):
+                    try:
+                        return func(*args, **kwargs)
+                    except Exception as exc:
+                        if retry == max_retries:
+                            raise
+                        if not predicate(exc):
+                            raise
+                        delay = calculate_delay(retry)
+                        time.sleep(delay)
+
+            if asyncio.iscoroutinefunction(func):
+                return async_wrapper()
+            else:
+                return sync_wrapper()
+
+        return wrapper
+
+    return decorator

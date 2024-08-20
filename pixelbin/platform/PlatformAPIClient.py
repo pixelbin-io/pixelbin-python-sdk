@@ -49,30 +49,33 @@ class APIClient:
                     get_params[k] = v
             query = get_params
 
-        query_string = await create_query_string(query)
+        #
+        # Skipping signature check for URLS starting with `/service/platform/` i.e. platform APIs of all services.
+        #
+        # query_string = await create_query_string(query)
+        # headers_with_sign = await add_signature_to_headers(
+        #     domain=conf.domain,
+        #     method=method,
+        #     url=url,
+        #     query_string=query_string,
+        #     headers=headers,
+        #     body=data,
+        #     exclude_headers=["Authorization", 'Content-Type']
+        #     )
 
-        headers_with_sign = await add_signature_to_headers(
-            domain=conf.domain,
-            method=method,
-            url=url,
-            query_string=query_string,
-            headers=headers,
-            body=data,
-            exclude_headers=["Authorization", "Content-Type"],
-        )
+        # headers_with_sign['x-ebg-param'] = base64.b64encode(bytes(headers_with_sign['x-ebg-param'], 'utf-8')).decode()
 
         http_client_options = conf.get_http_client_options()
         trust_env = http_client_options["trust_env"]
-
-        headers_with_sign["x-ebg-param"] = base64.b64encode(
-            bytes(headers_with_sign["x-ebg-param"], "utf-8")
-        ).decode()
+        
+        host = conf.domain.replace("https://", "").replace("http://", "")
+        headers["host"] = host
 
         return await AiohttpHelper().request(
             method=method,
             url=f"{conf.domain}{url}",
             params=query,
             data=body,
-            headers=headers_with_sign,
+            headers=headers,
             trust_env=trust_env,
         )

@@ -1,12 +1,13 @@
 
 import asyncio
 import ujson
+from ..common.utils import retry
 from ..common.aiohttp_helper import AiohttpHelper
-from ..common.exceptions import PixelbinServerResponseError
+from ..common.exceptions import PixelbinServerResponseError, PixelbinIllegalArgumentError
 from .PlatformAPIClient import APIClient
 from .PixelbinConfig import PixelbinConfig
-from io import FileIO
-from typing import List, Any
+from io import FileIO, BufferedIOBase
+from typing import List, Any, Union
 
 
 
@@ -35,6 +36,7 @@ class PixelbinClient:
         self.organization = Organization(config)
         self.transformation = Transformation(config)
         
+        self.uploader = Uploader(self.assets, config)
     
 
 
@@ -97,7 +99,7 @@ class Assets:
             contentType="application/json"
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def addCredentials(
@@ -174,7 +176,7 @@ class Assets:
             contentType="application/json"
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def updateCredentials(
@@ -239,7 +241,7 @@ class Assets:
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def deleteCredentials(
@@ -300,7 +302,7 @@ class Assets:
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def getFileById(
@@ -360,7 +362,7 @@ class Assets:
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def getFileByFileId(
@@ -457,7 +459,7 @@ class Assets:
             contentType="application/json"
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def updateFile(
@@ -535,7 +537,7 @@ class Assets:
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def deleteFile(
@@ -602,7 +604,7 @@ class Assets:
             contentType="application/json"
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def deleteFiles(
@@ -675,7 +677,7 @@ class Assets:
             contentType="application/json"
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def createFolder(
@@ -751,7 +753,7 @@ class Assets:
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def getFolderDetails(
@@ -830,7 +832,7 @@ We currently do not support updating folder name or path.
             contentType="application/json"
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def updateFolder(
@@ -897,7 +899,7 @@ We currently do not support updating folder name or path.
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def deleteFolder(
@@ -959,7 +961,7 @@ We currently do not support updating folder name or path.
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def getFolderAncestors(
@@ -1089,7 +1091,7 @@ We currently do not support updating folder name or path.
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def listFiles(
@@ -1170,7 +1172,7 @@ We currently do not support updating folder name or path.
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def getDefaultAssetForPlayground(
@@ -1223,7 +1225,7 @@ We currently do not support updating folder name or path.
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def getModules(
@@ -1282,7 +1284,7 @@ We currently do not support updating folder name or path.
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def getModule(
@@ -1361,7 +1363,7 @@ We currently do not support updating folder name or path.
             contentType="application/json"
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def addPreset(
@@ -1471,7 +1473,7 @@ We currently do not support updating folder name or path.
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def getPresets(
@@ -1559,7 +1561,7 @@ We currently do not support updating folder name or path.
             contentType="application/json"
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def updatePreset(
@@ -1624,7 +1626,7 @@ We currently do not support updating folder name or path.
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def deletePreset(
@@ -1686,7 +1688,7 @@ We currently do not support updating folder name or path.
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def getPreset(
@@ -1789,7 +1791,7 @@ We currently do not support updating folder name or path.
             contentType="multipart/form-data"
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def fileUpload(
@@ -1912,7 +1914,7 @@ We currently do not support updating folder name or path.
             contentType="application/json"
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def urlUpload(
@@ -2037,7 +2039,7 @@ which can be then used to upload your asset.
             contentType="application/json"
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def createSignedUrl(
@@ -2167,7 +2169,7 @@ which can be then used to upload your asset.
             contentType="application/json"
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def createSignedUrlV2(
@@ -2255,7 +2257,7 @@ class Organization:
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def getAppOrgDetails(
@@ -2324,7 +2326,7 @@ class Transformation:
             contentType=""
             )
         if response["status_code"] != 200:
-            raise PixelbinServerResponseError(str(response["content"]))
+            raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
         return ujson.loads(response["content"])
 
     def getTransformationContext(
@@ -2346,3 +2348,217 @@ class Transformation:
     
     
 
+
+class Uploader:
+    def __init__(self, assets: Assets, config: PixelbinConfig):
+        self.assets = assets
+        self.config = config
+
+    async def uploadAsync(
+        self,
+        file: Union[bytes, BufferedIOBase],
+        name: str = None,
+        path: str = None,
+        format: str = None,
+        access: AccessEnum = None,
+        tags: List[str] = None,
+        metadata: Any = None,
+        overwrite: bool = None,
+        filenameOverride: bool = None,
+        expiry: int = None,
+        uploadOptions: dict = {
+            "chunkSize": 10 * 1024 * 1024,  # 10MB
+            "maxRetries": 2,
+            "concurrency": 3,
+            "exponentialFactor": 2,
+        },
+    ) -> dict:
+        """
+        summary: Upload assets
+        description: Upload assets to PixelBin
+
+        :param - file : File to be uploaded : Type - Union[bytes, io.BufferedIOBase]
+        :param - name : Name of the file : Type - str
+        :param - path : Path of containing folder. : Type - str
+        :param - format : Format of the file : Type - str
+        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
+        :param - tags : Tags associated with the file. : Type - List[str]
+        :param - metadata : Metadata associated with the file. : Type - Any
+        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
+        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
+        :param - expiry : Expiry time in seconds for the signed URL. Defaults to 3000 seconds. : Type - int
+        :param - uploadOptions : Options for multipart upload. : Type - dict
+            - `chunkSize` (int): Size of each chunk to upload. Default is 10 megabyte.
+            - `maxRetries` (int): Maximum number of retries for each part upload. Defaults to 2.
+            - `concurrency` (int): Number of parallel upload tasks. Defaults to 3.
+            - `exponentialFactor` (int): Exponential factor for retry. Defaults to 2.
+        """
+
+        chunk_size = uploadOptions.get("chunkSize")
+        if chunk_size is None:
+            uploadOptions["chunkSize"] = 10 * 1024 * 1024  # Default to 10MB
+        elif not isinstance(chunk_size, int) or chunk_size <= 0:
+            raise PixelbinIllegalArgumentError("Invalid chunkSize: Must be a positive integer.")
+
+        max_retries = uploadOptions.get("maxRetries")
+        if max_retries is None:
+            uploadOptions["maxRetries"] = 2  # Default to 2 retries
+        elif not isinstance(max_retries, int) or max_retries < 0:
+            raise PixelbinIllegalArgumentError("Invalid maxRetries: Must be a non-negative integer.")
+
+        concurrency = uploadOptions.get("concurrency")
+        if concurrency is None:
+            uploadOptions["concurrency"] = 3  # Default to 3 concurrent uploads
+        elif not isinstance(concurrency, int) or concurrency <= 0:
+            raise PixelbinIllegalArgumentError("Invalid concurrency: Must be a positive integer.")
+
+        exponential_factor = uploadOptions.get("exponentialFactor")
+        if exponential_factor is None:
+            uploadOptions["exponentialFactor"] = 2  # Default to an exponential factor of 2
+        elif not isinstance(exponential_factor, (int, float)) or exponential_factor < 0:
+            raise PixelbinIllegalArgumentError("Invalid exponentialFactor: Must be a positive number.")
+        
+        signed_url_response = await self.assets.createSignedUrlV2Async(
+            name=name,
+            path=path,
+            format=format,
+            access=access,
+            tags=tags,
+            metadata=metadata,
+            overwrite=overwrite,
+            filenameOverride=filenameOverride,
+            expiry=expiry,
+        )
+
+        presigned_url = signed_url_response["presignedUrl"]
+
+        return await self._multipart_upload_async(
+            presigned_url["url"], presigned_url["fields"], file, **uploadOptions
+        )
+
+    async def _multipart_upload_async(
+        self, url: str, fields: dict, file: Union[bytes, FileIO], **options
+    ) -> dict:
+
+        http_client_options = self.config.get_http_client_options()
+        trust_env = http_client_options["trust_env"]
+
+        chunk_size = options.get("chunkSize")
+        max_retries = options.get("maxRetries")
+        concurrency = options.get("concurrency")
+        exponential_factor = options.get("exponentialFactor")
+
+        def retriable_error(error: Exception) -> bool:
+            if isinstance(error, PixelbinServerResponseError):
+                return not (error.status_code >= 400 and error.status_code < 500)
+            return True
+
+        @retry(max_retries=max_retries, predicate=retriable_error, exp_factor=2)
+        async def upload_chunk(chunk: bytes, part_number: int) -> dict:
+            body = {
+                "file": chunk,
+                **fields,
+            }
+            response = await AiohttpHelper().request(
+                method="put",
+                url=f"{url}&partNumber={part_number}",
+                data=body,
+                headers={},
+                params={},
+                trust_env=trust_env,
+            )
+            if response["status_code"] != 204:
+                    raise PixelbinServerResponseError(str(response["content"]),response["status_code"])
+            return
+
+        @retry(max_retries=max_retries, predicate=retriable_error, exp_factor=exponential_factor)
+        async def complete_multipart_upload():
+            data = {
+                "parts": list(range(1, part_number)),
+                **fields,
+            }
+            response = await AiohttpHelper().request(
+                        method="post",
+                        url=url,
+                        data=data,
+                        headers={
+                            "Content-Type": "application/json",
+                        },
+                        params={},
+                        trust_env=trust_env,
+                    )
+            if response["status_code"] != 200:
+                raise PixelbinServerResponseError(str(response["content"]), response["status_code"])
+            return ujson.loads(response["content"])
+
+        part_number = 1
+        tasks = []
+        if isinstance(file, bytes):
+            for i in range(0, len(file), chunk_size):
+                tasks.append(upload_chunk(file[i:i+chunk_size], part_number))
+                part_number += 1
+                if len(tasks) >= concurrency:
+                    await asyncio.gather(*tasks)
+                    tasks = []
+        elif hasattr(file, 'read'):
+            while True:
+                chunk = file.read(chunk_size)
+                if not chunk:
+                    break
+                tasks.append(upload_chunk(chunk, part_number))
+                part_number += 1
+                if len(tasks) >= concurrency:
+                    await asyncio.gather(*tasks)
+                    tasks = []
+        else:
+            raise TypeError("Unsupported file type. Expected bytes or a file-like object.")
+
+        if tasks:
+            await asyncio.gather(*tasks)
+
+        return await complete_multipart_upload()
+
+    def upload(
+        self,
+        file: Union[bytes, BufferedIOBase],
+        name: str = None,
+        path: str = None,
+        format: str = None,
+        access: AccessEnum = None,
+        tags: List[str] = None,
+        metadata: Any = None,
+        overwrite: bool = None,
+        filenameOverride: bool = None,
+        expiry: int = None,
+        uploadOptions: dict = {
+            "chunkSize": 10 * 1024 * 1024,  # 10MB
+            "maxRetries": 2,
+            "concurrency": 3,
+            "exponentialFactor": 2,
+        },
+    ) -> dict:
+        """
+        summary: Upload assets
+        description: Upload assets to PixelBin
+        
+        :param - file : File to be uploaded : Type - Union[bytes, io.BufferedIOBase]
+        :param - name : Name of the file : Type - str
+        :param - path : Path of containing folder. : Type - str
+        :param - format : Format of the file : Type - str
+        :param - access : Access level of asset, can be either `public-read` or `private` : Type - AccessEnum
+        :param - tags : Tags associated with the file. : Type - List[str]
+        :param - metadata : Metadata associated with the file. : Type - Any
+        :param - overwrite : Overwrite flag. If set to `true` will overwrite any file that exists with same path, name and type. Defaults to `false`. : Type - bool
+        :param - filenameOverride : If set to `true` will add unique characters to name if asset with given name already exists. If overwrite flag is set to `true`, preference will be given to overwrite flag. If both are set to `false` an error will be raised. : Type - bool
+        :param - expiry : Expiry time in seconds for the signed URL. Defaults to 3000 seconds. : Type - int
+        :param - uploadOptions : Options for multipart upload. : Type - dict
+            - `chunkSize` (int): Size of each chunk to upload. Default is 10 megabyte. Recommended chunk size for 3g network - up to 5kb, 4g network - 500kb to 1MB, 5g network - 1MB to 2MB.
+            - `maxRetries` (int): Maximum number of retries for each part upload. Defaults to 2.
+            - `concurrency` (int): Number of parallel upload tasks. Defaults to 3.
+            - `exponentialFactor` (int): Exponential factor for retry. Defaults to 2.
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self.uploadAsync(
+               file, name, path, format, access, tags, metadata, overwrite, filenameOverride, expiry, uploadOptions
+            )
+        )

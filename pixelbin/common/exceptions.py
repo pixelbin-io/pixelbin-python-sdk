@@ -6,9 +6,10 @@ class PixelbinInvalidCredentialError(Exception):
 
 class PixelbinServerResponseError(Exception):
     """Pixelbin Server Response Exception."""
-    def __init__(self, message=""):
+    def __init__(self, message="", status_code=None):
         """Initialize function __init__."""
         super(PixelbinServerResponseError, self).__init__(message)
+        self.status_code = status_code
 
 
 class PixelbinInvalidUrlError(Exception):
