@@ -3,7 +3,11 @@ import ujson
 import sys
 import unittest
 from unittest import mock
-from pixelbin.common.exceptions import PixelbinInvalidCredentialError
+from pixelbin.common.exceptions import (
+    PixelbinInvalidCredentialError,
+    PixelbinServerResponseError,
+    PixelbinIllegalArgumentError,
+)
 from pixelbin.common.aiohttp_helper import AiohttpHelper
 from aiohttp import FormData
 from test_utils import URLS_TO_OBJ, OBJ_TO_URL, MOCK_RESPONSE, SIGN_URL_CASES
@@ -96,8 +100,6 @@ class TestPixelBin(unittest.TestCase):
                 data={"name": "testdir", "path": "/"},
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                     "Content-Type": "application/json",
                 },
@@ -133,8 +135,6 @@ class TestPixelBin(unittest.TestCase):
                         data=mock.ANY,
                         headers={
                             "host": CONFIG["host"],
-                            "x-ebg-param": mock.ANY,
-                            "x-ebg-signature": mock.ANY,
                             "Authorization": BEARER_TOKEN,
                         },
                         timeout_allowed=mock.ANY,
@@ -194,8 +194,6 @@ class TestPixelBin(unittest.TestCase):
                         data=mock.ANY,
                         headers={
                             "host": CONFIG["host"],
-                            "x-ebg-param": mock.ANY,
-                            "x-ebg-signature": mock.ANY,
                             "Authorization": BEARER_TOKEN,
                         },
                         timeout_allowed=mock.ANY,
@@ -238,8 +236,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -261,8 +257,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -304,8 +298,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -350,8 +342,6 @@ class TestPixelBin(unittest.TestCase):
                 data=mock_data,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                     "Content-Type": "application/json",
                 },
@@ -374,8 +364,6 @@ class TestPixelBin(unittest.TestCase):
                 data={},
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -419,8 +407,6 @@ class TestPixelBin(unittest.TestCase):
                 data=mock_data,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                     "Content-Type": "application/json",
                 },
@@ -443,8 +429,6 @@ class TestPixelBin(unittest.TestCase):
                 data={},
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -488,8 +472,6 @@ class TestPixelBin(unittest.TestCase):
                 data=mock_data,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                     "Content-Type": "application/json",
                 },
@@ -518,8 +500,6 @@ class TestPixelBin(unittest.TestCase):
                 data=mock_data,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                     "Content-Type": "application/json",
                 },
@@ -562,8 +542,6 @@ class TestPixelBin(unittest.TestCase):
                 data=mock_data,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                     "Content-Type": "application/json",
                 },
@@ -588,8 +566,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -611,8 +587,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -642,8 +616,6 @@ class TestPixelBin(unittest.TestCase):
                 data=mock_data,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                     "Content-Type": "application/json",
                 },
@@ -672,8 +644,6 @@ class TestPixelBin(unittest.TestCase):
                 data=mock_data,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                     "Content-Type": "application/json",
                 },
@@ -698,8 +668,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -722,8 +690,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -746,8 +712,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -769,8 +733,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -792,8 +754,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -825,8 +785,6 @@ class TestPixelBin(unittest.TestCase):
                 data=mock_data,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                     "Content-Type": "application/json",
                 },
@@ -858,8 +816,6 @@ class TestPixelBin(unittest.TestCase):
                 data=mock_data,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                     "Content-Type": "application/json",
                 },
@@ -882,8 +838,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -923,8 +877,6 @@ class TestPixelBin(unittest.TestCase):
                 data=mock_data,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                     "Content-Type": "application/json",
                 },
@@ -947,8 +899,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -978,8 +928,6 @@ class TestPixelBin(unittest.TestCase):
                 data=mock_data,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                     "Content-Type": "application/json",
                 },
@@ -1002,8 +950,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -1025,8 +971,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -1048,8 +992,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -1071,8 +1013,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -1097,8 +1037,6 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
@@ -1187,7 +1125,7 @@ class TestPixelBin(unittest.TestCase):
                 self.assertTrue("pbt" in parsed_qs)
             except Exception as err:
                 self.assertEqual(err.args[0], case["error"])
-    
+
     def test_should_pass_trust_env_true(self):
         from pixelbin import PixelbinConfig, PixelbinClient
 
@@ -1195,11 +1133,7 @@ class TestPixelBin(unittest.TestCase):
             "host": "api.pixelbin.io",
             "domain": "https://api.pixelbin.io",
             "apiSecret": "token",
-            "options": {
-                "httpClientOptions": {
-                    "trust_env": True
-                }
-            }
+            "options": {"httpClientOptions": {"trust_env": True}},
         }
         pixelbinConfig = PixelbinConfig(config=TEST_CONFIG)
         pixelbinClient = PixelbinClient(config=pixelbinConfig)
@@ -1217,15 +1151,600 @@ class TestPixelBin(unittest.TestCase):
                 data=None,
                 headers={
                     "host": CONFIG["host"],
-                    "x-ebg-param": mock.ANY,
-                    "x-ebg-signature": mock.ANY,
                     "Authorization": BEARER_TOKEN,
                 },
                 timeout_allowed=mock.ANY,
                 trust_env=True,
             )
             self.assertDictEqual(resp, json.loads(mock_response["content"].decode()))
-        
+
+    def test_uploader_upload_buffer(self):
+        def make_request_side_effect(**kwargs):
+            method = kwargs.get("method")
+            if method == "put":
+                return MOCK_RESPONSE["multipartUploadChunkUpload"]["response"]
+            elif method == "post":
+                if (
+                    kwargs.get("url")
+                    == f"{CONFIG['domain']}/service/platform/assets/v2.0/upload/signed-url"
+                ):
+                    return MOCK_RESPONSE["createSignedURLV2_1"]["response"]
+                else:
+                    return MOCK_RESPONSE["multipartUploadCompleteUpload"]["response"]
+            else:
+                raise Exception("Invalid request")
+
+        form_data = FormData()
+        with mock.patch.object(
+            form_data, "add_field", wraps=form_data.add_field
+        ) as spy_add_field:
+            with mock.patch.object(
+                AiohttpHelper, "_AiohttpHelper__get_formdata"
+            ) as mock_get_formdata:
+                mock_get_formdata.return_value = form_data
+                with mock.patch.object(
+                    AiohttpHelper, "_AiohttpHelper__make_request"
+                ) as mock_request:
+                    mock_response = MOCK_RESPONSE["multipartUploadCompleteUpload"][
+                        "response"
+                    ]
+                    mock_request.side_effect = make_request_side_effect
+                    file = open("./tests/1.jpeg", "rb")
+                    file = file.read()
+                    self.assertEqual(len(file), 11732)
+                    chunk1 = file[: 6 * 1024]
+                    chunk2 = file[6 * 1024 :]
+
+                    resp = self.pixelbinClient.uploader.upload(
+                        file=file, uploadOptions={"chunkSize": 6 * 1024}
+                    )
+
+                    spy_add_field.assert_has_calls(
+                        calls=[
+                            mock.call("file", chunk1),
+                            mock.call(
+                                "x-pixb-meta-assetdata",
+                                '{"orgId":3308,"type":"file","name":"asset-8WhaVptV2.jpeg","path":"","fileId":"asset-8WhaVptV2.jpeg","format":"jpeg","s3Bucket":"erase-erase-erasebg-assets","s3Key":"uploads/shiny-tree-8df4f8/original/13859f04-3dc0-4aca-a762-263108fb0323.jpeg","access":"public-read","tags":[],"metadata":{"source":"signedUrl","publicUploadId":"376a20ef-cf61-469d-a90f-c35177cc1dd6"},"overwrite":false,"filenameOverride":false}',
+                            ),
+                            mock.call("file", chunk2),
+                            mock.call(
+                                "x-pixb-meta-assetdata",
+                                '{"orgId":3308,"type":"file","name":"asset-8WhaVptV2.jpeg","path":"","fileId":"asset-8WhaVptV2.jpeg","format":"jpeg","s3Bucket":"erase-erase-erasebg-assets","s3Key":"uploads/shiny-tree-8df4f8/original/13859f04-3dc0-4aca-a762-263108fb0323.jpeg","access":"public-read","tags":[],"metadata":{"source":"signedUrl","publicUploadId":"376a20ef-cf61-469d-a90f-c35177cc1dd6"},"overwrite":false,"filenameOverride":false}',
+                            ),
+                        ]
+                    )
+
+                    self.assertEqual(
+                        mock_request.call_args_list,
+                        [
+                            mock.call(
+                                method="post",
+                                url=f"{CONFIG['domain']}/service/platform/assets/v2.0/upload/signed-url",
+                                params={},
+                                data={},
+                                headers={
+                                    "host": CONFIG["host"],
+                                    "Authorization": BEARER_TOKEN,
+                                },
+                                timeout_allowed=mock.ANY,
+                                trust_env=False,
+                            ),
+                            mock.call(
+                                method="put",
+                                url="https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=3ab526b08221fd3e5c6facfc101a&pbe=1710243228975&pbt=ca1bdc76-9498-4353-385d-61e190c5c663&pbo=3308&pbu=376a20ef-cf61-469d-a90f-c35177cc1dd6&partNumber=1",
+                                params={},
+                                data=mock.ANY,
+                                headers={},
+                                timeout_allowed=15,
+                                trust_env=False,
+                            ),
+                            mock.call(
+                                method="put",
+                                url="https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=3ab526b08221fd3e5c6facfc101a&pbe=1710243228975&pbt=ca1bdc76-9498-4353-385d-61e190c5c663&pbo=3308&pbu=376a20ef-cf61-469d-a90f-c35177cc1dd6&partNumber=2",
+                                params={},
+                                data=mock.ANY,
+                                headers={},
+                                timeout_allowed=15,
+                                trust_env=False,
+                            ),
+                            mock.call(
+                                method="post",
+                                url="https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=3ab526b08221fd3e5c6facfc101a&pbe=1710243228975&pbt=ca1bdc76-9498-4353-385d-61e190c5c663&pbo=3308&pbu=376a20ef-cf61-469d-a90f-c35177cc1dd6",
+                                params={},
+                                data='{"parts":[1,2],"x-pixb-meta-assetdata":"{\\"orgId\\":3308,\\"type\\":\\"file\\",\\"name\\":\\"asset-8WhaVptV2.jpeg\\",\\"path\\":\\"\\",\\"fileId\\":\\"asset-8WhaVptV2.jpeg\\",\\"format\\":\\"jpeg\\",\\"s3Bucket\\":\\"erase-erase-erasebg-assets\\",\\"s3Key\\":\\"uploads/shiny-tree-8df4f8/original/13859f04-3dc0-4aca-a762-263108fb0323.jpeg\\",\\"access\\":\\"public-read\\",\\"tags\\":[],\\"metadata\\":{\\"source\\":\\"signedUrl\\",\\"publicUploadId\\":\\"376a20ef-cf61-469d-a90f-c35177cc1dd6\\"},\\"overwrite\\":false,\\"filenameOverride\\":false}"}',
+                                headers={"Content-Type": "application/json"},
+                                timeout_allowed=15,
+                                trust_env=False,
+                            ),
+                        ],
+                    )
+                    self.assertDictEqual(
+                        resp, json.loads(mock_response["content"].decode())
+                    )
+
+    def test_uploader_upload_stream(self):
+        def make_request_side_effect(**kwargs):
+            method = kwargs.get("method")
+            if method == "put":
+                return MOCK_RESPONSE["multipartUploadChunkUpload"]["response"]
+            elif method == "post":
+                if (
+                    kwargs.get("url")
+                    == f"{CONFIG['domain']}/service/platform/assets/v2.0/upload/signed-url"
+                ):
+                    return MOCK_RESPONSE["createSignedURLV2_1"]["response"]
+                else:
+                    return MOCK_RESPONSE["multipartUploadCompleteUpload"]["response"]
+            else:
+                raise Exception("Invalid request")
+
+        form_data = FormData()
+        with mock.patch.object(
+            form_data, "add_field", wraps=form_data.add_field
+        ) as spy_add_field:
+            with mock.patch.object(
+                AiohttpHelper, "_AiohttpHelper__get_formdata"
+            ) as mock_get_formdata:
+                mock_get_formdata.return_value = form_data
+                with mock.patch.object(
+                    AiohttpHelper, "_AiohttpHelper__make_request"
+                ) as mock_request:
+                    mock_response = MOCK_RESPONSE["multipartUploadCompleteUpload"][
+                        "response"
+                    ]
+                    mock_request.side_effect = make_request_side_effect
+
+                    file = open("./tests/1.jpeg", "rb")
+                    file = file.read()
+                    self.assertEqual(len(file), 11732)
+                    chunk1 = file[: 6 * 1024]
+                    chunk2 = file[6 * 1024 :]
+
+                    resp = self.pixelbinClient.uploader.upload(
+                        file=open("./tests/1.jpeg", "rb"),
+                        uploadOptions={"chunkSize": 6 * 1024},
+                    )
+
+                    spy_add_field.assert_has_calls(
+                        calls=[
+                            mock.call("file", chunk1),
+                            mock.call(
+                                "x-pixb-meta-assetdata",
+                                '{"orgId":3308,"type":"file","name":"asset-8WhaVptV2.jpeg","path":"","fileId":"asset-8WhaVptV2.jpeg","format":"jpeg","s3Bucket":"erase-erase-erasebg-assets","s3Key":"uploads/shiny-tree-8df4f8/original/13859f04-3dc0-4aca-a762-263108fb0323.jpeg","access":"public-read","tags":[],"metadata":{"source":"signedUrl","publicUploadId":"376a20ef-cf61-469d-a90f-c35177cc1dd6"},"overwrite":false,"filenameOverride":false}',
+                            ),
+                            mock.call("file", chunk2),
+                            mock.call(
+                                "x-pixb-meta-assetdata",
+                                '{"orgId":3308,"type":"file","name":"asset-8WhaVptV2.jpeg","path":"","fileId":"asset-8WhaVptV2.jpeg","format":"jpeg","s3Bucket":"erase-erase-erasebg-assets","s3Key":"uploads/shiny-tree-8df4f8/original/13859f04-3dc0-4aca-a762-263108fb0323.jpeg","access":"public-read","tags":[],"metadata":{"source":"signedUrl","publicUploadId":"376a20ef-cf61-469d-a90f-c35177cc1dd6"},"overwrite":false,"filenameOverride":false}',
+                            ),
+                        ]
+                    )
+
+                    self.assertEqual(
+                        mock_request.call_args_list,
+                        [
+                            mock.call(
+                                method="post",
+                                url=f"{CONFIG['domain']}/service/platform/assets/v2.0/upload/signed-url",
+                                params={},
+                                data={},
+                                headers={
+                                    "host": CONFIG["host"],
+                                    "Authorization": BEARER_TOKEN,
+                                },
+                                timeout_allowed=mock.ANY,
+                                trust_env=False,
+                            ),
+                            mock.call(
+                                method="put",
+                                url="https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=3ab526b08221fd3e5c6facfc101a&pbe=1710243228975&pbt=ca1bdc76-9498-4353-385d-61e190c5c663&pbo=3308&pbu=376a20ef-cf61-469d-a90f-c35177cc1dd6&partNumber=1",
+                                params={},
+                                data=mock.ANY,
+                                headers={},
+                                timeout_allowed=15,
+                                trust_env=False,
+                            ),
+                            mock.call(
+                                method="put",
+                                url="https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=3ab526b08221fd3e5c6facfc101a&pbe=1710243228975&pbt=ca1bdc76-9498-4353-385d-61e190c5c663&pbo=3308&pbu=376a20ef-cf61-469d-a90f-c35177cc1dd6&partNumber=2",
+                                params={},
+                                data=mock.ANY,
+                                headers={},
+                                timeout_allowed=15,
+                                trust_env=False,
+                            ),
+                            mock.call(
+                                method="post",
+                                url="https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=3ab526b08221fd3e5c6facfc101a&pbe=1710243228975&pbt=ca1bdc76-9498-4353-385d-61e190c5c663&pbo=3308&pbu=376a20ef-cf61-469d-a90f-c35177cc1dd6",
+                                params={},
+                                data='{"parts":[1,2],"x-pixb-meta-assetdata":"{\\"orgId\\":3308,\\"type\\":\\"file\\",\\"name\\":\\"asset-8WhaVptV2.jpeg\\",\\"path\\":\\"\\",\\"fileId\\":\\"asset-8WhaVptV2.jpeg\\",\\"format\\":\\"jpeg\\",\\"s3Bucket\\":\\"erase-erase-erasebg-assets\\",\\"s3Key\\":\\"uploads/shiny-tree-8df4f8/original/13859f04-3dc0-4aca-a762-263108fb0323.jpeg\\",\\"access\\":\\"public-read\\",\\"tags\\":[],\\"metadata\\":{\\"source\\":\\"signedUrl\\",\\"publicUploadId\\":\\"376a20ef-cf61-469d-a90f-c35177cc1dd6\\"},\\"overwrite\\":false,\\"filenameOverride\\":false}"}',
+                                headers={"Content-Type": "application/json"},
+                                timeout_allowed=15,
+                                trust_env=False,
+                            ),
+                        ],
+                    )
+                    self.assertDictEqual(
+                        resp, json.loads(mock_response["content"].decode())
+                    )
+
+    def test_uploader_upload_dont_retry_on_4xx(self):
+        def make_request_side_effect(**kwargs):
+            method = kwargs.get("method")
+            if method == "put":
+                return MOCK_RESPONSE["multipartUploadChunkUploadFailed"]["response"]
+            elif method == "post":
+                if (
+                    kwargs.get("url")
+                    == f"{CONFIG['domain']}/service/platform/assets/v2.0/upload/signed-url"
+                ):
+                    return MOCK_RESPONSE["createSignedURLV2_1"]["response"]
+            else:
+                raise Exception("Invalid request")
+
+        form_data = FormData()
+        with mock.patch.object(
+            form_data, "add_field", wraps=form_data.add_field
+        ) as spy_add_field:
+            with mock.patch.object(
+                AiohttpHelper, "_AiohttpHelper__get_formdata"
+            ) as mock_get_formdata:
+                mock_get_formdata.return_value = form_data
+                with mock.patch.object(
+                    AiohttpHelper, "_AiohttpHelper__make_request"
+                ) as mock_request:
+                    mock_response = MOCK_RESPONSE["multipartUploadChunkUploadFailed"][
+                        "response"
+                    ]
+                    mock_request.side_effect = make_request_side_effect
+                    file = open("./tests/1.jpeg", "rb")
+                    file = file.read()
+                    self.assertEqual(len(file), 11732)
+                    chunk1 = file[: 6 * 1024]
+                    chunk2 = file[6 * 1024 :]
+
+                    try:
+                        self.pixelbinClient.uploader.upload(
+                            file=file, uploadOptions={"chunkSize": 6 * 1024}
+                        )
+                        raise Exception("Request should have failed")
+                    except PixelbinServerResponseError as e:
+                        self.assertEqual(e.status_code, mock_response["status_code"])
+
+                    spy_add_field.assert_has_calls(
+                        calls=[
+                            mock.call("file", chunk1),
+                            mock.call(
+                                "x-pixb-meta-assetdata",
+                                '{"orgId":3308,"type":"file","name":"asset-8WhaVptV2.jpeg","path":"","fileId":"asset-8WhaVptV2.jpeg","format":"jpeg","s3Bucket":"erase-erase-erasebg-assets","s3Key":"uploads/shiny-tree-8df4f8/original/13859f04-3dc0-4aca-a762-263108fb0323.jpeg","access":"public-read","tags":[],"metadata":{"source":"signedUrl","publicUploadId":"376a20ef-cf61-469d-a90f-c35177cc1dd6"},"overwrite":false,"filenameOverride":false}',
+                            ),
+                            mock.call("file", chunk2),
+                            mock.call(
+                                "x-pixb-meta-assetdata",
+                                '{"orgId":3308,"type":"file","name":"asset-8WhaVptV2.jpeg","path":"","fileId":"asset-8WhaVptV2.jpeg","format":"jpeg","s3Bucket":"erase-erase-erasebg-assets","s3Key":"uploads/shiny-tree-8df4f8/original/13859f04-3dc0-4aca-a762-263108fb0323.jpeg","access":"public-read","tags":[],"metadata":{"source":"signedUrl","publicUploadId":"376a20ef-cf61-469d-a90f-c35177cc1dd6"},"overwrite":false,"filenameOverride":false}',
+                            ),
+                        ]
+                    )
+
+                    self.assertEqual(
+                        mock_request.call_args_list,
+                        [
+                            mock.call(
+                                method="post",
+                                url=f"{CONFIG['domain']}/service/platform/assets/v2.0/upload/signed-url",
+                                params={},
+                                data={},
+                                headers={
+                                    "host": CONFIG["host"],
+                                    "Authorization": BEARER_TOKEN,
+                                },
+                                timeout_allowed=mock.ANY,
+                                trust_env=False,
+                            ),
+                            mock.call(
+                                method="put",
+                                url="https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=3ab526b08221fd3e5c6facfc101a&pbe=1710243228975&pbt=ca1bdc76-9498-4353-385d-61e190c5c663&pbo=3308&pbu=376a20ef-cf61-469d-a90f-c35177cc1dd6&partNumber=1",
+                                params={},
+                                data=mock.ANY,
+                                headers={},
+                                timeout_allowed=15,
+                                trust_env=False,
+                            ),
+                            mock.call(
+                                method="put",
+                                url="https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=3ab526b08221fd3e5c6facfc101a&pbe=1710243228975&pbt=ca1bdc76-9498-4353-385d-61e190c5c663&pbo=3308&pbu=376a20ef-cf61-469d-a90f-c35177cc1dd6&partNumber=2",
+                                params={},
+                                data=mock.ANY,
+                                headers={},
+                                timeout_allowed=15,
+                                trust_env=False,
+                            ),
+                        ],
+                    )
+
+    def test_uploader_upload_retry(self):
+        put_request_count = 0
+
+        def make_request_side_effect(**kwargs):
+            method = kwargs.get("method")
+            if method == "put":
+                nonlocal put_request_count
+                if put_request_count == 0:
+                    put_request_count += 1
+                    return MOCK_RESPONSE["multipartUploadChunkUploadFailed2"][
+                        "response"
+                    ]
+                return MOCK_RESPONSE["multipartUploadChunkUpload"]["response"]
+            elif method == "post":
+                if (
+                    kwargs.get("url")
+                    == f"{CONFIG['domain']}/service/platform/assets/v2.0/upload/signed-url"
+                ):
+                    return MOCK_RESPONSE["createSignedURLV2_1"]["response"]
+                else:
+                    return MOCK_RESPONSE["multipartUploadCompleteUpload"]["response"]
+            else:
+                raise Exception("Invalid request")
+
+        form_data = FormData()
+        with mock.patch.object(
+            form_data, "add_field", wraps=form_data.add_field
+        ) as spy_add_field:
+            with mock.patch.object(
+                AiohttpHelper, "_AiohttpHelper__get_formdata"
+            ) as mock_get_formdata:
+                mock_get_formdata.return_value = form_data
+                with mock.patch.object(
+                    AiohttpHelper, "_AiohttpHelper__make_request"
+                ) as mock_request:
+                    mock_response = MOCK_RESPONSE["multipartUploadCompleteUpload"][
+                        "response"
+                    ]
+                    mock_request.side_effect = make_request_side_effect
+                    file = open("./tests/1.jpeg", "rb")
+                    file = file.read()
+                    self.assertEqual(len(file), 11732)
+                    chunk1 = file[: 6 * 1024]
+                    chunk2 = file[6 * 1024 :]
+
+                    resp = self.pixelbinClient.uploader.upload(
+                        file=file,
+                        uploadOptions={
+                            "chunkSize": 6 * 1024,
+                            "maxRetries": 1,
+                            "exponentialFactor": 1,
+                        },
+                    )
+
+                    spy_add_field.assert_has_calls(
+                        calls=[
+                            mock.call("file", chunk1),
+                            mock.call(
+                                "x-pixb-meta-assetdata",
+                                '{"orgId":3308,"type":"file","name":"asset-8WhaVptV2.jpeg","path":"","fileId":"asset-8WhaVptV2.jpeg","format":"jpeg","s3Bucket":"erase-erase-erasebg-assets","s3Key":"uploads/shiny-tree-8df4f8/original/13859f04-3dc0-4aca-a762-263108fb0323.jpeg","access":"public-read","tags":[],"metadata":{"source":"signedUrl","publicUploadId":"376a20ef-cf61-469d-a90f-c35177cc1dd6"},"overwrite":false,"filenameOverride":false}',
+                            ),
+                            mock.call("file", chunk2),
+                            mock.call(
+                                "x-pixb-meta-assetdata",
+                                '{"orgId":3308,"type":"file","name":"asset-8WhaVptV2.jpeg","path":"","fileId":"asset-8WhaVptV2.jpeg","format":"jpeg","s3Bucket":"erase-erase-erasebg-assets","s3Key":"uploads/shiny-tree-8df4f8/original/13859f04-3dc0-4aca-a762-263108fb0323.jpeg","access":"public-read","tags":[],"metadata":{"source":"signedUrl","publicUploadId":"376a20ef-cf61-469d-a90f-c35177cc1dd6"},"overwrite":false,"filenameOverride":false}',
+                            ),
+                        ]
+                    )
+
+                    self.assertEqual(
+                        mock_request.call_args_list,
+                        [
+                            mock.call(
+                                method="post",
+                                url=f"{CONFIG['domain']}/service/platform/assets/v2.0/upload/signed-url",
+                                params={},
+                                data={},
+                                headers={
+                                    "host": CONFIG["host"],
+                                    "Authorization": BEARER_TOKEN,
+                                },
+                                timeout_allowed=mock.ANY,
+                                trust_env=False,
+                            ),
+                            mock.call(
+                                method="put",
+                                url="https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=3ab526b08221fd3e5c6facfc101a&pbe=1710243228975&pbt=ca1bdc76-9498-4353-385d-61e190c5c663&pbo=3308&pbu=376a20ef-cf61-469d-a90f-c35177cc1dd6&partNumber=1",
+                                params={},
+                                data=mock.ANY,
+                                headers={},
+                                timeout_allowed=15,
+                                trust_env=False,
+                            ),
+                            mock.call(
+                                method="put",
+                                url="https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=3ab526b08221fd3e5c6facfc101a&pbe=1710243228975&pbt=ca1bdc76-9498-4353-385d-61e190c5c663&pbo=3308&pbu=376a20ef-cf61-469d-a90f-c35177cc1dd6&partNumber=2",
+                                params={},
+                                data=mock.ANY,
+                                headers={},
+                                timeout_allowed=15,
+                                trust_env=False,
+                            ),
+                            mock.call(
+                                method="put",
+                                url="https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=3ab526b08221fd3e5c6facfc101a&pbe=1710243228975&pbt=ca1bdc76-9498-4353-385d-61e190c5c663&pbo=3308&pbu=376a20ef-cf61-469d-a90f-c35177cc1dd6&partNumber=1",
+                                params={},
+                                data=mock.ANY,
+                                headers={},
+                                timeout_allowed=15,
+                                trust_env=False,
+                            ),
+                            mock.call(
+                                method="post",
+                                url="https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=3ab526b08221fd3e5c6facfc101a&pbe=1710243228975&pbt=ca1bdc76-9498-4353-385d-61e190c5c663&pbo=3308&pbu=376a20ef-cf61-469d-a90f-c35177cc1dd6",
+                                params={},
+                                data='{"parts":[1,2],"x-pixb-meta-assetdata":"{\\"orgId\\":3308,\\"type\\":\\"file\\",\\"name\\":\\"asset-8WhaVptV2.jpeg\\",\\"path\\":\\"\\",\\"fileId\\":\\"asset-8WhaVptV2.jpeg\\",\\"format\\":\\"jpeg\\",\\"s3Bucket\\":\\"erase-erase-erasebg-assets\\",\\"s3Key\\":\\"uploads/shiny-tree-8df4f8/original/13859f04-3dc0-4aca-a762-263108fb0323.jpeg\\",\\"access\\":\\"public-read\\",\\"tags\\":[],\\"metadata\\":{\\"source\\":\\"signedUrl\\",\\"publicUploadId\\":\\"376a20ef-cf61-469d-a90f-c35177cc1dd6\\"},\\"overwrite\\":false,\\"filenameOverride\\":false}"}',
+                                headers={"Content-Type": "application/json"},
+                                timeout_allowed=15,
+                                trust_env=False,
+                            ),
+                        ],
+                    )
+                    self.assertDictEqual(
+                        resp, json.loads(mock_response["content"].decode())
+                    )
+
+    def test_uploader_upload_0_maxRetries(self):
+
+        def make_request_side_effect(**kwargs):
+            method = kwargs.get("method")
+            if method == "put":
+                return MOCK_RESPONSE["multipartUploadChunkUploadFailed2"]["response"]
+            elif method == "post" and (
+                kwargs.get("url")
+                == f"{CONFIG['domain']}/service/platform/assets/v2.0/upload/signed-url"
+            ):
+                return MOCK_RESPONSE["createSignedURLV2_1"]["response"]
+            else:
+                raise Exception("Invalid request")
+
+        form_data = FormData()
+        with mock.patch.object(
+            form_data, "add_field", wraps=form_data.add_field
+        ) as spy_add_field:
+            with mock.patch.object(
+                AiohttpHelper, "_AiohttpHelper__get_formdata"
+            ) as mock_get_formdata:
+                mock_get_formdata.return_value = form_data
+                with mock.patch.object(
+                    AiohttpHelper, "_AiohttpHelper__make_request"
+                ) as mock_request:
+                    mock_response = MOCK_RESPONSE["multipartUploadChunkUploadFailed2"][
+                        "response"
+                    ]
+                    mock_request.side_effect = make_request_side_effect
+                    file = open("./tests/1.jpeg", "rb")
+                    file = file.read()
+                    self.assertEqual(len(file), 11732)
+                    chunk1 = file[: 6 * 1024]
+                    chunk2 = file[6 * 1024 :]
+
+                    try:
+                        self.pixelbinClient.uploader.upload(
+                            file=file,
+                            uploadOptions={
+                                "chunkSize": 6 * 1024,
+                                "maxRetries": 0,
+                                "exponentialFactor": 1,
+                            },
+                        )
+                        raise Exception("Request should have failed")
+                    except Exception as e:
+                        self.assertEqual(e.status_code, mock_response["status_code"])
+
+                    spy_add_field.assert_has_calls(
+                        calls=[
+                            mock.call("file", chunk1),
+                            mock.call(
+                                "x-pixb-meta-assetdata",
+                                '{"orgId":3308,"type":"file","name":"asset-8WhaVptV2.jpeg","path":"","fileId":"asset-8WhaVptV2.jpeg","format":"jpeg","s3Bucket":"erase-erase-erasebg-assets","s3Key":"uploads/shiny-tree-8df4f8/original/13859f04-3dc0-4aca-a762-263108fb0323.jpeg","access":"public-read","tags":[],"metadata":{"source":"signedUrl","publicUploadId":"376a20ef-cf61-469d-a90f-c35177cc1dd6"},"overwrite":false,"filenameOverride":false}',
+                            ),
+                            mock.call("file", chunk2),
+                            mock.call(
+                                "x-pixb-meta-assetdata",
+                                '{"orgId":3308,"type":"file","name":"asset-8WhaVptV2.jpeg","path":"","fileId":"asset-8WhaVptV2.jpeg","format":"jpeg","s3Bucket":"erase-erase-erasebg-assets","s3Key":"uploads/shiny-tree-8df4f8/original/13859f04-3dc0-4aca-a762-263108fb0323.jpeg","access":"public-read","tags":[],"metadata":{"source":"signedUrl","publicUploadId":"376a20ef-cf61-469d-a90f-c35177cc1dd6"},"overwrite":false,"filenameOverride":false}',
+                            ),
+                        ]
+                    )
+
+                    self.assertEqual(
+                        mock_request.call_args_list,
+                        [
+                            mock.call(
+                                method="post",
+                                url=f"{CONFIG['domain']}/service/platform/assets/v2.0/upload/signed-url",
+                                params={},
+                                data={},
+                                headers={
+                                    "host": CONFIG["host"],
+                                    "Authorization": BEARER_TOKEN,
+                                },
+                                timeout_allowed=mock.ANY,
+                                trust_env=False,
+                            ),
+                            mock.call(
+                                method="put",
+                                url="https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=3ab526b08221fd3e5c6facfc101a&pbe=1710243228975&pbt=ca1bdc76-9498-4353-385d-61e190c5c663&pbo=3308&pbu=376a20ef-cf61-469d-a90f-c35177cc1dd6&partNumber=1",
+                                params={},
+                                data=mock.ANY,
+                                headers={},
+                                timeout_allowed=15,
+                                trust_env=False,
+                            ),
+                            mock.call(
+                                method="put",
+                                url="https://api.pixelbin.io/service/public/assets/v1.0/signed-multipart?pbs=3ab526b08221fd3e5c6facfc101a&pbe=1710243228975&pbt=ca1bdc76-9498-4353-385d-61e190c5c663&pbo=3308&pbu=376a20ef-cf61-469d-a90f-c35177cc1dd6&partNumber=2",
+                                params={},
+                                data=mock.ANY,
+                                headers={},
+                                timeout_allowed=15,
+                                trust_env=False,
+                            ),
+                        ],
+                    )
+
+    # Test cases for invalid `chunkSize` values
+    def test_invalid_chunk_size_type(self):
+        with self.assertRaises(PixelbinIllegalArgumentError) as context:
+            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"chunkSize": "invalid"})
+        self.assertEqual(str(context.exception), "Invalid chunkSize: Must be a positive integer.")
+
+    def test_invalid_chunk_size_value(self):
+        with self.assertRaises(PixelbinIllegalArgumentError) as context:
+            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"chunkSize": -1})
+        self.assertEqual(str(context.exception), "Invalid chunkSize: Must be a positive integer.")
+
+    def test_invalid_chunk_size_float(self):
+        with self.assertRaises(PixelbinIllegalArgumentError) as context:
+            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"chunkSize": 10.5})
+        self.assertEqual(str(context.exception), "Invalid chunkSize: Must be a positive integer.")
+
+    # Test cases for invalid `maxRetries` values
+    def test_invalid_max_retries_type(self):
+        with self.assertRaises(PixelbinIllegalArgumentError) as context:
+            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"maxRetries": "invalid"})
+        self.assertEqual(str(context.exception), "Invalid maxRetries: Must be a non-negative integer.")
+
+    def test_invalid_max_retries_value(self):
+        with self.assertRaises(PixelbinIllegalArgumentError) as context:
+            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"maxRetries": -1})
+        self.assertEqual(str(context.exception), "Invalid maxRetries: Must be a non-negative integer.")
+
+    def test_invalid_max_retries_float(self):
+        with self.assertRaises(PixelbinIllegalArgumentError) as context:
+            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"maxRetries": 1.5})
+        self.assertEqual(str(context.exception), "Invalid maxRetries: Must be a non-negative integer.")
+
+    # Test cases for invalid `concurrency` values
+    def test_invalid_concurrency_type(self):
+        with self.assertRaises(PixelbinIllegalArgumentError) as context:
+            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"concurrency": "invalid"})
+        self.assertEqual(str(context.exception), "Invalid concurrency: Must be a positive integer.")
+
+    def test_invalid_concurrency_value(self):
+        with self.assertRaises(PixelbinIllegalArgumentError) as context:
+            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"concurrency": 0})
+        self.assertEqual(str(context.exception), "Invalid concurrency: Must be a positive integer.")
+
+    def test_invalid_concurrency_float(self):
+        with self.assertRaises(PixelbinIllegalArgumentError) as context:
+            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"concurrency": 2.5})
+        self.assertEqual(str(context.exception), "Invalid concurrency: Must be a positive integer.")
+
+    # Test cases for `exponentialFactor` values
+    def test_invalid_exponential_factor_type(self):
+        with self.assertRaises(PixelbinIllegalArgumentError) as context:
+            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"exponentialFactor": "invalid"})
+        self.assertEqual(str(context.exception), "Invalid exponentialFactor: Must be a positive number.")
+
+    def test_invalid_exponential_factor_value(self):
+        with self.assertRaises(PixelbinIllegalArgumentError) as context:
+            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"exponentialFactor": -1})
+        self.assertEqual(str(context.exception), "Invalid exponentialFactor: Must be a positive number.")
 
 
 class SequentialTestLoader(unittest.TestLoader):

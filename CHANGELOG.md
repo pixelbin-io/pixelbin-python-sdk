@@ -1,3 +1,8 @@
+## 4.2.0
+
+-   Added [upload](./README.md#upload) method.
+-   Removed support for signature generation for APIs.
+
 # 4.1.0
 
 -   Fixed parameters for `getPresets` method.
