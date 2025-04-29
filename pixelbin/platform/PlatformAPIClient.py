@@ -67,7 +67,7 @@ class APIClient:
 
         http_client_options = conf.get_http_client_options()
         trust_env = http_client_options["trust_env"]
-        
+
         host = conf.domain.replace("https://", "").replace("http://", "")
         headers["host"] = host
 

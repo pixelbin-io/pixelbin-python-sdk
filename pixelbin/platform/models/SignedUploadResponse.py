@@ -11,7 +11,4 @@ from .PresignedUrl import PresignedUrl
 class SignedUploadResponse(BaseSchema):
     # Assets swagger.json
 
-    
     s3PresignedUrl = fields.Nested(PresignedUrl, required=False)
-    
-

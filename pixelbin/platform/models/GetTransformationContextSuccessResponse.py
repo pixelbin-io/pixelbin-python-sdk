@@ -6,12 +6,7 @@ from ..enums import *
 from ..models.BaseSchema import BaseSchema
 
 
-
-
 class GetTransformationContextSuccessResponse(BaseSchema):
     # Transformation swagger.json
 
-    
     context = fields.Dict(required=False)
-    
-

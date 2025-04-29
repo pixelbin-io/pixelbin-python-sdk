@@ -6,12 +6,7 @@ from ..enums import *
 from ..models.BaseSchema import BaseSchema
 
 
-
-
 class UpdateCredentialsRequest(BaseSchema):
     # Assets swagger.json
 
-    
     credentials = fields.Dict(required=False)
-    
-

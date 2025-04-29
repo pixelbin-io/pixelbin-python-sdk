@@ -63,9 +63,9 @@ class AiohttpHelper:
                 response["headers"] = dict(resp.headers)
                 response["cookies"] = dict(resp.cookies)
                 try:
-                    response["content"] = (
-                        await resp.content.read()
-                    )  # resp.content is a StreamReader
+                    response[
+                        "content"
+                    ] = await resp.content.read()  # resp.content is a StreamReader
                     response["text"] = response["content"].decode()  # converting to str
                 except UnicodeDecodeError as err:
                     response["error_message"] = (

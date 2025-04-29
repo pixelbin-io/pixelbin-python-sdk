@@ -1589,7 +1589,6 @@ class TestPixelBin(unittest.TestCase):
                     )
 
     def test_uploader_upload_0_maxRetries(self):
-
         def make_request_side_effect(**kwargs):
             method = kwargs.get("method")
             if method == "put":
@@ -1690,61 +1689,110 @@ class TestPixelBin(unittest.TestCase):
     # Test cases for invalid `chunkSize` values
     def test_invalid_chunk_size_type(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"chunkSize": "invalid"})
-        self.assertEqual(str(context.exception), "Invalid chunkSize: Must be a positive integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"chunkSize": "invalid"}
+            )
+        self.assertEqual(
+            str(context.exception), "Invalid chunkSize: Must be a positive integer."
+        )
 
     def test_invalid_chunk_size_value(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"chunkSize": -1})
-        self.assertEqual(str(context.exception), "Invalid chunkSize: Must be a positive integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"chunkSize": -1}
+            )
+        self.assertEqual(
+            str(context.exception), "Invalid chunkSize: Must be a positive integer."
+        )
 
     def test_invalid_chunk_size_float(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"chunkSize": 10.5})
-        self.assertEqual(str(context.exception), "Invalid chunkSize: Must be a positive integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"chunkSize": 10.5}
+            )
+        self.assertEqual(
+            str(context.exception), "Invalid chunkSize: Must be a positive integer."
+        )
 
     # Test cases for invalid `maxRetries` values
     def test_invalid_max_retries_type(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"maxRetries": "invalid"})
-        self.assertEqual(str(context.exception), "Invalid maxRetries: Must be a non-negative integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"maxRetries": "invalid"}
+            )
+        self.assertEqual(
+            str(context.exception),
+            "Invalid maxRetries: Must be a non-negative integer.",
+        )
 
     def test_invalid_max_retries_value(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"maxRetries": -1})
-        self.assertEqual(str(context.exception), "Invalid maxRetries: Must be a non-negative integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"maxRetries": -1}
+            )
+        self.assertEqual(
+            str(context.exception),
+            "Invalid maxRetries: Must be a non-negative integer.",
+        )
 
     def test_invalid_max_retries_float(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"maxRetries": 1.5})
-        self.assertEqual(str(context.exception), "Invalid maxRetries: Must be a non-negative integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"maxRetries": 1.5}
+            )
+        self.assertEqual(
+            str(context.exception),
+            "Invalid maxRetries: Must be a non-negative integer.",
+        )
 
     # Test cases for invalid `concurrency` values
     def test_invalid_concurrency_type(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"concurrency": "invalid"})
-        self.assertEqual(str(context.exception), "Invalid concurrency: Must be a positive integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"concurrency": "invalid"}
+            )
+        self.assertEqual(
+            str(context.exception), "Invalid concurrency: Must be a positive integer."
+        )
 
     def test_invalid_concurrency_value(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"concurrency": 0})
-        self.assertEqual(str(context.exception), "Invalid concurrency: Must be a positive integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"concurrency": 0}
+            )
+        self.assertEqual(
+            str(context.exception), "Invalid concurrency: Must be a positive integer."
+        )
 
     def test_invalid_concurrency_float(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"concurrency": 2.5})
-        self.assertEqual(str(context.exception), "Invalid concurrency: Must be a positive integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"concurrency": 2.5}
+            )
+        self.assertEqual(
+            str(context.exception), "Invalid concurrency: Must be a positive integer."
+        )
 
     # Test cases for `exponentialFactor` values
     def test_invalid_exponential_factor_type(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"exponentialFactor": "invalid"})
-        self.assertEqual(str(context.exception), "Invalid exponentialFactor: Must be a positive number.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"exponentialFactor": "invalid"}
+            )
+        self.assertEqual(
+            str(context.exception),
+            "Invalid exponentialFactor: Must be a positive number.",
+        )
 
     def test_invalid_exponential_factor_value(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"exponentialFactor": -1})
-        self.assertEqual(str(context.exception), "Invalid exponentialFactor: Must be a positive number.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"exponentialFactor": -1}
+            )
+        self.assertEqual(
+            str(context.exception),
+            "Invalid exponentialFactor: Must be a positive number.",
+        )
 
 
 class SequentialTestLoader(unittest.TestLoader):

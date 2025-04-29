@@ -13,9 +13,6 @@ from .OrganizationDetailSchema import OrganizationDetailSchema
 class AppOrgDetails(BaseSchema):
     # Organization swagger.json
 
-    
     app = fields.Nested(AppSchema, required=False)
-    
-    org = fields.Nested(OrganizationDetailSchema, required=False)
-    
 
+    org = fields.Nested(OrganizationDetailSchema, required=False)
