@@ -55,6 +55,7 @@ class TestPixelBin(unittest.TestCase):
         self.assertEqual(self.pixelbinClient.config, self.pixelbinConfig)
         self.assertIsInstance(self.pixelbinClient.assets, Assets)
         self.assertIsInstance(self.pixelbinClient.organization, Organization)
+        self.assertTrue(hasattr(self.pixelbinClient, "predictions"))
 
     def test_pixelbin_config_token_1(self):
         with self.assertRaises(Exception) as context:
@@ -1589,7 +1590,6 @@ class TestPixelBin(unittest.TestCase):
                     )
 
     def test_uploader_upload_0_maxRetries(self):
-
         def make_request_side_effect(**kwargs):
             method = kwargs.get("method")
             if method == "put":
@@ -1690,61 +1690,303 @@ class TestPixelBin(unittest.TestCase):
     # Test cases for invalid `chunkSize` values
     def test_invalid_chunk_size_type(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"chunkSize": "invalid"})
-        self.assertEqual(str(context.exception), "Invalid chunkSize: Must be a positive integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"chunkSize": "invalid"}
+            )
+        self.assertEqual(
+            str(context.exception), "Invalid chunkSize: Must be a positive integer."
+        )
 
     def test_invalid_chunk_size_value(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"chunkSize": -1})
-        self.assertEqual(str(context.exception), "Invalid chunkSize: Must be a positive integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"chunkSize": -1}
+            )
+        self.assertEqual(
+            str(context.exception), "Invalid chunkSize: Must be a positive integer."
+        )
 
     def test_invalid_chunk_size_float(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"chunkSize": 10.5})
-        self.assertEqual(str(context.exception), "Invalid chunkSize: Must be a positive integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"chunkSize": 10.5}
+            )
+        self.assertEqual(
+            str(context.exception), "Invalid chunkSize: Must be a positive integer."
+        )
 
     # Test cases for invalid `maxRetries` values
     def test_invalid_max_retries_type(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"maxRetries": "invalid"})
-        self.assertEqual(str(context.exception), "Invalid maxRetries: Must be a non-negative integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"maxRetries": "invalid"}
+            )
+        self.assertEqual(
+            str(context.exception),
+            "Invalid maxRetries: Must be a non-negative integer.",
+        )
 
     def test_invalid_max_retries_value(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"maxRetries": -1})
-        self.assertEqual(str(context.exception), "Invalid maxRetries: Must be a non-negative integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"maxRetries": -1}
+            )
+        self.assertEqual(
+            str(context.exception),
+            "Invalid maxRetries: Must be a non-negative integer.",
+        )
 
     def test_invalid_max_retries_float(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"maxRetries": 1.5})
-        self.assertEqual(str(context.exception), "Invalid maxRetries: Must be a non-negative integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"maxRetries": 1.5}
+            )
+        self.assertEqual(
+            str(context.exception),
+            "Invalid maxRetries: Must be a non-negative integer.",
+        )
 
     # Test cases for invalid `concurrency` values
     def test_invalid_concurrency_type(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"concurrency": "invalid"})
-        self.assertEqual(str(context.exception), "Invalid concurrency: Must be a positive integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"concurrency": "invalid"}
+            )
+        self.assertEqual(
+            str(context.exception), "Invalid concurrency: Must be a positive integer."
+        )
 
     def test_invalid_concurrency_value(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"concurrency": 0})
-        self.assertEqual(str(context.exception), "Invalid concurrency: Must be a positive integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"concurrency": 0}
+            )
+        self.assertEqual(
+            str(context.exception), "Invalid concurrency: Must be a positive integer."
+        )
 
     def test_invalid_concurrency_float(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"concurrency": 2.5})
-        self.assertEqual(str(context.exception), "Invalid concurrency: Must be a positive integer.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"concurrency": 2.5}
+            )
+        self.assertEqual(
+            str(context.exception), "Invalid concurrency: Must be a positive integer."
+        )
 
     # Test cases for `exponentialFactor` values
     def test_invalid_exponential_factor_type(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"exponentialFactor": "invalid"})
-        self.assertEqual(str(context.exception), "Invalid exponentialFactor: Must be a positive number.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"exponentialFactor": "invalid"}
+            )
+        self.assertEqual(
+            str(context.exception),
+            "Invalid exponentialFactor: Must be a positive number.",
+        )
 
     def test_invalid_exponential_factor_value(self):
         with self.assertRaises(PixelbinIllegalArgumentError) as context:
-            self.pixelbinClient.uploader.upload(file="dummy_file", uploadOptions={"exponentialFactor": -1})
-        self.assertEqual(str(context.exception), "Invalid exponentialFactor: Must be a positive number.")
+            self.pixelbinClient.uploader.upload(
+                file="dummy_file", uploadOptions={"exponentialFactor": -1}
+            )
+        self.assertEqual(
+            str(context.exception),
+            "Invalid exponentialFactor: Must be a positive number.",
+        )
+
+    def test_predictions_create(self):
+        # Intentionally do not import Predictions directly; it should be accessed via client only
+        form_data = FormData()
+        with mock.patch.object(
+            form_data, "add_field", wraps=form_data.add_field
+        ) as spy_add_field:
+            with mock.patch.object(
+                AiohttpHelper, "_AiohttpHelper__get_formdata"
+            ) as mock_get_formdata:
+                mock_get_formdata.return_value = form_data
+                with mock.patch.object(
+                    AiohttpHelper, "_AiohttpHelper__make_request"
+                ) as mock_request:
+                    mock_response = {
+                        "status_code": 200,
+                        "content": ujson.dumps(
+                            {
+                                "_id": "erase--bg--001",
+                                "status": "ACCEPTED",
+                                "urls": {
+                                    "get": "/service/platform/transformation/v1.0/predictions/erase--bg--001"
+                                },
+                            }
+                        ).encode(),
+                    }
+                    mock_request.return_value = mock_response
+
+                    pixelbin = self.pixelbinClient
+                    img_path = "./tests/1.jpeg"
+                    mask_path = "./tests/1.jpeg"
+                    job = pixelbin.predictions.create(
+                        name="erase_bg",
+                        input={
+                            "image": b"x",
+                            "mask": b"y",
+                            "industry_type": "general",
+                            "quality_type": "original",
+                            "shadow": "false",
+                            "refine": "true",
+                        },
+                        webhook="https://example.com/webhook",
+                    )
+
+                    called = mock_request.call_args.kwargs
+                    self.assertEqual(called["method"], "post")
+                    self.assertEqual(
+                        called["url"],
+                        f"{CONFIG['domain']}/service/platform/transformation/v1.0/predictions/erase/bg",
+                    )
+                    self.assertEqual(called["params"], {})
+                    self.assertIsInstance(called["data"], FormData)
+                    # both fields should have been added via add_field
+                    calls = [c.args[0] for c in spy_add_field.mock_calls]
+                    self.assertIn("input.image", calls)
+                    self.assertIn("input.mask", calls)
+                    self.assertIn("input.industry_type", calls)
+                    self.assertIn("input.quality_type", calls)
+                    self.assertIn("input.shadow", calls)
+                    self.assertIn("input.refine", calls)
+                    self.assertEqual(job["_id"], "erase--bg--001")
+
+    def test_predictions_get(self):
+        with mock.patch.object(
+            AiohttpHelper, "_AiohttpHelper__make_request"
+        ) as mock_request:
+            mock_response = {
+                "status_code": 200,
+                "content": ujson.dumps(
+                    {
+                        "_id": "erase--bg--001",
+                        "status": "SUCCESS",
+                        "output": ["https://example.com/out.png"],
+                    }
+                ).encode(),
+            }
+            mock_request.return_value = mock_response
+            pixelbin = self.pixelbinClient
+            status = pixelbin.predictions.get("erase--bg--001")
+            self.assertEqual(status["status"], "SUCCESS")
+            called = mock_request.call_args.kwargs
+            self.assertEqual(called["method"], "get")
+            self.assertEqual(
+                called["url"],
+                f"{CONFIG['domain']}/service/platform/transformation/v1.0/predictions/erase--bg--001",
+            )
+
+    def test_predictions_wait(self):
+        with mock.patch.object(
+            AiohttpHelper, "_AiohttpHelper__make_request"
+        ) as mock_request:
+            responses = [
+                {
+                    "status_code": 200,
+                    "content": ujson.dumps(
+                        {"_id": "rid", "status": "ACCEPTED"}
+                    ).encode(),
+                },
+                {
+                    "status_code": 200,
+                    "content": ujson.dumps(
+                        {"_id": "rid", "status": "ACCEPTED"}
+                    ).encode(),
+                },
+                {
+                    "status_code": 200,
+                    "content": ujson.dumps(
+                        {"_id": "rid", "status": "SUCCESS", "output": "ok"}
+                    ).encode(),
+                },
+            ]
+            mock_request.side_effect = responses
+            pixelbin = self.pixelbinClient
+            status = pixelbin.predictions.wait("rid")
+            self.assertEqual(status["status"], "SUCCESS")
+
+    def test_predictions_wait_with_options(self):
+        with mock.patch.object(
+            AiohttpHelper, "_AiohttpHelper__make_request"
+        ) as mock_request:
+            responses = [
+                {
+                    "status_code": 200,
+                    "content": ujson.dumps(
+                        {"_id": "rid", "status": "ACCEPTED"}
+                    ).encode(),
+                },
+                {
+                    "status_code": 200,
+                    "content": ujson.dumps(
+                        {"_id": "rid", "status": "SUCCESS", "output": "ok"}
+                    ).encode(),
+                },
+            ]
+            mock_request.side_effect = responses
+            pixelbin = self.pixelbinClient
+            status = pixelbin.predictions.wait(
+                "rid", {"maxAttempts": 999, "retryFactor": 10, "retryInterval": 0.0001}
+            )
+            self.assertEqual(status["status"], "SUCCESS")
+
+    def test_predictions_list(self):
+        with mock.patch.object(
+            AiohttpHelper, "_AiohttpHelper__make_request"
+        ) as mock_request:
+            mock_response = {
+                "status_code": 200,
+                "content": ujson.dumps(
+                    [
+                        {
+                            "name": "erase_bg",
+                            "displayName": "Erase Background",
+                            "description": "Removes image background.",
+                            "bannerImage": "https://cdn.pixelbin.io/v2/.../erase-bg.png",
+                        }
+                    ]
+                ).encode(),
+            }
+            mock_request.return_value = mock_response
+            pixelbin = self.pixelbinClient
+            items = pixelbin.predictions.list()
+            self.assertTrue(isinstance(items, list))
+            called = mock_request.call_args.kwargs
+            self.assertEqual(called["method"], "get")
+            self.assertEqual(
+                called["url"],
+                f"{CONFIG['domain']}/service/public/transformation/v1.0/predictions",
+            )
+
+    def test_predictions_get_schema(self):
+        with mock.patch.object(
+            AiohttpHelper, "_AiohttpHelper__make_request"
+        ) as mock_request:
+            mock_response = {
+                "status_code": 200,
+                "content": ujson.dumps(
+                    {
+                        "name": "erase_bg",
+                        "displayName": "Erase Background",
+                        "input": {"image": {"oneOf": []}},
+                    }
+                ).encode(),
+            }
+            mock_request.return_value = mock_response
+            pixelbin = self.pixelbinClient
+            schema = pixelbin.predictions.get_schema("erase_bg")
+            self.assertTrue(isinstance(schema, dict))
+            called = mock_request.call_args.kwargs
+            self.assertEqual(called["method"], "get")
+            self.assertEqual(
+                called["url"],
+                f"{CONFIG['domain']}/service/public/transformation/v1.0/predictions/schema/erase_bg",
+            )
 
 
 class SequentialTestLoader(unittest.TestLoader):

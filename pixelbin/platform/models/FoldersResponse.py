@@ -6,24 +6,13 @@ from ..enums import *
 from ..models.BaseSchema import BaseSchema
 
 
-
-
-
-
-
-
-
-
 class FoldersResponse(BaseSchema):
     # Assets swagger.json
 
-    
     _id = fields.Str(required=False)
-    
-    name = fields.Str(required=False)
-    
-    path = fields.Str(required=False)
-    
-    isActive = fields.Boolean(required=False)
-    
 
+    name = fields.Str(required=False)
+
+    path = fields.Str(required=False)
+
+    isActive = fields.Boolean(required=False)

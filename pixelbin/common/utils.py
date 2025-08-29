@@ -13,7 +13,7 @@ from functools import wraps
 from typing import Callable, Any
 
 
-async def create_query_string(params : dict={}) -> str:
+async def create_query_string(params: dict = {}) -> str:
     """
     summary : Creates query string
     :param - params : query params : Type - dict
@@ -29,8 +29,16 @@ async def create_query_string(params : dict={}) -> str:
     return query_string
 
 
-async def add_signature_to_headers(domain: str, method: str, url: str, query_string: str, headers: dict, body: Union[dict, str]="",
-                                     exclude_headers=[], sign_query=False) -> Union[dict, str]:
+async def add_signature_to_headers(
+    domain: str,
+    method: str,
+    url: str,
+    query_string: str,
+    headers: dict,
+    body: Union[dict, str] = "",
+    exclude_headers=[],
+    sign_query=False,
+) -> Union[dict, str]:
     """
     summary : returns headers with signature
     :param - domain : url domain : Type - str
@@ -47,7 +55,9 @@ async def add_signature_to_headers(domain: str, method: str, url: str, query_str
     if not sign_query:
         headers["x-ebg-param"] = ebg_date
     else:
-        query_string += f"&x-ebg-param={ebg_date}" if query_string else f"?x-ebg-param={ebg_date}"
+        query_string += (
+            f"&x-ebg-param={ebg_date}" if query_string else f"?x-ebg-param={ebg_date}"
+        )
     excluded_headers = {}
     for header in exclude_headers:
         excluded_headers[header] = headers.pop(header) if header in headers else None
@@ -56,18 +66,28 @@ async def add_signature_to_headers(domain: str, method: str, url: str, query_str
 
     body_hex = hashlib.sha256("".encode()).hexdigest()
     if body:
-        body_hex = hashlib.sha256(ujson.dumps(body, escape_forward_slashes=False).replace(", ", ",").replace(": ", ":").encode()).hexdigest()
+        body_hex = hashlib.sha256(
+            ujson.dumps(body, escape_forward_slashes=False)
+            .replace(", ", ",")
+            .replace(": ", ":")
+            .encode()
+        ).hexdigest()
     request_list = [
         method.upper(),
         url,
         query_string,
         headers_str,
         ";".join([h for h in headers.keys() if h == "host" or h.startswith("x-ebg-")]),
-        body_hex
+        body_hex,
     ]
     request_str = "\n".join(request_list)
-    request_str = "\n".join([ebg_date, hashlib.sha256(request_str.encode()).hexdigest()])
-    signature = "v1:" + hmac.new("1234567".encode(), request_str.encode(), hashlib.sha256).hexdigest()
+    request_str = "\n".join(
+        [ebg_date, hashlib.sha256(request_str.encode()).hexdigest()]
+    )
+    signature = (
+        "v1:"
+        + hmac.new("1234567".encode(), request_str.encode(), hashlib.sha256).hexdigest()
+    )
     if not sign_query:
         headers["x-ebg-signature"] = signature
     else:
@@ -76,6 +96,7 @@ async def add_signature_to_headers(domain: str, method: str, url: str, query_str
         if h_value:
             headers[h_key] = h_value
     return headers if not sign_query else query_string
+
 
 def retry(
     max_retries: int = 5,

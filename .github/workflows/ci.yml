@@ -28,7 +28,7 @@ jobs:
           pip install dist/pixelbin-*.tar.gz
           
 
-      - name: Run tests 
+      - name: Run test
         run: |
           coverage run -m pytest tests/pixelbin_test.py
           coverage report

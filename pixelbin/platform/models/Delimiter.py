@@ -6,16 +6,9 @@ from ..enums import *
 from ..models.BaseSchema import BaseSchema
 
 
-
-
-
-
 class Delimiter(BaseSchema):
     # Assets swagger.json
 
-    
     operationSeparator = fields.Str(required=False)
-    
-    parameterSeparator = fields.Str(required=False)
-    
 
+    parameterSeparator = fields.Str(required=False)

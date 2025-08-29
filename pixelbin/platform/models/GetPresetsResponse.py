@@ -13,9 +13,8 @@ from .page import page
 class GetPresetsResponse(BaseSchema):
     # Assets swagger.json
 
-    
-    items = fields.List(fields.Nested(AddPresetResponse, required=False), required=False)
-    
-    page = fields.Nested(page, required=False)
-    
+    items = fields.List(
+        fields.Nested(AddPresetResponse, required=False), required=False
+    )
 
+    page = fields.Nested(page, required=False)

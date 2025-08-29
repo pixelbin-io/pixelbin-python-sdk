@@ -13,9 +13,8 @@ from .FoldersResponse import FoldersResponse
 class GetAncestorsResponse(BaseSchema):
     # Assets swagger.json
 
-    
     folder = fields.Nested(folderItem, required=False)
-    
-    ancestors = fields.List(fields.Nested(FoldersResponse, required=False), required=False)
-    
 
+    ancestors = fields.List(
+        fields.Nested(FoldersResponse, required=False), required=False
+    )

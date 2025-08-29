@@ -63,9 +63,9 @@ class AiohttpHelper:
                 response["headers"] = dict(resp.headers)
                 response["cookies"] = dict(resp.cookies)
                 try:
-                    response["content"] = (
-                        await resp.content.read()
-                    )  # resp.content is a StreamReader
+                    response[
+                        "content"
+                    ] = await resp.content.read()  # resp.content is a StreamReader
                     response["text"] = response["content"].decode()  # converting to str
                 except UnicodeDecodeError as err:
                     response["error_message"] = (
@@ -100,12 +100,34 @@ class AiohttpHelper:
         :param - timeout_allowed : timeout for request in seconds : Type - int
         """
         if data:
-            if "file" in data.keys():
+            # Determine if multipart form-data is needed. This is true when any value is
+            # a file-like object or bytes/bytearray, or when explicit 'file' key exists.
+            needs_form = False
+            for _k, _v in data.items():
+                if _k == "file":
+                    needs_form = True
+                    break
+                if isinstance(_v, (bytes, bytearray)) or hasattr(_v, "read"):
+                    needs_form = True
+                    break
+                if isinstance(_v, list) and any(
+                    isinstance(__e, (bytes, bytearray)) or hasattr(__e, "read")
+                    for __e in _v
+                ):
+                    needs_form = True
+                    break
+
+            if needs_form:
                 form_data = self.__get_formdata()
                 for k, v in data.items():
                     if isinstance(v, list):
                         for ele in v:
-                            form_data.add_field(k, ele)
+                            ele_val = (
+                                ujson.dumps(ele, escape_forward_slashes=False)
+                                if isinstance(ele, dict) or isinstance(ele, bool)
+                                else ele
+                            )
+                            form_data.add_field(k, ele_val)
                     else:
                         value = (
                             ujson.dumps(v, escape_forward_slashes=False)

@@ -13,9 +13,6 @@ from .page import page
 class exploreResponse(BaseSchema):
     # Assets swagger.json
 
-    
     items = fields.List(fields.Nested(exploreItem, required=False), required=False)
-    
-    page = fields.Nested(page, required=False)
-    
 
+    page = fields.Nested(page, required=False)
